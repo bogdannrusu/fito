@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/bogdannrusu/coffe_desktop/issues"
   },
-  "homepage": "https://github.com/bogdannrusu/coffe_desktop#readme"
+  "homepage": "https://github.com/bogdannrusu/coffe_desktop#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express-validator": "^7.1.0"
+  }
 }

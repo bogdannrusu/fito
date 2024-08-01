@@ -2,9 +2,9 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Navbar from './components/Navbar'
-//import About from './components/About'
-//import Contact from './components/Contact' 
+import Navbar from './components/Navbar';
+import Login from './components/Login'
+
 function App() {
 
   return (
@@ -14,9 +14,8 @@ function App() {
         <Navbar />
         <div className="flex flex-1 overflow-hidden">
           <Routes>
+            <Route path="/login" element={<Login />} />
             <Route path="/navbar" element={<Navbar />} />
-            {/* <Route path="/users" element={<Users />} />
-            <Route path="/orders" element={<Orders />} /> */}
           </Routes>
         </div>
       </div>
