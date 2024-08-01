@@ -1,6 +1,16 @@
 /* eslint-disable prettier/prettier */
 //import React from 'react';
-import { AppstoreOutlined, FileDoneOutlined, SettingOutlined } from '@ant-design/icons';
+import { 
+  AppstoreOutlined, 
+  FileDoneOutlined, 
+  SettingOutlined,
+  OrderedListOutlined,
+  SnippetsOutlined,
+  LineChartOutlined,
+  SolutionOutlined, 
+  FontSizeOutlined,
+  TableOutlined
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 const items = [
   {
@@ -10,31 +20,45 @@ const items = [
     children: [
       {
         key: '1-1',
-        label: 'Item 1',
+        label: 'Orders',
         type: 'group',
         children: [
           {
             key: '1',
-            label: 'Option 1',
+            icon: <OrderedListOutlined />,
+            label: 'Orders View',
           },
           {
             key: '2',
-            label: 'Option 2',
+            icon: <SnippetsOutlined />,
+            label: 'Invoices View',
+          },
+          {
+            key: '3',
+            icon: <SolutionOutlined />,
+            label: 'Contragents',
+          },
+          {
+            key: '4',
+            icon: <FontSizeOutlined />,
+            label: 'Units',
           },
         ],
       },
       {
         key: '1-2',
-        label: 'Item 2',
+        label: 'Reports',
         type: 'group',
         children: [
           {
             key: '3',
-            label: 'Option 3',
+            icon: <LineChartOutlined />,
+            label: 'Orders Invoice View',
           },
           {
             key: '4',
-            label: 'Option 4',
+            icon: <TableOutlined />,
+            label: 'Invoice Report View',
           },
         ],
       },
