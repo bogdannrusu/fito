@@ -1,0 +1,20 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "api for desktop app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bogdannrusu/coffe_desktop.git"
+  },
+  "author": "Bogdan Rusu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bogdannrusu/coffe_desktop/issues"
+  },
+  "homepage": "https://github.com/bogdannrusu/coffe_desktop#readme"
+}
