@@ -10,7 +10,7 @@ const wpRoutes = require('./routes/workpointsRoute');
 const dbUri = process.env.MONGODB_URI;
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
 app.use(cors()); // Enable CORS for all routes
 

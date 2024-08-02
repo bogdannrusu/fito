@@ -6,9 +6,9 @@ const {
   getUserById,
   createUser,
   updateUser,
+  loginUser,
   deleteUser,
-  getUserDetails,
-  getUserToken
+  getUserDetails
 } = require('../controllers/userController');
 
 const auth = require('../middleware/auth');
@@ -28,7 +28,7 @@ router.post('/register', validateUser, createUser);
 router.post('/login', [
   check('username').notEmpty().withMessage('Username is required'),
   check('password').notEmpty().withMessage('Password is required')
-], getUserToken); // Update the route handler to getUserToken
+], loginUser); // Update the route handler to getUserToken
 router.get('/me', auth, getUserDetails);
 router.put('/:id', auth, validateUser, updateUser);
 router.delete('/:id', auth, deleteUser);
