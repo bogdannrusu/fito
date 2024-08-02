@@ -1,28 +1,28 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Login from './components/Login'
+import Login from './components/Login';
+import Logout from './components/Logout';
+import Dashboard from './components/Dashboard';
 
-function App() {
+const App = () => {
+  const isAuthenticated = !!localStorage.getItem('token');
 
   return (
-    <>
-      <Router>
+    <Router>
       <div className="flex flex-col h-screen bg-gray-100">
-        <Navbar />
         <div className="flex flex-1 overflow-hidden">
+          {/* {isAuthenticated && <Navbar />} Conditionally render Navbar */}
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/navbar" element={<Navbar />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/navbar" element={isAuthenticated ? <Navbar /> : <Navigate to="/" />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} />
           </Routes>
         </div>
       </div>
     </Router>
-    </>
-  )
-}
+  );
+};
 
-export default App
-
+export default App;

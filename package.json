@@ -21,11 +21,12 @@
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
     "antd": "^5.19.4",
-    "axios": "^1.7.2",
+    "axios": "^1.7.3",
     "electron-updater": "^6.1.7",
     "express": "^4.19.2",
     "mongoose": "^8.5.2",
     "nodemon": "^3.1.4",
+    "prop-types": "^15.8.1",
     "react-router-dom": "^6.25.1"
   },
   "devDependencies": {

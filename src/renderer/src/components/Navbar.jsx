@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-//import React from 'react';
 import { 
   AppstoreOutlined, 
   FileDoneOutlined, 
@@ -9,9 +8,12 @@ import {
   LineChartOutlined,
   SolutionOutlined, 
   FontSizeOutlined,
-  TableOutlined
+  TableOutlined,
+  LogoutOutlined
 } from '@ant-design/icons';
 import { Menu } from 'antd';
+import { useNavigate } from 'react-router-dom';
+
 const items = [
   {
     key: 'sub1',
@@ -116,18 +118,34 @@ const items = [
       },
     ],
   },
+  {
+    key: 'sub5',
+    label: 'Logout',
+    icon: <LogoutOutlined />,
+  }
 ];
-const onClick = (e) => {
-  console.log('click', e);
+
+const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (e) => {
+    console.log('click', e);
+    if (e.key === '1') {
+      navigate('/dashboard');
+    }
+    // Mai multe conditii vor fi aici in caz de ceva
+  };
+
+  return (
+    <div>
+      <Menu
+        onClick={handleClick}
+        style={{ width: 725 }}
+        mode="horizontal"
+        items={items}
+      />
+    </div>
+  );
 };
-const Navbar = () => (
-  <Menu
-    onClick={onClick}
-    style={{
-      width: 725,
-    }}
-    mode="horizontal"
-    items={items}
-  />
-);
+
 export default Navbar;

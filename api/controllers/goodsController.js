@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // controllers/goodsController.js
 const Goods = require('../models/goods');
 

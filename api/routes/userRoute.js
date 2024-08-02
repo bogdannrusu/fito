@@ -1,13 +1,36 @@
-// routes/usersRoute.js
+/* eslint-disable prettier/prettier */
 const express = require('express');
-const router = express.Router();
-const userController = require('../controllers/userController');
+const { check } = require('express-validator');
+const {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
+  getUserDetails,
+  getUserToken
+} = require('../controllers/userController');
 
-// Routes
-router.get('/', userController.getAllUsers);
-router.get('/:id', userController.getUserById);
-router.post('/', userController.createUser);
-router.put('/:id', userController.updateUser);
-router.delete('/:id', userController.deleteUser);
+const auth = require('../middleware/auth');
+
+const router = express.Router();
+
+const validateUser = [
+  check('user_id').isInt().withMessage('User ID must be an integer'),
+  check('username').notEmpty().withMessage('Username is required'),
+  check('email').isEmail().withMessage('Valid email is required'),
+  check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+];
+
+router.get('/', auth, getAllUsers);
+router.get('/:id', auth, getUserById);
+router.post('/register', validateUser, createUser);
+router.post('/login', [
+  check('username').notEmpty().withMessage('Username is required'),
+  check('password').notEmpty().withMessage('Password is required')
+], getUserToken); // Update the route handler to getUserToken
+router.get('/me', auth, getUserDetails);
+router.put('/:id', auth, validateUser, updateUser);
+router.delete('/:id', auth, deleteUser);
 
 module.exports = router;
