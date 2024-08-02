@@ -14,6 +14,8 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+
+//Detaliile Userului
 const getUserDetails = async (req, res) => {
   try {
     const user = await User.findById(req.user.userId);
@@ -26,6 +28,8 @@ const getUserDetails = async (req, res) => {
   }
 };
 
+
+//Get user by Id
 const getUserById = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -36,6 +40,8 @@ const getUserById = async (req, res) => {
   }
 };
 
+
+//Crearea Users
 const createUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -56,6 +62,8 @@ const createUser = async (req, res) => {
   }
 };
 
+
+// Logarea
 const loginUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -65,30 +73,30 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
+    // Find user by username
     const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-     // Log user data to verify it's fetched correctly
-     console.log('User found:', user);
-
+    // Compare provided password with stored hash
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-      // Log success message before generating token
-      console.log('Password match successful');
-
+    // Generate JWT token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
+    // Respond with the token
     res.json({ token });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
+
+// Get User Token
 const getUserToken = async (req, res) => {
   const { username, password } = req.body;
 
@@ -115,6 +123,8 @@ const getUserToken = async (req, res) => {
   }
 };
 
+
+
 const updateUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -138,6 +148,8 @@ const updateUser = async (req, res) => {
   }
 };
 
+
+
 const deleteUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -149,6 +161,7 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 
 module.exports = {
   getAllUsers,

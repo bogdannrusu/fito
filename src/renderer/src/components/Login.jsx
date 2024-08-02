@@ -2,6 +2,7 @@
 import { Button, Checkbox, Form, Input, message } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+//import SignUp from './SignUp';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -16,11 +17,12 @@ const Login = () => {
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
         message.success('Login successful!');
-        navigate('/dashboard'); // Redirect to the protected route
+        navigate('/navbar');
       }
+  
     } catch (error) {
       message.error('Login failed. Please check your credentials and try again.');
-      console.error('Failed:', error);
+      console.error('Failed:', error.response.data);
     }
   };
 
