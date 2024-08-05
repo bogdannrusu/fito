@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import { useState } from 'react';
 import { 
   AppstoreOutlined, 
   FileDoneOutlined, 
@@ -9,9 +10,9 @@ import {
   SolutionOutlined, 
   FontSizeOutlined,
   TableOutlined,
-  LogoutOutlined
+  LogoutOutlined,
 } from '@ant-design/icons';
-import { Menu } from 'antd';
+import { Button, Menu, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const items = [
@@ -127,13 +128,29 @@ const items = [
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+    navigate('/logout');
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
 
   const handleClick = (e) => {
     console.log('click', e);
     if (e.key === '1') {
       navigate('/dashboard');
+    } else if (e.key === 'sub5') {
+      showModal();
     }
-    // Mai multe conditii vor fi aici in caz de ceva
+    // Mai multe conditii vor fi aici in caz de
   };
 
   return (
@@ -144,6 +161,22 @@ const Navbar = () => {
         mode="horizontal"
         items={items}
       />
+      <Modal
+        title="Logout Confirmation"
+        open={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={[
+          <Button key="back" onClick={handleCancel}>
+            Cancel
+          </Button>,
+          <Button danger key="submit" type="primary" onClick={handleOk}>
+            Logout
+          </Button>,
+        ]}
+      >
+        <p>Are you sure you want to log out?</p>
+      </Modal>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 const { validationResult } = require('express-validator');
-const userService = require('../services/userService'); // Adjust the path as necessary
+const userService = require('../services/userService');
 
 // Get All Users
 const getAllUsers = async (req, res) => {
@@ -68,7 +68,7 @@ const loginUser = async (req, res) => {
     }
 
     // Log the actual password and hashed password
-    console.log('Plain password:', password);
+    //console.log('Plain password:', password);
     console.log('Hashed password from DB:', user.password);
 
     const isMatch = await userService.comparePassword(password, user.password);

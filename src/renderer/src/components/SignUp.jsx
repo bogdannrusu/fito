@@ -1,19 +1,48 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
-import React from 'react'
-import { Form, Input, Button, Typography } from 'antd'
-import { UserOutlined, LockOutlined } from '@ant-design/icons'
+import React from 'react';
+import { Form, Input, Button, Typography, message } from 'antd';
+import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const { Title } = Typography
+const { Title } = Typography;
 
 const SignUp = () => {
-  const [form] = Form.useForm()
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values)
-    // Here you would typically handle the sign-up process
-  }
+  const onFinish = async (values) => {
+    try {
+      // Sign up user
+      const response = await axios.post('http://localhost:5000/api/users/register', {
+        username: values.username,
+        password: values.password,
+        confirm: values.confirm,
+        email: values.email,
+      });
+
+      if (response.status === 201) {
+        message.success('Account created successfully!');
+
+        // Authenticate user
+        const loginResponse = await axios.post('http://localhost:5000/api/users/login', {
+          username: values.username,
+          password: values.password,
+        });
+
+        if (loginResponse.data.token) {
+          localStorage.setItem('token', loginResponse.data.token);
+          message.success('Login successful!');
+          navigate('/navbar');
+        }
+      }
+    } catch (error) {
+      message.error('Sign-up failed. Please try again.');
+      console.error('Failed:', error.response.data);
+    }
+  };
 
   return (
     <div style={{ 
@@ -23,7 +52,7 @@ const SignUp = () => {
       alignItems: 'center' 
     }}>
       <div style={{ maxWidth: 300 }}>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>Crearea account</Title>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>Create Account</Title>
         <Form
           form={form}
           name="signup"
@@ -67,9 +96,9 @@ const SignUp = () => {
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve()
+                    return Promise.resolve();
                   }
-                  return Promise.reject(new Error('The two passwords that you entered do not match!'))
+                  return Promise.reject(new Error('The two passwords that you entered do not match!'));
                 },
               }),
             ]}
@@ -77,15 +106,32 @@ const SignUp = () => {
             <Input.Password prefix={<LockOutlined />} placeholder="Confirm Password" />
           </Form.Item>
 
+          {/* Add email field if needed */}
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              },
+              {
+                required: true,
+                message: 'Please input your E-mail!',
+              },
+            ]}
+          >
+            <Input prefix={<UserOutlined />} placeholder="Email" />
+          </Form.Item>
+
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-              Creare account
+              Create Account
             </Button>
           </Form.Item>
         </Form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignUp
+export default SignUp;

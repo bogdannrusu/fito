@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/users'); // Adjust the path as necessary
-
+const User = require('../models/users');
 const findAllUsers = async () => {
   return await User.find();
 };
