@@ -19,7 +19,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
       }
 
       try {
-        const response = await axios.get('http://localhost:3000/api/users/login', {
+        const response = await axios.get('http://localhost:5000/api/users/login', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

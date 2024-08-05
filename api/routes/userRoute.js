@@ -28,7 +28,7 @@ router.post('/register', validateUser, createUser);
 router.post('/login', [
   check('username').notEmpty().withMessage('Username is required'),
   check('password').notEmpty().withMessage('Password is required')
-], loginUser); // Update the route handler to getUserToken
+], loginUser);
 router.get('/me', auth, getUserDetails);
 router.put('/:id', auth, validateUser, updateUser);
 router.delete('/:id', auth, deleteUser);

@@ -10,7 +10,7 @@ const wpRoutes = require('./routes/workpointsRoute');
 const dbUri = process.env.MONGODB_URI;
 
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 
 app.use(cors()); // Enable CORS for all routes
 
@@ -18,7 +18,7 @@ app.use(cors()); // Enable CORS for all routes
 app.use((req, res, next) => {
   res.setHeader(
     "Content-Security-Policy",
-    "default-src 'self'; connect-src 'self' http://localhost:3000"
+    "default-src 'self'; connect-src 'self' http://localhost:5000"
   );
   next();
 });

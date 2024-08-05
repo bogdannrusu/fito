@@ -1,24 +1,21 @@
 /* eslint-disable prettier/prettier */
 const { validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const User = require('../models/users');
+const userService = require('../services/userService'); // Adjust the path as necessary
 
 // Get All Users
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await userService.findAllUsers();
     res.json(users);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-
-//Detaliile Userului
+// User Details
 const getUserDetails = async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId);
+    const user = await userService.findUserById(req.user.userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
@@ -28,11 +25,10 @@ const getUserDetails = async (req, res) => {
   }
 };
 
-
-//Get user by Id
+// Get User by ID
 const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await userService.findUserById(req.params.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user);
   } catch (err) {
@@ -40,30 +36,22 @@ const getUserById = async (req, res) => {
   }
 };
 
-
-//Crearea Users
+// Create User
 const createUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { user_id, username, password, isActive } = req.body;
-
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const user = new User({ user_id, username, password: hashedPassword, isActive });
-    const newUser = await user.save();
+    const newUser = await userService.createUser(req.body);
     res.status(201).json(newUser);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-
-// Logarea
+// Login User
 const loginUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -73,58 +61,28 @@ const loginUser = async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // Find user by username
-    const user = await User.findOne({ username });
+    const user = await userService.findUserByUsername(username);
     if (!user) {
+      console.log('User not found:', username);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Compare provided password with stored hash
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await userService.comparePassword(password, user.password);
     if (!isMatch) {
+      console.log('Password mismatch for user:', username);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Generate JWT token
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    // Respond with the token
+    const token = userService.generateToken(user);
+    console.log('Login successful for user:', username);
     res.json({ token });
   } catch (err) {
+    console.error('Error during login:', err);
     res.status(500).json({ message: err.message });
   }
 };
 
-
-// Get User Token
-const getUserToken = async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(400).json({ message: 'User not found' });
-    }
-
-    if (!user.is_active) {
-      return res.status(400).json({ message: 'User is not active' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-    res.json({ token });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-
-
+// Update User
 const updateUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -132,36 +90,28 @@ const updateUser = async (req, res) => {
   }
 
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    if (req.body.password) {
-      const salt = await bcrypt.genSalt(10);
-      req.body.password = await bcrypt.hash(req.body.password, salt);
+    const updatedUser = await userService.updateUser(req.params.id, req.body);
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
     }
-
-    Object.assign(user, req.body);
-    const updatedUser = await user.save();
     res.json(updatedUser);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
 
-
-
+// Delete User
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) return res.status(404).json({ message: 'User not found' });
-
-    await user.remove();
+    const deletedUser = await userService.deleteUser(req.params.id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
     res.json({ message: 'User deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
-
 
 module.exports = {
   getAllUsers,
@@ -171,5 +121,4 @@ module.exports = {
   loginUser,
   updateUser,
   deleteUser,
-  getUserToken
 };
