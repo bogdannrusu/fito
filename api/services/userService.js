@@ -1,51 +1,56 @@
 /* eslint-disable prettier/prettier */
+const User = require('../models/users');
+const Counter = require('../models/counterModel');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../models/users');
+
 const findAllUsers = async () => {
-  return await User.find();
+  return User.find();
 };
 
 const findUserById = async (id) => {
-  return await User.findById(id);
+  return User.findById(id);
 };
 
 const findUserByUsername = async (username) => {
-  return await User.findOne({ username });
+  return User.findOne({ username });
 };
 
 const createUser = async (userData) => {
-  const { user_id, username, password, isActive } = userData;
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+  // Increment the user_id counter
+  const counter = await Counter.findByIdAndUpdate(
+    { _id: 'user_id' },
+    { $inc: { seq: 1 } },
+    { new: true, upsert: true }
+  );
 
-  const user = new User({ user_id, username, password: hashedPassword, isActive });
-  return await user.save();
+  const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+  const newUser = new User({
+    user_id: counter.seq,
+    username: userData.username,
+    password: hashedPassword,
+    email: userData.email,
+    is_active: true,
+    createdAt: new Date(),
+  });
+
+  return newUser.save();
 };
 
 const updateUser = async (id, updateData) => {
-  const user = await User.findById(id);
-  if (!user) return null;
-
   if (updateData.password) {
-    const salt = await bcrypt.genSalt(10);
-    updateData.password = await bcrypt.hash(updateData.password, salt);
+    updateData.password = await bcrypt.hash(updateData.password, 10);
   }
-
-  Object.assign(user, updateData);
-  return await user.save();
+  return User.findByIdAndUpdate(id, updateData, { new: true });
 };
 
 const deleteUser = async (id) => {
-  const user = await User.findById(id);
-  if (!user) return null;
-
-  await user.remove();
-  return user;
+  return User.findByIdAndDelete(id);
 };
 
-const comparePassword = async (candidatePassword, hashedPassword) => {
-  return await bcrypt.compare(candidatePassword, hashedPassword);
+const comparePassword = async (plainPassword, hashedPassword) => {
+  return bcrypt.compare(plainPassword, hashedPassword);
 };
 
 const generateToken = (user) => {

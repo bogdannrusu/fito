@@ -2,7 +2,7 @@
 const bcrypt = require('bcrypt');
 
 const plainPassword = 'brs1911';
-const hashedPassword = '$2a$12$s3/UppfzNQx90ZBxBcFo2e4mwIO.cqMMXPyJ3IcDTpvLgdrYwIUai';
+const hashedPassword = '$2b$10$Irgqcandao44Tklb8r7iH.lkJweVUIbAo8vCb../37Kl1SyqwsRV6';
 
 bcrypt.compare(plainPassword, hashedPassword, (err, isMatch) => {
   if (err) {

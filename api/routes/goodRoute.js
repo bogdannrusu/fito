@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // routes/goodsRoute.js
 const express = require('express');
 const router = express.Router();

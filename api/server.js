@@ -6,6 +6,7 @@ const cors = require('cors');
 const goodsRoutes = require('./routes/goodRoute');
 const userRoutes = require('./routes/userRoute');
 const wpRoutes = require('./routes/workpointsRoute');
+const Counter = require('./models/counterModel');
 
 const dbUri = process.env.MONGODB_URI;
 
@@ -28,8 +29,14 @@ mongoose.connect(dbUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-  .then(() => {
+  .then(async () => {
     console.log('Connected to MongoDB');
+
+    // Initialize the counter if it does not exist
+    const userCounter = await Counter.findById('user_id');
+    if (!userCounter) {
+      await new Counter({ _id: 'user_id', seq: 0 }).save();
+    }
   })
   .catch((err) => {
     console.error('Failed to connect to MongoDB', err);
