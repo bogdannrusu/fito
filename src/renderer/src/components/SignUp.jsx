@@ -13,6 +13,10 @@ const SignUp = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
 
+  const navigateLogin = () => {
+    navigate('/');
+  }
+
   const onFinish = async (values) => {
     try {
       // Sign up user
@@ -126,6 +130,9 @@ const SignUp = () => {
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
               Create Account
+            </Button>
+            <Button onClick={navigateLogin} type="secondary" style={{ width: '100%' }}>
+              Ai un cont? Conectati-vă
             </Button>
           </Form.Item>
         </Form>
