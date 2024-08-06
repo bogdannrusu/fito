@@ -53,7 +53,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             <Component {...props} />
           </>
         ) : (
-          <Navigate to="/login" />
+          <Navigate to="/" />
         )
       }
     />

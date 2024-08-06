@@ -161,7 +161,7 @@ const Navbar = () => {
     setIsModalVisible(false);
     localStorage.removeItem('token');
     setLoggedInUser(null);
-    navigate('/login');
+    navigate('/');
   };
 
   const handleCancel = () => {
