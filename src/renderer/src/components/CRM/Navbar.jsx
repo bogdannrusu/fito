@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   AppstoreOutlined, 
   FileDoneOutlined, 
@@ -11,9 +11,12 @@ import {
   FontSizeOutlined,
   TableOutlined,
   LogoutOutlined,
+  EuroOutlined,
+  UserOutlined
 } from '@ant-design/icons';
-import { Button, Menu, Modal } from 'antd';
+import { Button, Menu, Modal, Dropdown, Avatar } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const items = [
   {
@@ -74,23 +77,24 @@ const items = [
     children: [
       {
         key: '5',
-        label: 'Option 5',
+        label: 'Deposit Sales',
+        icon: <EuroOutlined />
       },
       {
         key: '6',
-        label: 'Option 6',
+        label: 'Deposit Invoices',
       },
       {
         key: 'sub3',
-        label: 'Submenu',
+        label: 'Sales',
         children: [
           {
             key: '7',
-            label: 'Option 7',
+            label: 'SaleToWp',
           },
           {
             key: '8',
-            label: 'Option 8',
+            label: 'Direct Sale',
           },
         ],
       },
@@ -129,6 +133,25 @@ const items = [
 const Navbar = () => {
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await axios.get('http://localhost:5000/api/users/me', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setLoggedInUser(response.data.user);
+        } catch (error) {
+          console.error('Failed to fetch user:', error);
+        }
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -136,7 +159,9 @@ const Navbar = () => {
 
   const handleOk = () => {
     setIsModalVisible(false);
-    navigate('/logout');
+    localStorage.removeItem('token');
+    setLoggedInUser(null);
+    navigate('/login');
   };
 
   const handleCancel = () => {
@@ -150,17 +175,32 @@ const Navbar = () => {
     } else if (e.key === 'sub5') {
       showModal();
     }
-    // Mai multe conditii vor fi aici in caz de
+    // Additional conditions can be added here as needed
   };
 
+  const userMenu = (
+    <Menu>
+      <Menu.Item key="1">
+        <Button type="link" onClick={() => navigate('/profile')}>Profile</Button>
+      </Menu.Item>
+      <Menu.Item key="2">
+        <Button type="link" onClick={handleOk}>Logout</Button>
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    <div>
+    <div style={{ position: 'relative', width: '100%' }}>
       <Menu
         onClick={handleClick}
-        style={{ width: 725 }}
         mode="horizontal"
         items={items}
       />
+      {loggedInUser && (
+        <Dropdown overlay={userMenu} style={{ position: 'absolute', top: 0, right: 0 }}>
+          <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
+        </Dropdown>
+      )}
       <Modal
         title="Logout Confirmation"
         open={isModalVisible}

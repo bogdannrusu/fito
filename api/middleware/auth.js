@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-// middleware/auth.js
 const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
@@ -10,9 +9,10 @@ const auth = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+    req.user = decoded; // Attach the decoded user info to the request
     next();
   } catch (err) {
+    console.error('Token verification failed:', err);
     res.status(401).json({ message: 'Token is not valid' });
   }
 };

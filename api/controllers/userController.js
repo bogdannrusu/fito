@@ -22,6 +22,7 @@ const getUserDetails = async (req, res) => {
     }
     res.json({ user });
   } catch (err) {
+    console.error('Error fetching user details:', err);
     res.status(500).json({ message: err.message });
   }
 };

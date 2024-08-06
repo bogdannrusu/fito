@@ -1,5 +1,5 @@
-// routes/userRoute.js
 /* eslint-disable prettier/prettier */
+// routes/userRoute.js
 const express = require('express');
 const { check } = require('express-validator');
 const {

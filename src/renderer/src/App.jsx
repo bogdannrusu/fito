@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Navbar from './components/CRM/Navbar';
 import Login from './components/Login';
 import Logout from './components/Logout';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/Settings/UsersComponent';
 import SignUp from './components/SignUp';
 
 const App = () => {
@@ -15,8 +15,8 @@ const App = () => {
         <div className="flex flex-1 overflow-hidden">
           {/* {isAuthenticated && <Navbar />} Conditionally render Navbar */}
           <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/navbar" element={isAuthenticated ? <Navbar /> : <Navigate to="/" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={isAuthenticated ? <Navbar /> : <Navigate to="/" />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} />

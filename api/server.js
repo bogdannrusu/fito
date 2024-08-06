@@ -43,7 +43,7 @@ app.use('/api/goods', goodsRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/workpoints', wpRoutes);
 
-app.use((err, req, res, next) => {
+app.use((err, req, res) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
