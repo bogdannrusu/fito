@@ -15,8 +15,8 @@ const App = () => {
         <div className="flex flex-1 overflow-hidden">
           {/* {isAuthenticated && <Navbar />} Conditionally render Navbar */}
           <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/" element={isAuthenticated ? <Navbar /> : <Navigate to="/" />} />
+            <Route path="/" element={<Login />} />
+            <Route path="/navbar" element={isAuthenticated ? <Navbar /> : <Navigate to="/" />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} />
