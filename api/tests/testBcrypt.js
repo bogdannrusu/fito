@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
-const bcrypt = require('bcrypt');
+const Crypto = require('crypto')
 
 const plainPassword = 'brs1911';
-const hashedPassword = '$2b$10$Irgqcandao44Tklb8r7iH.lkJweVUIbAo8vCb../37Kl1SyqwsRV6';
+const hashedPassword = '4d866f7f57ed84a65baa91e6de19f2f6cd6b999f1047f8ff85995b6d7ec616b4';
 
-bcrypt.compare(plainPassword, hashedPassword, (err, isMatch) => {
+Crypto.compare(plainPassword, hashedPassword, (err, isMatch) => {
   if (err) {
     console.error('Error comparing passwords:', err);
   } else if (isMatch) {

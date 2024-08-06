@@ -1,3 +1,4 @@
+// controllers/userController.js
 /* eslint-disable prettier/prettier */
 const { validationResult } = require('express-validator');
 const userService = require('../services/userService');
@@ -67,8 +68,6 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    // Log the actual password and hashed password
-    //console.log('Plain password:', password);
     console.log('Hashed password from DB:', user.password);
 
     const isMatch = await userService.comparePassword(password, user.password);
@@ -85,6 +84,7 @@ const loginUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 // Update User
 const updateUser = async (req, res) => {
   const errors = validationResult(req);

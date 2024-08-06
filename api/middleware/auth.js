@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+// middleware/auth.js
 const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {

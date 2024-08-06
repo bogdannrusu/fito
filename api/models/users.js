@@ -1,6 +1,7 @@
+// models/users.js
 /* eslint-disable prettier/prettier */
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+const Crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
   user_id: { type: Number, unique: true },
@@ -11,13 +12,12 @@ const userSchema = new mongoose.Schema({
   is_active: { type: Boolean, default: true }
 });
 
-userSchema.pre('save', async function (next) {
+userSchema.pre('save', function (next) {
   const user = this;
   if (!user.isModified('password')) return next();
 
   try {
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(user.password, salt);
+    const hash = Crypto.createHash('sha256').update(user.password).digest('hex');
     user.password = hash;
     next();
   } catch (err) {
@@ -25,6 +25,7 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-const User = mongoose.model('User', userSchema);
+// Check if the model already exists before defining it
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
 module.exports = User;

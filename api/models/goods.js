@@ -1,23 +1,31 @@
 /* eslint-disable prettier/prettier */
-// models/goods.js
+// models/users.js
 const mongoose = require('mongoose');
+const Crypto = require('crypto');
 
-const goodsSchema = new mongoose.Schema({
-  good_id: { type: Number, required: true, unique: true },
-  good_name: { type: String, required: true },
-  good_description: { type: String },
-  good_price: { type: Number, required: true, min: 0 },
-  category: { type: String, required: true },
+const userSchema = new mongoose.Schema({
+  user_id: { type: Number, unique: true },
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
-  is_semifinished: { type: Boolean, default: false }
+  is_active: { type: Boolean, default: true }
 });
 
-goodsSchema.pre('save', function (next) {
-  this.updatedAt = Date.now();
-  next();
+userSchema.pre('save', function (next) {
+  const user = this;
+  if (!user.isModified('password')) return next();
+
+  try {
+    const hash = Crypto.createHash('sha256').update(user.password).digest('hex');
+    user.password = hash;
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
-const Goods = mongoose.model('Goods', goodsSchema);
+// Check if the model already exists before defining it
+const User = mongoose.models.User || mongoose.model('User', userSchema);
 
-module.exports = Goods;
+module.exports = User;

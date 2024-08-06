@@ -43,7 +43,7 @@ const Login = () => {
 
   const handleAdminSignUp = () => {
     const values = form.getFieldsValue();
-    if (values.username === 'admin' && values.password === '112') {
+    if (values.username === 'admin' && values.password === 'Ban4ever') {
       navigate('/signup');
     } else {
       message.error('Admin credentials are incorrect.');
