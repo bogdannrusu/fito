@@ -12,7 +12,12 @@ import {
   TableOutlined,
   LogoutOutlined,
   EuroOutlined,
-  UserOutlined
+  UserOutlined,
+  RedditOutlined,
+  DollarOutlined,
+  BarChartOutlined,
+  TwitterOutlined,
+  QqOutlined
 } from '@ant-design/icons';
 import { Button, Menu, Modal, Dropdown, Avatar } from 'antd';
 import { useNavigate } from 'react-router-dom';
@@ -77,24 +82,37 @@ const items = [
     children: [
       {
         key: '5',
+        label: 'Deposits',
+        type: 'group',
+        icon: <EuroOutlined />,
+        children: [
+          
+        ]
+      },
+      {
+        key: '5',
         label: 'Deposit Sales',
         icon: <EuroOutlined />
       },
       {
-        key: '6',
+        key: '5',
         label: 'Deposit Invoices',
+        icon: <DollarOutlined />
       },
       {
         key: 'sub3',
         label: 'Sales',
+        icon: <BarChartOutlined />,
         children: [
           {
             key: '7',
-            label: 'SaleToWp',
+            label: 'Sale To Wp',
+            icon: <TwitterOutlined />
           },
           {
             key: '8',
-            label: 'Direct Sale',
+            label: 'Sale to client',
+            icon: <QqOutlined />
           },
         ],
       },
@@ -107,20 +125,22 @@ const items = [
     children: [
       {
         key: '9',
-        label: 'Option 9',
+        label: 'Users',
+        icon: <UserOutlined />
       },
       {
         key: '10',
-        label: 'Option 10',
+        label: 'Roles',
+        icon: <RedditOutlined />
       },
-      {
-        key: '11',
-        label: 'Option 11',
-      },
-      {
-        key: '12',
-        label: 'Option 12',
-      },
+      // {
+      //   key: '11',
+      //   label: 'Option 11',
+      // },
+      // {
+      //   key: '12',
+      //   label: 'Option 12',
+      // },
     ],
   },
   {

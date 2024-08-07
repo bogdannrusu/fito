@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/bogdannrusu/coffe_desktop#readme",
   "dependencies": {
+    "@flaticon/flaticon-uicons": "^3.3.1",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
     "express": "^4.19.2",

@@ -18,7 +18,6 @@ const ensureUserCounter = async () => {
     console.error('Failed to initialize user counter', err);
   }
 };
-
 ensureUserCounter();
 
 const Counter = mongoose.model('Counter', counterSchema);

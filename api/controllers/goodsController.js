@@ -1,11 +1,11 @@
 /* eslint-disable prettier/prettier */
 // controllers/goodsController.js
-const Goods = require('../models/goods');
+const goodsService = require('../services/goodsService')
 
 // Get all goods
 const getAllGoods = async (req, res) => {
   try {
-    const goods = await Goods.find();
+    const goods = await goodsService.getAllGoods();
     res.json(goods);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -15,7 +15,7 @@ const getAllGoods = async (req, res) => {
 // Get a single good by ID
 const getGoodById = async (req, res) => {
   try {
-    const good = await Goods.findById(req.params.id);
+    const good = await goodsService.findGoodById();
     if (!good) return res.status(404).json({ message: 'Good not found' });
     res.json(good);
   } catch (err) {
@@ -25,34 +25,18 @@ const getGoodById = async (req, res) => {
 
 // Create a new good
 const createGood = async (req, res) => {
-  const good = new Goods({
-    good_id: req.body.good_id,
-    good_name: req.body.good_name,
-    good_description: req.body.good_description,
-    good_price: req.body.good_price,
-    category: req.body.category,
-    createdAt: req.body.createdAt,
-    updatedAt: req.body.updatedAt,
-    is_semifinished: req.body.is_semifinished
-  });
-
   try {
-    const newGood = await good.save();
+    const newGood = await goodsService.createGood(req.body);
     res.status(201).json(newGood);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
 };
-
 // Update an existing good
 const updateGood = async (req, res) => {
   try {
-    const good = await Goods.findById(req.params.id);
-    if (!good) return res.status(404).json({ message: 'Good not found' });
-
-    Object.assign(good, req.body);
-    const updatedGood = await good.save();
-    res.json(updatedGood);
+    const updatedGood = await goodsService.updateGood(req.params.id, req.body);
+    res.status(200).json(updatedGood);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -60,14 +44,11 @@ const updateGood = async (req, res) => {
 
 // Delete a good
 const deleteGood = async (req, res) => {
-  try {
-    const good = await Goods.findById(req.params.id);
-    if (!good) return res.status(404).json({ message: 'Good not found' });
-
-    await good.remove();
-    res.json({ message: 'Good deleted' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  try{
+    const deleteGood = await goodsService.deleteGoods(req.params.id, req.body);
+    res.status(200).json(deleteGood);
+  } catch( err ) {
+    res.status(400).json({message: err.message})
   }
 };
 
