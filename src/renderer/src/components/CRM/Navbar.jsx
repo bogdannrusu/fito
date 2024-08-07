@@ -81,13 +81,10 @@ const items = [
     label: 'Workspace',
     children: [
       {
-        key: '5',
+        key: '5-1',
         label: 'Deposits',
         type: 'group',
-        icon: <EuroOutlined />,
-        children: [
-          
-        ]
+        //icon: <OrderedListOutlined />
       },
       {
         key: '5',
@@ -95,7 +92,7 @@ const items = [
         icon: <EuroOutlined />
       },
       {
-        key: '5',
+        key: '6',
         label: 'Deposit Invoices',
         icon: <DollarOutlined />
       },

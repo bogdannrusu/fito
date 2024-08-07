@@ -56,7 +56,7 @@ const SignUp = () => {
       alignItems: 'center' 
     }}>
       <div style={{ maxWidth: 300 }}>
-        <Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>Create Account</Title>
+        <Title level={2} style={{ textAlign: 'center', marginBottom: 24 }}>Creare Account</Title>
         <Form
           form={form}
           name="signup"
@@ -129,7 +129,7 @@ const SignUp = () => {
 
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-              Create Account
+              Creare Account
             </Button>
             <Button onClick={navigateLogin} type="secondary" style={{ width: '100%' }}>
               Ai un cont? Conectati-vă
