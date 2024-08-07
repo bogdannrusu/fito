@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Navbar from './components/CRM/Navbar';
 import Login from './components/Login';
 import Logout from './components/Logout';
-import Dashboard from './components/Settings/UsersComponent';
+import UserComponent from './components/Settings/UsersComponent';
 import SignUp from './components/SignUp';
+import Invoices from './components/CRM/Invoices';
 
 const App = () => {
   const isAuthenticated = !!localStorage.getItem('token');
@@ -19,7 +20,8 @@ const App = () => {
             <Route path="/navbar" element={isAuthenticated ? <Navbar /> : <Navigate to="/" />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} />
+            <Route path="/dashboard" element={isAuthenticated ? <UserComponent /> : <Navigate to="/" />} />
+            <Route path="/invoices" element={isAuthenticated ? <Invoices /> : <Navigate to="/" />} />
           </Routes>
         </div>
       </div>

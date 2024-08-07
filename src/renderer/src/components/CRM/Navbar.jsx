@@ -187,10 +187,16 @@ const Navbar = () => {
 
   const handleClick = (e) => {
     console.log('click', e);
-    if (e.key === '1') {
+    if (e.key === '9') {
       navigate('/dashboard');
     } else if (e.key === 'sub5') {
       showModal();
+    } else if(e.key === '2') {
+      navigate('/invoices');
+    } else if(e.key === 'sub2') {
+      navigate('/s');
+    } else if(e.key === 'sub4') {
+      navigate('/s');
     }
     // Additional conditions can be added here as needed
   };
