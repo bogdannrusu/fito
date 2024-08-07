@@ -1,9 +1,9 @@
 {
   "name": "electron",
   "version": "1.0.0",
-  "description": "An Electron application with React",
+  "description": "Coffee Le Coupage",
   "main": "./out/main/index.js",
-  "author": "example.com",
+  "author": "Bogdan Rusu",
   "homepage": "https://electron-vite.org",
   "scripts": {
     "format": "prettier --write .",
@@ -16,6 +16,9 @@
     "build:win": "npm run build && electron-builder --win",
     "build:mac": "npm run build && electron-builder --mac",
     "build:linux": "npm run build && electron-builder --linux"
+  },
+  "win": {
+    "icon": "assets/icons/icon.ico"
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
