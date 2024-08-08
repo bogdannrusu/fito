@@ -26,7 +26,7 @@ const Login = () => {
       }
     } catch (error) {
       message.error(t('Login failed. Please check your credentials and try again.'));
-      console.error('Failed:', error.response.data);
+      console.error('Failed:', error.response?.data);
     }
   };
 
@@ -35,8 +35,8 @@ const Login = () => {
   };
 
   const handleCloseApp = () => {
-    const electronFunction = window.electron();
-    const electronCloseApp = window.electron.closeApp()
+    const electronFunction = window.electron?.();
+    const electronCloseApp = window.electron?.closeApp();
     if (electronFunction && electronCloseApp) {
       electronCloseApp();
     } else {
@@ -55,6 +55,7 @@ const Login = () => {
 
   const handleLanguageSelector = (language) => {
     i18n.changeLanguage(language);
+    message.success(t(`Language changed to ${language}`));
   };
 
   return (
@@ -74,16 +75,13 @@ const Login = () => {
         onChange={handleLanguageSelector}
       >
         <Option value="en">
-        <Flag country="GB" size={15} />
-          
+          <Flag country="GB" size={15} />
         </Option>
         <Option value="ro">
-        <Flag country="RO" size={15} />
-          
+          <Flag country="RO" size={15} />
         </Option>
         <Option value="ru">
-        <Flag country="RU" size={15}/>
-          
+          <Flag country="RU" size={15} />
         </Option>
       </Select>
 

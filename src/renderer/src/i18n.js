@@ -33,7 +33,7 @@ i18n
       cache: ['cookie'],
     },
     interpolation: {
-      escapeValue: false, // React already escapes by default
+      escapeValue: true, // React already escapes by default
     },
   });
 

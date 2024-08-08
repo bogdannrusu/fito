@@ -1,11 +1,10 @@
 {
-    "login": "Autentificare",
-    "username": "Nume de utilizator",
-    "password": "Parolă",
-    "rememberMe": "Ține-mă minte",
-    "submit": "Trimite",
-    "logoutConfirmation": "Sigur doriți să vă deconectați?",
-    "cancel": "Anulare",
-    "logout": "Deconectare"
-  }
-  
+  "Username": "Nume de utilizator",
+  "Password": "Parola",
+  "Remember me": "Ține-mă minte",
+  "Submit": "Login",
+  "Connect": "Conectare",
+  "Login successful!": "Autentificare reusită!",
+  "Login failed. Please check your credentials and try again.": "Autentificare nereușită! Încercați din nou să introduceți datele.",
+  "Admin credentials are incorrect.": "Admin credentials are incorrect."
+}

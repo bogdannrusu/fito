@@ -22,133 +22,11 @@ import {
 import { Button, Menu, Modal, Dropdown, Avatar } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
-const items = [
-  {
-    key: 'sub1',
-    icon: <FileDoneOutlined />,
-    label: 'CRM',
-    children: [
-      {
-        key: '1-1',
-        label: 'Orders',
-        type: 'group',
-        children: [
-          {
-            key: '1',
-            icon: <OrderedListOutlined />,
-            label: 'Orders View',
-          },
-          {
-            key: '2',
-            icon: <SnippetsOutlined />,
-            label: 'Invoices View',
-          },
-          {
-            key: '3',
-            icon: <SolutionOutlined />,
-            label: 'Contragents',
-          },
-          {
-            key: '4',
-            icon: <FontSizeOutlined />,
-            label: 'Units',
-          },
-        ],
-      },
-      {
-        key: '1-2',
-        label: 'Reports',
-        type: 'group',
-        children: [
-          {
-            key: '3',
-            icon: <LineChartOutlined />,
-            label: 'Orders Invoice View',
-          },
-          {
-            key: '4',
-            icon: <TableOutlined />,
-            label: 'Invoice Report View',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'sub2',
-    icon: <AppstoreOutlined />,
-    label: 'Workspace',
-    children: [
-      {
-        key: '5-1',
-        label: 'Deposits',
-        type: 'group',
-        //icon: <OrderedListOutlined />
-      },
-      {
-        key: '5',
-        label: 'Deposit Sales',
-        icon: <EuroOutlined />
-      },
-      {
-        key: '6',
-        label: 'Deposit Invoices',
-        icon: <DollarOutlined />
-      },
-      {
-        key: 'sub3',
-        label: 'Sales',
-        icon: <BarChartOutlined />,
-        children: [
-          {
-            key: '7',
-            label: 'Sale To Wp',
-            icon: <TwitterOutlined />
-          },
-          {
-            key: '8',
-            label: 'Sale to client',
-            icon: <QqOutlined />
-          },
-        ],
-      },
-    ],
-  },
-  {
-    key: 'sub4',
-    label: 'Settings',
-    icon: <SettingOutlined />,
-    children: [
-      {
-        key: '9',
-        label: 'Users',
-        icon: <UserOutlined />
-      },
-      {
-        key: '10',
-        label: 'Roles',
-        icon: <RedditOutlined />
-      },
-      // {
-      //   key: '11',
-      //   label: 'Option 11',
-      // },
-      // {
-      //   key: '12',
-      //   label: 'Option 12',
-      // },
-    ],
-  },
-  {
-    key: 'sub5',
-    label: 'Logout',
-    icon: <LogoutOutlined />,
-  }
-];
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
 
@@ -204,13 +82,129 @@ const Navbar = () => {
   const userMenu = (
     <Menu>
       <Menu.Item key="1">
-        <Button type="link" onClick={() => navigate('/profile')}>Profile</Button>
+        <Button type="link" onClick={() => navigate('/profile')}>{t('profile')}</Button>
       </Menu.Item>
       <Menu.Item key="2">
-        <Button type="link" onClick={handleOk}>Logout</Button>
+        <Button type="link" onClick={handleOk}>{t('logout')}</Button>
       </Menu.Item>
     </Menu>
   );
+
+  const items = [
+    {
+      key: 'sub1',
+      icon: <FileDoneOutlined />,
+      label: t('CRM'),
+      children: [
+        {
+          key: '1-1',
+          label: t('Orders'),
+          type: 'group',
+          children: [
+            {
+              key: '1',
+              icon: <OrderedListOutlined />,
+              label: t('Orders View'),
+            },
+            {
+              key: '2',
+              icon: <SnippetsOutlined />,
+              label: t('Invoices View'),
+            },
+            {
+              key: '3',
+              icon: <SolutionOutlined />,
+              label: t('Contragents'),
+            },
+            {
+              key: '4',
+              icon: <FontSizeOutlined />,
+              label: t('Units'),
+            },
+          ],
+        },
+        {
+          key: '1-2',
+          label: t('Reports'),
+          type: 'group',
+          children: [
+            {
+              key: '3',
+              icon: <LineChartOutlined />,
+              label: t('Orders Invoice View'),
+            },
+            {
+              key: '4',
+              icon: <TableOutlined />,
+              label: t('Invoice Report View'),
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'sub2',
+      icon: <AppstoreOutlined />,
+      label: t('Workspace'),
+      children: [
+        {
+          key: '5-1',
+          label: t('Deposits'),
+          type: 'group',
+          //icon: <OrderedListOutlined />
+        },
+        {
+          key: '5',
+          label: t('Deposit Sales'),
+          icon: <EuroOutlined />
+        },
+        {
+          key: '6',
+          label: t('Deposit Invoices'),
+          icon: <DollarOutlined />
+        },
+        {
+          key: 'sub3',
+          label: t('Sales'),
+          icon: <BarChartOutlined />,
+          children: [
+            {
+              key: '7',
+              label: t('Sale To Wp'),
+              icon: <TwitterOutlined />
+            },
+            {
+              key: '8',
+              label: t('Sale to client'),
+              icon: <QqOutlined />
+            },
+          ],
+        },
+      ],
+    },
+    {
+      key: 'sub4',
+      label: t('Settings'),
+      icon: <SettingOutlined />,
+      children: [
+        {
+          key: '9',
+          label: t('Users'),
+          icon: <UserOutlined />
+        },
+        {
+          key: '10',
+          label: t('Roles'),
+          icon: <RedditOutlined />
+        },
+      ],
+    },
+    {
+      key: 'sub5',
+      label: t('Logout'),
+      icon: <LogoutOutlined />,
+    }
+  ];
 
   return (
     <div style={{ position: 'relative', width: '100%' }}>
@@ -225,20 +219,20 @@ const Navbar = () => {
         </Dropdown>
       )}
       <Modal
-        title="Logout Confirmation"
-        open={isModalVisible}
-        onOk={handleOk}
+        title={t('Logout Confirmation')}
+        open={ isModalVisible }
+        onOk={ handleOk }
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
-            Cancel
+            {t('Cancel')}
           </Button>,
           <Button danger key="submit" type="primary" onClick={handleOk}>
-            Logout
+            {t('Logout')}
           </Button>,
         ]}
       >
-        <p>Are you sure you want to log out?</p>
+        <p>{t('Are you sure you want to log out?')}</p>
       </Modal>
     </div>
   );
