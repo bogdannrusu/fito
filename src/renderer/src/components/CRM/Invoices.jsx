@@ -1,77 +1,100 @@
 /* eslint-disable prettier/prettier */
-import { useState, useEffect } from 'react'
-import { Table, Space, Button, message } from 'antd'
-import axios from 'axios'
+import React from 'react';
+import { Button, Table, Modal, Form, Input } from 'antd';
+import Navbar from './Navbar';
 
 const Invoices = () => {
-  const [invoices, setInvoices] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  const [form] = Form.useForm();
+  const [loading, setLoading] = React.useState(false);
+  const [invoices, setInvoices] = React.useState([]);
 
-  useEffect(() => {
-    fetchInvoices()
-  }, [])
+  const showCreateInvoiceModal = () => {
+    setIsModalVisible(true);
+  };
 
-  const fetchInvoices = async () => {
-    try {
-      const response = await axios.get('/api/invoices')
-      setInvoices(response.data)
-      setLoading(false)
-    } catch (error) {
-      console.error('Error fetching invoices:', error)
-      message.error('Failed to fetch invoices')
-      setLoading(false)
-    }
-  }
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCreateInvoice = (values) => {
+    console.log('Form values:', values);
+    setIsModalVisible(false);
+  };
 
   const columns = [
     {
       title: 'Invoice Number',
-      dataIndex: 'invoiceNumber',
-      key: 'invoiceNumber',
+      dataIndex: 'invoice_number',
+      key: 'invoice_number',
     },
     {
-      title: 'Customer',
-      dataIndex: 'customer',
-      key: 'customer',
+      title: 'Company',
+      dataIndex: 'company',
+      key: 'company',
     },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount',
+      title: 'Client',
+      dataIndex: 'client',
+      key: 'client',
     },
-    {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-    },
-    {
-      title: 'Action',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button type="primary">View</Button>
-          <Button>Edit</Button>
-        </Space>
-      ),
-    },
-  ]
+  ];
 
   return (
-    <div>
-      <h1>Invoices</h1>
-      <Table
-        columns={columns}
-        dataSource={invoices}
-        loading={loading}
-        rowKey="_id"
-      />
-    </div>
-  )
-}
+    <>
+      <Navbar />
+      <div className="p-5">
+        <div className="mb-5">
+          <Button type="primary" onClick={showCreateInvoiceModal}>
+            Create Invoice
+          </Button>
+        </div>
+        <div className="mb-5">
+          <Table
+            columns={columns}
+            dataSource={invoices}
+            loading={loading}
+            rowKey="_id"
+          />
+        </div>
+        <Modal
+          title="Create Invoice"
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <Form form={form} onFinish={handleCreateInvoice}>
+            <Form.Item
+              label="Invoice Number"
+              name="invoice_number"
+              rules={[{ required: true, message: 'Please input the invoice number!' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Company"
+              name="company"
+              rules={[{ required: true, message: 'Please input the company name!' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Client"
+              name="client"
+              rules={[{ required: true, message: 'Please input the client name!' }]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item>
+              <Button type="primary" htmlType="submit">
+                Create
+              </Button>
+            </Form.Item>
+          </Form>
+        </Modal>
+      </div>
+    </>
+  );
+};
 
-export default Invoices
+export default Invoices;

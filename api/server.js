@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -9,6 +8,7 @@ const helmet = require('helmet');
 const goodsRoutes = require('./routes/goodRoute');
 const userRoutes = require('./routes/userRoute');
 const wpRoutes = require('./routes/workpointsRoute');
+const invoiceRoutes = require('./routes/invoiceRoute'); // Add this line
 
 const dbUri = process.env.MONGODB_URI;
 
@@ -42,6 +42,7 @@ app.use(express.json());
 app.use('/api/goods', goodsRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/workpoints', wpRoutes);
+app.use('/api/invoices', invoiceRoutes); // Add this line
 
 app.use((err, req, res) => {
   console.error(err.stack);

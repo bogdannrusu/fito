@@ -1,0 +1,11 @@
+{
+    "login": "Войти",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "rememberMe": "Запомни меня",
+    "submit": "Отправить",
+    "logoutConfirmation": "Вы уверены, что хотите выйти?",
+    "cancel": "Отмена",
+    "logout": "Выйти"
+  }
+  

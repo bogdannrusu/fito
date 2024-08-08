@@ -6,6 +6,8 @@ import Logout from './components/Logout';
 import UserComponent from './components/Settings/UsersComponent';
 import SignUp from './components/SignUp';
 import Invoices from './components/CRM/Invoices';
+import './i18n';
+
 
 const App = () => {
   const isAuthenticated = !!localStorage.getItem('token');

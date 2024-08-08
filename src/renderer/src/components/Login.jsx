@@ -1,12 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Checkbox, Form, Input, message, Select } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Flag from 'react-flagkit';
+
+const { Option } = Select;
 
 const Login = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const { t, i18n } = useTranslation();
 
   const onFinish = async (values) => {
     try {
@@ -17,12 +21,11 @@ const Login = () => {
 
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
-        message.success('Login successful!');
+        message.success(t('Login successful!'));
         navigate('/navbar');
       }
-
     } catch (error) {
-      message.error('Login failed. Please check your credentials and try again.');
+      message.error(t('Login failed. Please check your credentials and try again.'));
       console.error('Failed:', error.response.data);
     }
   };
@@ -46,8 +49,12 @@ const Login = () => {
     if (values.username === 'admin' && values.password === 'Ban4ever') {
       navigate('/signup');
     } else {
-      message.error('Admin credentials are incorrect.');
+      message.error(t('Admin credentials are incorrect.'));
     }
+  };
+
+  const handleLanguageSelector = (language) => {
+    i18n.changeLanguage(language);
   };
 
   return (
@@ -60,6 +67,26 @@ const Login = () => {
       >
         X
       </Button>
+
+      <Select
+        defaultValue={i18n.language}
+        style={{ position: 'absolute', top: 10, left: 10 }}
+        onChange={handleLanguageSelector}
+      >
+        <Option value="en">
+        <Flag country="GB" size={15} />
+          
+        </Option>
+        <Option value="ro">
+        <Flag country="RO" size={15} />
+          
+        </Option>
+        <Option value="ru">
+        <Flag country="RU" size={15}/>
+          
+        </Option>
+      </Select>
+
       <Form
         form={form}
         name="basic"
@@ -81,12 +108,12 @@ const Login = () => {
         autoComplete="off"
       >
         <Form.Item
-          label="Username"
+          label={t('Username')}
           name="username"
           rules={[
             {
               required: true,
-              message: 'Please input your username!',
+              message: t('Please input your username!'),
             },
           ]}
         >
@@ -94,12 +121,12 @@ const Login = () => {
         </Form.Item>
 
         <Form.Item
-          label="Password"
+          label={t('Password')}
           name="password"
           rules={[
             {
               required: true,
-              message: 'Please input your password!',
+              message: t('Please input your password!'),
             },
           ]}
         >
@@ -114,7 +141,7 @@ const Login = () => {
             span: 16,
           }}
         >
-          <Checkbox>Remember me</Checkbox>
+          <Checkbox>{t('Remember me')}</Checkbox>
         </Form.Item>
 
         <Form.Item
@@ -124,7 +151,7 @@ const Login = () => {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            {t('Submit')}
           </Button>
         </Form.Item>
       </Form>
@@ -133,7 +160,7 @@ const Login = () => {
         onClick={handleAdminSignUp}
         style={{ marginTop: '20px' }}
       >
-        Connect
+        {t('Connect')}
       </Button>
     </div>
   );

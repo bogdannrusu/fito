@@ -1,0 +1,10 @@
+{
+  "Username": "Username",
+  "Password": "Password",
+  "Remember me": "Remember me",
+  "Submit": "Submit",
+  "Connect": "Connect",
+  "Login successful!": "Login successful!",
+  "Login failed. Please check your credentials and try again.": "Login failed. Please check your credentials and try again.",
+  "Admin credentials are incorrect.": "Admin credentials are incorrect."
+}
