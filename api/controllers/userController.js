@@ -2,6 +2,7 @@
 /* eslint-disable prettier/prettier */
 const { validationResult } = require('express-validator');
 const userService = require('../services/userService');
+const Role = require('../models/roles');
 
 // Get All Users
 const getAllUsers = async (req, res) => {
@@ -78,8 +79,10 @@ const loginUser = async (req, res) => {
     }
 
     const token = userService.generateToken(user);
-    console.log('Login successful for user:', username);
-    res.json({ token });
+    const roles = await Role.find({ user_id: user.user_id }).select('role_name');
+
+    console.log('Login successful for user:', username, 'and with role:', roles);
+    res.json({ token, roles });
   } catch (err) {
     console.error('Error during login:', err);
     res.status(500).json({ message: err.message });

@@ -31,6 +31,7 @@ const Navbar = () => {
   const { t, i18n } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [roles, setRoles] = useState([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,6 +51,12 @@ const Navbar = () => {
     fetchUser();
   }, []);
 
+  //Fetch roles from local storage
+  useEffect(() => {
+    const savedRoles = JSON.parse(localStorage.getItem('roles'));
+    setRoles(savedRoles || []);
+  }, []);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -57,6 +64,7 @@ const Navbar = () => {
   const handleOk = () => {
     setIsModalVisible(false);
     localStorage.removeItem('token');
+    localStorage.removeItem('roles'); // Clear roles on logout
     setLoggedInUser(null);
     navigate('/');
   };
@@ -90,7 +98,7 @@ const Navbar = () => {
     } else {
       switch (e.key) {
         case '9':
-          navigate('/dashboard');
+          navigate('/users');
           break;
         case 'sub5':
           showModal();
@@ -111,10 +119,10 @@ const Navbar = () => {
   const userMenu = (
     <Menu>
       <Menu.Item key="1">
-        <Button type="link" onClick={() => navigate('/profile')}>{t('profile')}</Button>
+        <Button type="link" onClick={() => navigate('/profile')}>{t('Profile')}</Button>
       </Menu.Item>
       <Menu.Item key="2">
-        <Button type="link" onClick={handleOk}>{t('logout')}</Button>
+        <Button type="link" onClick={handleOk}>{t('Logout')}</Button>
       </Menu.Item>
     </Menu>
   );
@@ -198,12 +206,12 @@ const Navbar = () => {
           children: [
             {
               key: '7',
-              label: t('?'),
+              label: t('Sale to WP'),
               icon: <TwitterOutlined />
             },
             {
               key: '8',
-              label: t('Sale to WP'),
+              label: t('Direct Sale'),
               icon: <QqOutlined />
             },
           ],
@@ -240,12 +248,12 @@ const Navbar = () => {
         {
           key: '13',
           label: t('Russian'),
-          icon:  <Flag country="RU" size={15} />
+          icon: <Flag country="RU" size={15} />
         },
         {
           key: '14',
           label: t('Romanian'),
-          icon:   <Flag country="RO" size={15} />
+          icon: <Flag country="RO" size={15} />
         },
       ]
     },

@@ -21,6 +21,7 @@ const Login = () => {
 
       if (response.data.token) {
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('roles', JSON.stringify(response.data.roles));
         message.success(t('Login successful!'));
         navigate('/navbar');
       }

@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 // routes/userRoute.js
 const express = require('express');
+const { assignRolesToAllUsers } = require('../services/userService');
 const { check } = require('express-validator');
 const {
   getAllUsers,
@@ -22,7 +23,7 @@ const validateUser = [
   check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
 ];
 
-router.get('/', auth, getAllUsers);
+router.get('/', getAllUsers);
 router.get('/:id', auth, getUserById);
 router.post('/register', validateUser, createUser);
 router.post('/login', [
@@ -31,6 +32,14 @@ router.post('/login', [
 ], loginUser);
 router.get('/me', auth, getUserDetails);
 router.put('/:id', auth, validateUser, updateUser);
-router.delete('/:id', auth, deleteUser);
+router.delete('/:id', deleteUser);
+router.post('/assign-roles', async (req, res) => {
+  try {
+    await assignRolesToAllUsers();
+    res.status(200).json({ message: 'Roles assigned to all users successfully.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to assign roles to users.' });
+  }
+});
 
 module.exports = router;

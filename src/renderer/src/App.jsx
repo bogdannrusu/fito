@@ -22,8 +22,8 @@ const App = () => {
             <Route path="/navbar" element={isAuthenticated ? <Navbar /> : <Navigate to="/" />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/dashboard" element={isAuthenticated ? <UserComponent /> : <Navigate to="/" />} />
             <Route path="/invoices" element={isAuthenticated ? <Invoices /> : <Navigate to="/" />} />
+            <Route path="/users" element={isAuthenticated ? <UserComponent /> : <Navigate to="/" />} />
           </Routes>
         </div>
       </div>
