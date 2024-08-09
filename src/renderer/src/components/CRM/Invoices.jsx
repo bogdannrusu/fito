@@ -2,12 +2,14 @@
 import React from 'react';
 import { Button, Table, Modal, Form, Input } from 'antd';
 import Navbar from './Navbar';
+import { useTranslation } from 'react-i18next';
 
 const Invoices = () => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = React.useState(false);
   const [invoices, setInvoices] = React.useState([]);
+  const { t } = useTranslation();
 
   const showCreateInvoiceModal = () => {
     setIsModalVisible(true);
@@ -24,17 +26,17 @@ const Invoices = () => {
 
   const columns = [
     {
-      title: 'Invoice Number',
+      title: t('Invoice Number'),
       dataIndex: 'invoice_number',
       key: 'invoice_number',
     },
     {
-      title: 'Company',
+      title: t('Company'),
       dataIndex: 'company',
       key: 'company',
     },
     {
-      title: 'Client',
+      title: t('Client'),
       dataIndex: 'client',
       key: 'client',
     },
@@ -46,7 +48,7 @@ const Invoices = () => {
       <div className="p-5">
         <div className="mb-5">
           <Button type="primary" onClick={showCreateInvoiceModal}>
-            Create Invoice
+            {t('Create Invoice')}
           </Button>
         </div>
         <div className="mb-5">
@@ -58,36 +60,36 @@ const Invoices = () => {
           />
         </div>
         <Modal
-          title="Create Invoice"
-          visible={isModalVisible}
+          title={t('Create Invoice')}
+          open={isModalVisible}
           onCancel={handleCancel}
           footer={null}
         >
           <Form form={form} onFinish={handleCreateInvoice}>
             <Form.Item
-              label="Invoice Number"
+              label={t('Invoice Number')}
               name="invoice_number"
-              rules={[{ required: true, message: 'Please input the invoice number!' }]}
+              rules={[{ required: true, message: t('Please input the invoice number!') }]}
             >
               <Input />
             </Form.Item>
             <Form.Item
-              label="Company"
+              label={t('Company')}
               name="company"
-              rules={[{ required: true, message: 'Please input the company name!' }]}
+              rules={[{ required: true, message: t('Please input the company name!') }]}
             >
               <Input />
             </Form.Item>
             <Form.Item
-              label="Client"
+              label={t('Client')}
               name="client"
-              rules={[{ required: true, message: 'Please input the client name!' }]}
+              rules={[{ required: true, message: t('Please input the client name!') }]}
             >
               <Input />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Create
+                {t('Create')}
               </Button>
             </Form.Item>
           </Form>

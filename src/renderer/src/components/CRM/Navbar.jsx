@@ -17,16 +17,18 @@ import {
   DollarOutlined,
   BarChartOutlined,
   TwitterOutlined,
-  QqOutlined
+  QqOutlined,
+  FlagOutlined,
 } from '@ant-design/icons';
-import { Button, Menu, Modal, Dropdown, Avatar } from 'antd';
+import { Button, Menu, Modal, Dropdown, Avatar, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import Flag from 'react-flagkit';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
 
@@ -63,20 +65,47 @@ const Navbar = () => {
     setIsModalVisible(false);
   };
 
-  const handleClick = (e) => {
-    console.log('click', e);
-    if (e.key === '9') {
-      navigate('/dashboard');
-    } else if (e.key === 'sub5') {
-      showModal();
-    } else if(e.key === '2') {
-      navigate('/invoices');
-    } else if(e.key === 'sub2') {
-      navigate('/s');
-    } else if(e.key === 'sub4') {
-      navigate('/s');
+  const handleLanguageChange = (key) => {
+    switch (key) {
+      case '12':
+        i18n.changeLanguage('en');
+        message.success(t('Language changed to English'));
+        break;
+      case '13':
+        i18n.changeLanguage('ru');
+        message.success(t('Language changed to Russian'));
+        break;
+      case '14':
+        i18n.changeLanguage('ro');
+        message.success(t('Language changed to Romanian'));
+        break;
+      default:
+        break;
     }
-    // Additional conditions can be added here as needed
+  };
+
+  const handleClick = (e) => {
+    if (['12', '13', '14'].includes(e.key)) {
+      handleLanguageChange(e.key);
+    } else {
+      switch (e.key) {
+        case '9':
+          navigate('/dashboard');
+          break;
+        case 'sub5':
+          showModal();
+          break;
+        case '2':
+          navigate('/invoices');
+          break;
+        case 'sub2':
+        case 'sub4':
+          navigate('/s');
+          break;
+        default:
+          break;
+      }
+    }
   };
 
   const userMenu = (
@@ -151,7 +180,6 @@ const Navbar = () => {
           key: '5-1',
           label: t('Deposits'),
           type: 'group',
-          //icon: <OrderedListOutlined />
         },
         {
           key: '5',
@@ -170,12 +198,12 @@ const Navbar = () => {
           children: [
             {
               key: '7',
-              label: t('Sale To Wp'),
+              label: t('?'),
               icon: <TwitterOutlined />
             },
             {
               key: '8',
-              label: t('Sale to client'),
+              label: t('Sale to WP'),
               icon: <QqOutlined />
             },
           ],
@@ -200,10 +228,32 @@ const Navbar = () => {
       ],
     },
     {
+      key: '11',
+      icon: <FlagOutlined />,
+      label: t('Language'),
+      children: [
+        {
+          key: '12',
+          label: t('English'),
+          icon: <Flag country="GB" size={15} />
+        },
+        {
+          key: '13',
+          label: t('Russian'),
+          icon:  <Flag country="RU" size={15} />
+        },
+        {
+          key: '14',
+          label: t('Romanian'),
+          icon:   <Flag country="RO" size={15} />
+        },
+      ]
+    },
+    {
       key: 'sub5',
       label: t('Logout'),
       icon: <LogoutOutlined />,
-    }
+    },
   ];
 
   return (

@@ -6,5 +6,35 @@
   "Connect": "Conectare",
   "Login successful!": "Autentificare reusită!",
   "Login failed. Please check your credentials and try again.": "Autentificare nereușită! Încercați din nou să introduceți datele.",
-  "Admin credentials are incorrect.": "Admin credentials are incorrect."
+  "Admin credentials are incorrect.": "Admin credentials are incorrect.",
+  "CRM": "CRM",
+  "Workspace": "Masa de lucru",
+  "Settings": "Setări",
+  "Language": "Limba",
+  "Logout": "Ieșire",
+  "Logout Confirmation": "Confirmare ieșire",
+  "Are you sure you want to log out?": "Sigur doriți să ieșiți?",
+  "You will be logged out of the application.": "Veți fi deconectat de aplicația.",
+  "Logout?": "Ieșire?",
+  "Yes": "Da",
+  "No": "Nu",
+  "Cancel": "Anulare",
+  "Orders View": "Vizualizare comenzi",
+  "Invoices View": "Vizualizare facturi",
+  "Contragents": "Contragenții",
+  "Units": "Unități",
+  "Orders Invoice View": "Vizualizare facturi comenzi",
+  "Invoice Report View": "Vizualizare raport de facturi de intrare",
+  "Orders": "Comenzi",
+  "Reports": "Rapoarte",
+  "Deposit Sales": "Deposit Sales",
+  "Deposit Sales Report": "Deposit Sales Report",
+  "Deposit Invoice": "Deposit Invoice ",
+  "Sales": "Sales",
+  "Sales Report": "Sales Report",
+  "Sales To WP": "Sales To WP",
+  "Romanian": "Romanian"
+
+  
+  
 }
