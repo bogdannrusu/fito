@@ -68,7 +68,7 @@ const comparePassword = async (plainPassword, hashedPassword) => {
 };
 
 const generateToken = (user) => {
-  return jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  return jwt.sign({ userId: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
 
 const assignRolesToAllUsers = async () => {

@@ -16,12 +16,19 @@ if (process.contextIsolated) {
       ...electronAPI
     })
     contextBridge.exposeInMainWorld('electron', {
-      closeApp: () => ipcRenderer.send('close-app')
+      closeApp: () => ipcRenderer.send('close-app'),
+      minimizeApp: () => ipcRenderer.send('minimize-app'),
     });
   } catch (error) {
     console.error(error)
   }
-} else {
-  window.electron = { ...electronAPI, closeApp: () => ipcRenderer.send('close-app') }
+} 
+  else {
+  window.electron = { 
+    ...electronAPI, 
+    closeApp: () => ipcRenderer.send('close-app'), 
+    minimizeApp: () => ipcRenderer.send('minimize-app') 
+  }
+
   window.api = api
 }

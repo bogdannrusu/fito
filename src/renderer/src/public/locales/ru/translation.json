@@ -40,7 +40,10 @@
   "Romanian": "Румынский",
   "English": "Английский",
   "Create Invoice": "Создать приход",
-  "Sorry, the page you visited does not exist.": "Извините, страница, которую вы посетили, не существует."
+  "Sorry, the page you visited does not exist.": "Извините, страница, которую вы посетили, не существует.",
+  "Language changed to English": "Язык поменялся на русском",
+  "Please input your username!": "Пожалуйста, введите ваше имя пользователя!",
+  "Please input your password!": "Пожалуйста, введите ваш пароль!"
 
 
 }

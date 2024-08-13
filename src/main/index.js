@@ -46,6 +46,11 @@ function createWindow() {
   ipcMain.on('close-app', () => {
     mainWindow.close();
   });
+
+  // Listen for minize-app event from renderer process
+  ipcMain.on('minimize-app', () => {
+      mainWindow.minimize();
+  });
 }
 
 app.whenReady().then(() => {

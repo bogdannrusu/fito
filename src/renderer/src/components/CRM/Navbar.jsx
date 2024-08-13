@@ -20,7 +20,7 @@ import {
   QqOutlined,
   FlagOutlined,
 } from '@ant-design/icons';
-import { Button, Menu, Modal, Dropdown, Avatar, message } from 'antd';
+import { Button, Menu, Modal, message, Popover } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +32,12 @@ const Navbar = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [roles, setRoles] = useState([]);
+
+  const routes = {
+    '2': '/invoices',
+    '20': '/users',
+    'sub5': null, 
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -51,7 +57,6 @@ const Navbar = () => {
     fetchUser();
   }, []);
 
-  //Fetch roles from local storage
   useEffect(() => {
     const savedRoles = JSON.parse(localStorage.getItem('roles'));
     setRoles(savedRoles || []);
@@ -61,10 +66,26 @@ const Navbar = () => {
     setIsModalVisible(true);
   };
 
+  const handleClose = () => {
+    if (window.electron && window.electron.closeApp) {
+      window.electron.closeApp(); 
+    } else {
+      console.error('Electron API not available');
+    }
+  };
+
+  const handleMinim = () => {
+    if (window.electron && window.electron.minimizeApp) {
+      window.electron.minimizeApp();
+    } else {
+      console.error('Electron API not available');
+    }
+  };
+
   const handleOk = () => {
     setIsModalVisible(false);
     localStorage.removeItem('token');
-    localStorage.removeItem('roles'); // Clear roles on logout
+    localStorage.removeItem('roles');
     setLoggedInUser(null);
     navigate('/');
   };
@@ -92,39 +113,27 @@ const Navbar = () => {
     }
   };
 
-  const routes = {
-    // '1': '/ordersview',
-    '2': '/invoices',
-    '9': '/users',
-    'sub5': null, // for modal, no navigation
-  };
+ 
   
-
   const handleClick = (e) => {
-    if (['12', '13', '14'].includes(e.key)) {
-      handleLanguageChange(e.key);
-    } else if (routes[e.key] !== undefined) {
-      if (routes[e.key]) {
-        navigate(routes[e.key]);
-      } else if (e.key === 'sub5') {
-        showModal();
+    try {
+      if (['12', '13', '14'].includes(e.key)) {
+        handleLanguageChange(e.key);
+      } else if (routes[e.key] !== undefined) {
+        if (routes[e.key]) {
+          navigate(routes[e.key]);
+        } else if (e.key === 'sub5') {
+          showModal();
+        }
+      } else {
+        navigate('/404notfound');
       }
-    } else {
+    } catch (error) {
+      console.error('Navigation error:', error);
       navigate('/404notfound');
     }
   };
   
-
-  const userMenu = (
-    <Menu>
-      <Menu.Item key="1">
-        <Button type="link" onClick={() => navigate('/profile')}>{t('Profile')}</Button>
-      </Menu.Item>
-      <Menu.Item key="2">
-        <Button type="link" onClick={handleOk}>{t('Logout')}</Button>
-      </Menu.Item>
-    </Menu>
-  );
 
   const items = [
     {
@@ -165,12 +174,12 @@ const Navbar = () => {
           type: 'group',
           children: [
             {
-              key: '3',
+              key: '5',
               icon: <LineChartOutlined />,
               label: t('Orders Invoice View'),
             },
             {
-              key: '4',
+              key: '6',
               icon: <TableOutlined />,
               label: t('Invoice Report View'),
             },
@@ -189,12 +198,12 @@ const Navbar = () => {
           type: 'group',
         },
         {
-          key: '5',
+          key: '7',
           label: t('Deposit Sales'),
           icon: <EuroOutlined />
         },
         {
-          key: '6',
+          key: '8',
           label: t('Deposit Invoices'),
           icon: <DollarOutlined />
         },
@@ -204,12 +213,12 @@ const Navbar = () => {
           icon: <BarChartOutlined />,
           children: [
             {
-              key: '7',
+              key: '9',
               label: t('Sale to WP'),
               icon: <TwitterOutlined />
             },
             {
-              key: '8',
+              key: '10',
               label: t('Direct Sale'),
               icon: <QqOutlined />
             },
@@ -223,12 +232,12 @@ const Navbar = () => {
       icon: <SettingOutlined />,
       children: [
         {
-          key: '9',
+          key: '20',
           label: t('Users'),
           icon: <UserOutlined />
         },
         {
-          key: '10',
+          key: '15',
           label: t('Roles'),
           icon: <RedditOutlined />
         },
@@ -263,18 +272,52 @@ const Navbar = () => {
     },
   ];
 
+  // Update contentUser to display logged-in user info
+  const contentUser = (
+    <div>
+      {loggedInUser ? (
+        <>
+          <p>{t('User')}: {loggedInUser.name}</p>
+          <p>{t('Email')}: {loggedInUser.email}</p>
+        </>
+      ) : (
+        <p>{t('No user logged in')}</p>
+      )}
+    </div>
+  );
+
   return (
     <div style={{ position: 'relative', width: '100%' }}>
+      <Button danger
+        style={{ position: 'absolute', top: 5, right: 10 }}
+        type="primary"
+        shape="circle"
+        onClick={handleClose}
+      >
+        X
+      </Button>
+      <Button
+        style={{ position: 'absolute', top: 5, right: 50 }}
+        type="primary"
+        shape="circle"
+        onClick={handleMinim}
+      >
+        _
+      </Button>
+      
+      <Popover content={contentUser} placement="bottom">
+        <Button
+          icon={<UserOutlined />} 
+          style={{ position: 'absolute', top: 5, right: 95 }}
+        />
+      </Popover>
+      
       <Menu
         onClick={handleClick}
         mode="horizontal"
         items={items}
       />
-      {loggedInUser && (
-        <Dropdown overlay={userMenu} style={{ position: 'absolute', top: 0, right: 0 }}>
-          <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
-        </Dropdown>
-      )}
+      
       <Modal
         title={t('Logout Confirmation')}
         open={ isModalVisible }
@@ -289,7 +332,7 @@ const Navbar = () => {
           </Button>,
         ]}
       >
-        <p>{t('Are you sure you want to log out?')}</p>
+        <p>{t('Are you sure you want to logout?')}</p>
       </Modal>
     </div>
   );

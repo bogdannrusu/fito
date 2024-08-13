@@ -16,18 +16,22 @@ const getAllUsers = async (req, res) => {
 };
 
 // controllers/userController.js
+// controllers/userController.js
 const getUserDetails = async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId);
+    const userId = req.user.userId; // This should be a valid ObjectId string
+    const user = await User.findById(userId);
+    console.log(user.username);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json({ user });
   } catch (err) {
-    console.error('Error fetching user details:', err); // Log the error
+    console.error('Error fetching user details:', err);
     res.status(500).json({ message: err.message });
   }
 };
+
 
 // Get User by ID
 const getUserById = async (req, res) => {

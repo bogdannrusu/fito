@@ -44,6 +44,14 @@ const Login = () => {
     }
   };
 
+  const handleMinim = () => {
+    if (window.electron && window.electron.minimizeApp) {
+      window.electron.minimizeApp();
+    } else {
+      console.error('Electron API not available');
+    }
+  };
+
   const handleAdminSignUp = () => {
     const values = form.getFieldsValue();
     if (values.username === 'admin' && values.password === 'Ban4ever') {
@@ -67,6 +75,14 @@ const Login = () => {
         onClick={handleClose}
       >
         X
+      </Button>
+      <Button
+        style={{ position: 'absolute', top: 10, right: 50 }}
+        type="primary"
+        shape="circle"
+        onClick={handleMinim}
+      >
+        _
       </Button>
 
       <Select
