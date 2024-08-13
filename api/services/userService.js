@@ -38,10 +38,24 @@ const createUser = async (userData) => {
 };
 
 const updateUser = async (id, updateData) => {
-  if (updateData.password) {
-    updateData.password = Crypto.createHash('sha256').update(updateData.password).digest('hex');
+  try {
+    if (updateData.password) {
+      updateData.password = Crypto.createHash('sha256').update(updateData.password).digest('hex');
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true });
+
+    if (!updatedUser) {
+      console.log(`No user found with ID: ${id}`);
+      return null;
+    }
+
+    console.log(`User with ID: ${id} updated successfully.`);
+    return updatedUser;
+  } catch (error) {
+    console.error('Error in updateUser:', error);
+    throw error;
   }
-  return User.findByIdAndUpdate(id, updateData, { new: true });
 };
 
 const deleteUser = async (id) => {

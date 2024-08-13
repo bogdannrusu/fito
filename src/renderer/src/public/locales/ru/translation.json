@@ -18,6 +18,7 @@
   "Logout?": "Выйти?",
   "Yes": "Да",
   "No": "Нет",
+  "Back": "Назад",
   "Cancel": "Отмена",
   "Orders View": "Заявки",
   "Invoices View": "Приходы",
@@ -38,7 +39,8 @@
   "Russian": "Русский",
   "Romanian": "Румынский",
   "English": "Английский",
-  "Create Invoice": "Создать приход"
+  "Create Invoice": "Создать приход",
+  "Sorry, the page you visited does not exist.": "Извините, страница, которую вы посетили, не существует."
 
 
 }

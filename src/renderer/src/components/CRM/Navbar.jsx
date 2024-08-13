@@ -92,29 +92,28 @@ const Navbar = () => {
     }
   };
 
+  const routes = {
+    // '1': '/ordersview',
+    '2': '/invoices',
+    '9': '/users',
+    'sub5': null, // for modal, no navigation
+  };
+  
+
   const handleClick = (e) => {
     if (['12', '13', '14'].includes(e.key)) {
       handleLanguageChange(e.key);
-    } else {
-      switch (e.key) {
-        case '9':
-          navigate('/users');
-          break;
-        case 'sub5':
-          showModal();
-          break;
-        case '2':
-          navigate('/invoices');
-          break;
-        case 'sub2':
-        case 'sub4':
-          navigate('/s');
-          break;
-        default:
-          break;
+    } else if (routes[e.key] !== undefined) {
+      if (routes[e.key]) {
+        navigate(routes[e.key]);
+      } else if (e.key === 'sub5') {
+        showModal();
       }
+    } else {
+      navigate('/404notfound');
     }
   };
+  
 
   const userMenu = (
     <Menu>

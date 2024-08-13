@@ -3,6 +3,7 @@
 const { validationResult } = require('express-validator');
 const userService = require('../services/userService');
 const Role = require('../models/roles');
+const User = require('../models/users');
 
 // Get All Users
 const getAllUsers = async (req, res) => {
@@ -14,16 +15,16 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// User Details
+// controllers/userController.js
 const getUserDetails = async (req, res) => {
   try {
-    const user = await userService.findUserById(req.user.userId);
+    const user = await User.findById(req.user.userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json({ user });
   } catch (err) {
-    console.error('Error fetching user details:', err);
+    console.error('Error fetching user details:', err); // Log the error
     res.status(500).json({ message: err.message });
   }
 };
@@ -93,16 +94,23 @@ const loginUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Validation errors:', errors.array());
     return res.status(400).json({ errors: errors.array() });
   }
 
   try {
+    console.log('Update data received:', req.body);
+
     const updatedUser = await userService.updateUser(req.params.id, req.body);
     if (!updatedUser) {
+      console.log('User not found with ID:', req.params.id);
       return res.status(404).json({ message: 'User not found' });
     }
+
+    console.log('User updated successfully:', updatedUser);
     res.json(updatedUser);
   } catch (err) {
+    console.error('Error updating user:', err);
     res.status(400).json({ message: err.message });
   }
 };

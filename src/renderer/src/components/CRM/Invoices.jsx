@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, Table, Modal, Form, Input } from 'antd';
 import Navbar from './Navbar';
 import { useTranslation } from 'react-i18next';
+import '../../assets/main.css';
 
 const Invoices = () => {
   const [isModalVisible, setIsModalVisible] = React.useState(false);
@@ -46,18 +47,22 @@ const Invoices = () => {
     <>
       <Navbar />
       <div className="p-5">
-        <div className="mb-5">
+      <div className="custom-spacing">
           <Button type="primary" onClick={showCreateInvoiceModal}>
             {t('Create Invoice')}
           </Button>
         </div>
+        <div className='tailwind'>
         <div className="mb-5">
+            <div className='mb-20 mt-20 ml-7'>
           <Table
             columns={columns}
             dataSource={invoices}
             loading={loading}
             rowKey="_id"
           />
+            </div>
+        </div>
         </div>
         <Modal
           title={t('Create Invoice')}

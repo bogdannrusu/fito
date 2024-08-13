@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+import React from 'react';
 import { Button, Checkbox, Form, Input, message, Select } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -35,13 +36,11 @@ const Login = () => {
     console.error('Failed:', errorInfo);
   };
 
-  const handleCloseApp = () => {
-    const electronFunction = window.electron?.();
-    const electronCloseApp = window.electron?.closeApp();
-    if (electronFunction && electronCloseApp) {
-      electronCloseApp();
+  const handleClose = () => {
+    if (window.electron && window.electron.closeApp) {
+      window.electron.closeApp(); // Call the closeApp function
     } else {
-      console.error('window.electron.closeApp is not a function');
+      console.error('Electron API not available');
     }
   };
 
@@ -65,7 +64,7 @@ const Login = () => {
         style={{ position: 'absolute', top: 10, right: 10 }}
         type="primary"
         shape="circle"
-        onClick={handleCloseApp}
+        onClick={handleClose}
       >
         X
       </Button>

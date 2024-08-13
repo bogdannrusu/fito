@@ -31,7 +31,7 @@ router.post('/login', [
   check('password').notEmpty().withMessage('Password is required')
 ], loginUser);
 router.get('/me', auth, getUserDetails);
-router.put('/:id', auth, validateUser, updateUser);
+router.put('/:id', validateUser, updateUser);
 router.delete('/:id', deleteUser);
 router.post('/assign-roles', async (req, res) => {
   try {

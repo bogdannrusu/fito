@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
@@ -12,9 +13,11 @@ if (process.contextIsolated) {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
     contextBridge.exposeInMainWorld('electron', {
-      ...electronAPI,
-      closeApp: () => ipcRenderer.send('close-app')
+      ...electronAPI
     })
+    contextBridge.exposeInMainWorld('electron', {
+      closeApp: () => ipcRenderer.send('close-app')
+    });
   } catch (error) {
     console.error(error)
   }

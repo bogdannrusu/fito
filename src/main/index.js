@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { app, shell, BrowserWindow, ipcMain } from 'electron';
-import { join } from 'path';
+const path = require('path');
 import { electronApp, optimizer, is } from '@electron-toolkit/utils';
+import '../renderer/src/assets/main.css';
+
 
 function createWindow() {
   // Create the browser window.
@@ -11,12 +13,16 @@ function createWindow() {
     show: false,
     frame: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'win32' ? { icon: join(__dirname, '../../build/icon.ico') } : {}),
+    ...(process.platform === 'win32' ? { icon: path.join(__dirname, '../../build/icon.ico') } : {}),
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      preload: path.join(__dirname, '../preload/index.js'),
+      sandbox: false,
+      nodeIntegration: true,
+      contextIsolation: false,
     }
   });
+
+  mainWindow.loadURL('http://localhost:3000');
 
   mainWindow.on('ready-to-show', () => {
     mainWindow.show();
@@ -33,7 +39,7 @@ function createWindow() {
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL']);
   } else {
-    mainWindow.loadFile(join(__dirname, '../renderer/index.html'));
+    mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'));
   }
 
   // Listen for close-app event from renderer process

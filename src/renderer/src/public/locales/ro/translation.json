@@ -18,6 +18,7 @@
   "Logout?": "Ieșire?",
   "Yes": "Da",
   "No": "Nu",
+  "Back": "Înapoi",
   "Cancel": "Anulare",
   "Orders View": "Vizualizare comenzi",
   "Invoices View": "Vizualizare facturi",
@@ -27,13 +28,20 @@
   "Invoice Report View": "Vizualizare raport de facturi de intrare",
   "Orders": "Comenzi",
   "Reports": "Rapoarte",
-  "Deposit Sales": "Deposit Sales",
-  "Deposit Sales Report": "Deposit Sales Report",
-  "Deposit Invoice": "Deposit Invoice ",
-  "Sales": "Sales",
-  "Sales Report": "Sales Report",
-  "Sales To WP": "Sales To WP",
-  "Romanian": "Romanian"
+  "Deposit Sales": "Vanzari Depozit",
+  "Deposit Sales Report": "Raport de vanzari",
+  "Deposit Invoice": "Intrari per deposit ",
+  "Sales": "Vanzari",
+  "Sale Report": "Raport per vanzari",
+  "Sale to WP": "Vanzari catre localuri",
+  "Romanian": "Romana",
+  "Russian": "Rusă",
+  "English": "Engleza",
+  "Users": "Utilizatori",
+  "Roles": "Roluri",
+  "Sorry, the page you visited does not exist.": "Ne pare rău, pagina pe care ați vizitat-o ​​nu există."
+ 
+
 
   
   

@@ -1,14 +1,18 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
-import { Table, Space, Button, message, Modal } from 'antd';
+import { Table, Space, Button, message, Modal, Form, Input, Select, Switch } from 'antd';
 import axios from 'axios';
 import Navbar from '../CRM/Navbar';
+
+const { Option } = Select;
 
 const UsersComponent = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [isDeleteModalVisible, setIsDeleteModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [form] = Form.useForm();
 
   useEffect(() => {
     fetchUsers();
@@ -37,11 +41,6 @@ const UsersComponent = () => {
       key: 'username',
     },
     {
-      title: 'Password',
-      dataIndex: 'password',
-      key: 'password',
-    },
-    {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
@@ -55,6 +54,7 @@ const UsersComponent = () => {
       title: 'Is Active',
       dataIndex: 'is_active',
       key: 'is_active',
+      render: (is_active) => (is_active ? 'Active' : 'Inactive'),
     },
     {
       title: 'Role',
@@ -66,21 +66,38 @@ const UsersComponent = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="middle">
-          <Button onClick={() => handleEdit(record)}>Edit</Button>
+          <Button onClick={() => showEditModal(record)}>Edit</Button>
           <Button danger onClick={() => showDeleteModal(record)}>Delete</Button>
         </Space>
       ),
     },
   ];
 
-  const handleEdit = (user) => {
-    // Implement edit functionality
-    console.log('Edit user:', user);
+  const showEditModal = (user) => {
+    setSelectedUser(user);
+    form.setFieldsValue({
+      role: user.role,
+      is_active: user.is_active,
+    });
+    setIsEditModalVisible(true);
+  };
+
+  const handleEdit = async () => {
+    try {
+      const values = await form.validateFields();
+      await axios.put(`http://localhost:5000/api/users/${selectedUser._id}`, values);
+      message.success('User updated successfully');
+      fetchUsers();
+      setIsEditModalVisible(false);
+      setSelectedUser(null);
+    } catch (error) {
+      message.error('Failed to update user');
+    }
   };
 
   const showDeleteModal = (user) => {
     setSelectedUser(user);
-    setIsModalVisible(true);
+    setIsDeleteModalVisible(true);
   };
 
   const handleDelete = async () => {
@@ -88,7 +105,7 @@ const UsersComponent = () => {
       await axios.delete(`http://localhost:5000/api/users/${selectedUser._id}`);
       message.success('User deleted successfully');
       fetchUsers();
-      setIsModalVisible(false);
+      setIsDeleteModalVisible(false);
       setSelectedUser(null);
     } catch (error) {
       message.error('Failed to delete user');
@@ -96,7 +113,8 @@ const UsersComponent = () => {
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
+    setIsEditModalVisible(false);
+    setIsDeleteModalVisible(false);
     setSelectedUser(null);
   };
 
@@ -104,7 +122,6 @@ const UsersComponent = () => {
     <>
       <Navbar />
       <div>
-        <h2>Users</h2>
         <Table
           columns={columns}
           dataSource={users}
@@ -112,9 +129,49 @@ const UsersComponent = () => {
           loading={loading}
         />
       </div>
+
+      {/* Edit Modal */}
+      <Modal
+        title="Edit User"
+        visible={isEditModalVisible}
+        onOk={handleEdit}
+        onCancel={handleCancel}
+        okText="Save"
+        cancelText="Cancel"
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          initialValues={{
+            role: '',
+            is_active: false,
+          }}
+        >
+          <Form.Item
+            name="role"
+            label="Role"
+            rules={[{ required: true, message: 'Please select a role' }]}
+          >
+            <Select>
+              <Option value="admin">Admin</Option>
+              <Option value="user_invoice">User Invoice</Option>
+              <Option value="user_sales">User Sales</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="is_active"
+            label="Active Status"
+            valuePropName="checked"
+          >
+            <Switch checkedChildren="Active" unCheckedChildren="Inactive" />
+          </Form.Item>
+        </Form>
+      </Modal>
+
+      {/* Delete Modal */}
       <Modal
         title="Confirm Delete"
-        visible={isModalVisible}
+        open={isDeleteModalVisible}
         onOk={handleDelete}
         onCancel={handleCancel}
         okText="Delete"

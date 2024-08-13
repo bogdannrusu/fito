@@ -18,6 +18,7 @@
   "Logout?": "Logout?",
   "Yes": "Yes",
   "No": "No",
+  "Back": "Back",
   "Cancel": "Cancel",
   "Orders View": "Orders View",
   "Invoices View": "Invoices View",
@@ -32,7 +33,12 @@
   "Deposit Invoice": "Deposit Invoice ",
   "Sales": "Sales",
   "Sales Report": "Sales Report",
-  "Sales To WP": "Sales To WP"
-
+  "Sales To WP": "Sales To WP",
+  "Romanian": "Romanian",
+  "Russian": "Russian",
+  "English": "English",
+  "Sorry, the page you visited does not exist.": "Sorry, the page you visited does not exist.",
+  "Users": "Users",
+  "Roles": "Roles"
 
 }
