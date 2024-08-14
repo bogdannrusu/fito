@@ -50,10 +50,15 @@ const Navbar = () => {
           setLoggedInUser(response.data.user);
         } catch (error) {
           console.error('Failed to fetch user:', error);
+          if (error.response && error.response.status === 401) {
+            // Token might be invalid or expired
+            localStorage.removeItem('token');
+            setLoggedInUser(null);
+          }
         }
       }
     };
-
+  
     fetchUser();
   }, []);
 
@@ -272,12 +277,11 @@ const Navbar = () => {
     },
   ];
 
-  // Update contentUser to display logged-in user info
   const contentUser = (
     <div>
       {loggedInUser ? (
         <>
-          <p>{t('User')}: {loggedInUser.name}</p>
+          <p>{t('User')}: {loggedInUser.username}</p>
           <p>{t('Email')}: {loggedInUser.email}</p>
         </>
       ) : (

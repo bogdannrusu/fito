@@ -1,12 +1,6 @@
-.tailwind {
-    @tailwind base;
-    @tailwind components;
-    @tailwind utilities;
-  }
-
-/* .custom-spacing {
+.custom-spacing {
     margin-bottom: 20px;
     margin-top: 20px;
     margin-left: 7px;
-  }
-   */
+}
+  
