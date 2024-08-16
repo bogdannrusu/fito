@@ -6,10 +6,12 @@ import { useTranslation } from 'react-i18next';
 import '../../assets/main.css';
 import axios from 'axios';
 import { FileAddOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom'
 
 const { Option } = Select;
 
 const Invoices = () => {
+  const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
@@ -17,6 +19,10 @@ const Invoices = () => {
   const [usernames, setUsernames] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const { t } = useTranslation();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   // Fetch invoices when the component mounts
   useEffect(() => {
@@ -40,30 +46,30 @@ const Invoices = () => {
   }, [t]);
 
   // Fetch usernames and the logged-in user's information when the component mounts
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const token = localStorage.getItem('token');
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const token = localStorage.getItem('token');
 
-        // Fetch all usernames
-        const usersResponse = await axios.get('http://localhost:5000/api/users', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUsernames(usersResponse.data.map(user => user.username));
+  //       // Fetch all usernames
+  //       const usersResponse = await axios.get('http://localhost:5000/api/users', {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       });
+  //       setUsernames(usersResponse.data.map(user => user.username));
 
-        // Fetch logged-in user information
-        const loggedInUserResponse = await axios.get('http://localhost:5000/api/users/me', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setLoggedInUser(loggedInUserResponse.data.user.username);
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-        message.error(t('Failed to load user data. Please try again later.'));
-      }
-    };
+  //       // Fetch logged-in user information
+  //       const loggedInUserResponse = await axios.get('http://localhost:5000/api/users/me', {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       });
+  //       setLoggedInUser(loggedInUserResponse.data.user.username);
+  //     } catch (error) {
+  //       console.error('Failed to fetch user data:', error);
+  //       message.error(t('Failed to load user data. Please try again later.'));
+  //     }
+  //   };
 
-    fetchUserData();
-  }, [t]);
+  //   fetchUserData();
+  // }, [t]);
 
   //CORS Functionality
   const handleCreateInvoice = async (values) => {
@@ -90,22 +96,22 @@ const Invoices = () => {
     }
   };
 
-  const handleEditInvoice = async (invoiceId, updatedValues) => {
-    try {
-      const token = localStorage.getItem('token');
-      const response = await axios.put(`http://localhost:5000/api/invoices/${invoiceId}`, updatedValues, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const updatedInvoices = invoices.map(invoice =>
-        invoice._id === invoiceId ? { ...invoice, ...updatedValues } : invoice
-      );
-      setInvoices(updatedInvoices);
-      message.success(t('Invoice updated successfully!'));
-    } catch (error) {
-      console.error('Failed to update invoice:', error);
-      message.error(t('Failed to update invoice. Please try again later.'));
-    }
-  };
+  // const handleEditInvoice = async (invoiceId, updatedValues) => {
+  //   try {
+  //     const token = localStorage.getItem('token');
+  //     const response = await axios.put(`http://localhost:5000/api/invoices/${invoiceId}`, updatedValues, {
+  //       headers: { Authorization: `Bearer ${token}` },
+  //     });
+  //     const updatedInvoices = invoices.map(invoice =>
+  //       invoice._id === invoiceId ? { ...invoice, ...updatedValues } : invoice
+  //     );
+  //     setInvoices(updatedInvoices);
+  //     message.success(t('Invoice updated successfully!'));
+  //   } catch (error) {
+  //     console.error('Failed to update invoice:', error);
+  //     message.error(t('Failed to update invoice. Please try again later.'));
+  //   }
+  // };
 
   const showCreateInvoiceModal = () => {
     setIsModalVisible(true);
@@ -161,6 +167,12 @@ const Invoices = () => {
             style={{ backgroundColor: '#37bd8e', color: '#ffffff' }}
           >
             {t('Create Invoice')}
+          </Button>
+          <Button
+            style={{ marginLeft: '1685px' }}
+            onClick={ handleNavigate }
+          >
+            {t('X')}
           </Button>
         </div>
         <div className='tailwind'>
