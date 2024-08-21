@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ./:/usr/src/app
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Change to your app's port
+    volumes:
+      - ./:/usr/src/app
+       - node_modules:/usr/src/app/node_modules
+    networks:
+      - app-network
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./api:/api
+    networks:
+      - app-network
+
+  website:
+    build:
+      context: ./website
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001" # Change to your website's port
+    volumes:
+      - ./website:/website
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
