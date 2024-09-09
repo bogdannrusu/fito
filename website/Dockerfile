@@ -16,5 +16,8 @@ COPY . .
 # Run the build command
 RUN npm run build
 
+# Run the free port
+EXPOSE 8080
+
 # Serve the Vite app
-CMD ["npm", "run", "preview", "--", "--host"]
+CMD [ "serve", "-s", "dist" ]

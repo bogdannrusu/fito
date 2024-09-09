@@ -25,6 +25,7 @@ function createWindow() {
   mainWindow.loadURL('http://localhost:3000');
 
   mainWindow.on('ready-to-show', () => {
+    app.commandLine.appendSwitch('no-sandbox'); // Add this line
     mainWindow.show();
     mainWindow.maximize();
   });
