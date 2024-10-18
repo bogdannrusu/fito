@@ -12,7 +12,7 @@ RUN npm install
 COPY . .
 
 # Expose the port the API runs on
-EXPOSE 3000
+EXPOSE 8080
 
 # Start the Express.js API
 CMD ["npm", "run", "nodemon"]

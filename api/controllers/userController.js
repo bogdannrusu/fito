@@ -15,8 +15,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// controllers/userController.js
-// controllers/userController.js
 const getUserDetails = async (req, res) => {
   try {
     const userId = req.user.userId; // This should be a valid ObjectId string

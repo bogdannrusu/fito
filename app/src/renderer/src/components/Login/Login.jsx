@@ -15,7 +15,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/users/login', {
+      const response = await axios.post('http://localhost:4000/api/users/login', {
         username: values.username,
         password: values.password,
       });
@@ -155,7 +155,6 @@ const Login = () => {
             span: 16,
           }}
         >
-          <Checkbox>{t('Remember me')}</Checkbox>
         </Form.Item>
 
         <Form.Item
@@ -167,15 +166,14 @@ const Login = () => {
           <Button type="primary" htmlType="submit">
             {t('Submit')}
           </Button>
-        </Form.Item>
-      </Form>
-      <Button
+          <Button
         type="link"
         onClick={handleAdminSignUp}
-        style={{ marginTop: '20px' }}
       >
         {t('Connect')}
       </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

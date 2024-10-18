@@ -13,34 +13,37 @@ const getAllInvoices = async (req, res) => {
 };
 
 const createInvoice = async (req, res) => {
-  const { invoice_number, company, client } = req.body;
+  const { invoice_number, company, client, deposit, createdDate } = req.body;
 
-  if (!invoice_number || !company || !client) {
-    return res.status(400).json({ message: 'All fields are required' });
+  if (!invoice_number || !company || !client || !deposit) {
+      return res.status(400).json({ message: 'All fields are required' });
   }
 
   try {
-    const counter = await Counter.findByIdAndUpdate(
-      { _id: 'invoice_id' },
-      { $inc: { seq: 1 } },
-      { new: true, upsert: true }
-    );
+      const counter = await Counter.findByIdAndUpdate(
+          { _id: 'invoice_id' },
+          { $inc: { seq: 1 } },
+          { new: true, upsert: true }
+      );
 
-    const newInvoice = new Invoice({
-      invoice_id: counter.seq,
-      invoice_number,
-      company,
-      client,
-      createdBy: req.user.username,
-    });
+      const newInvoice = new Invoice({
+          invoice_id: counter.seq,
+          invoice_number,
+          company,
+          client,
+          deposit,
+          createdDate,
+          createdBy: req.user.username,
+      });
 
-    await newInvoice.save();
-    res.status(201).json(newInvoice);
+      await newInvoice.save();
+      res.status(201).json(newInvoice);
   } catch (err) {
-    console.error('Error creating invoice:', err);
-    res.status(400).json({ message: err.message });
+      console.error('Error creating invoice:', err);
+      res.status(400).json({ message: err.message });
   }
 };
+
 
 module.exports = {
   getAllInvoices,

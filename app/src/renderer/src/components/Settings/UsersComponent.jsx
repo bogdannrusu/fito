@@ -21,7 +21,7 @@ const UsersComponent = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:5000/api/users');
+      const response = await axios.get('http://localhost:4000/api/users');
       setUsers(response.data);
     } catch (error) {
       message.error('Failed to fetch users');
@@ -85,7 +85,7 @@ const UsersComponent = () => {
   const handleEdit = async () => {
     try {
       const values = await form.validateFields();
-      await axios.put(`http://localhost:5000/api/users/${selectedUser._id}`, values);
+      await axios.put(`http://localhost:4000/api/users/${selectedUser._id}`, values);
       message.success('User updated successfully');
       fetchUsers();
       setIsEditModalVisible(false);
@@ -102,7 +102,7 @@ const UsersComponent = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:5000/api/users/${selectedUser._id}`);
+      await axios.delete(`http://localhost:4000/api/users/${selectedUser._id}`);
       message.success('User deleted successfully');
       fetchUsers();
       setIsDeleteModalVisible(false);

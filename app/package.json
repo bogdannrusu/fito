@@ -1,7 +1,7 @@
 {
-  "name": "electron",
+  "name": "Fito",
   "version": "1.0.0",
-  "description": "Coffee Le Coupage",
+  "description": "Fito Coffee",
   "main": "./out/main/index.js",
   "author": "Bogdan Rusu",
   "homepage": "https://electron-vite.org",
@@ -38,7 +38,8 @@
     "prop-types": "^15.8.1",
     "react-flagkit": "^2.0.4",
     "react-i18next": "^15.0.1",
-    "react-router-dom": "^6.25.1"
+    "react-router-dom": "^6.25.1",
+    "xvfb": "^0.4.0"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config": "^1.0.2",

@@ -13,7 +13,7 @@ function createWindow() {
     show: false,
     frame: false,
     autoHideMenuBar: true,
-    ...(process.platform === 'win32' ? { icon: path.join(__dirname, '../../build/icon.ico') } : {}),
+    ...(process.platform === 'win32' ? { icon: path.join(__dirname, '../../build/icon.png') } : {}),
     webPreferences: {
       preload: path.join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -22,7 +22,7 @@ function createWindow() {
     }
   });
 
-  mainWindow.loadURL('http://localhost:3000');
+  mainWindow.loadURL('http://localhost:5000');
 
   mainWindow.on('ready-to-show', () => {
     app.commandLine.appendSwitch('no-sandbox'); // Add this line

@@ -1,7 +1,7 @@
 # Use the node image as a base
 FROM node:20
 
-# Install dependencies required by Electron
+# Install dependencies required by Electron and xvfb
 RUN apt-get update && apt-get install -y \
     libnss3 \
     libatk-bridge2.0-0 \
@@ -28,8 +28,13 @@ RUN apt-get update && apt-get install -y \
     libxrandr2 \
     libappindicator3-1 \
     libnotify4 \
+    xvfb \
+    xauth \
     --no-install-recommends && \
     rm -rf /var/lib/apt/lists/*
+
+# Create a non-root user and group
+RUN groupadd -r appuser && useradd -r -g appuser -d /app appuser
 
 # Set working directory
 WORKDIR /app
@@ -43,8 +48,14 @@ RUN npm install
 # Copy the rest of the application code
 COPY . .
 
+# Change ownership of the application files to the non-root user
+RUN chown -R appuser:appuser /app
+
+# Switch to the non-root user
+USER appuser
+
 # Run the build command (if necessary)
 RUN npm run build
 
-# Start the Electron app
-CMD ["npm", "run", "start", "--", "--no-sandbox"]
+# Start the Electron app with xvfb
+CMD ["xvfb-run", "--auto-servernum", "--", "npm", "run", "dev"]

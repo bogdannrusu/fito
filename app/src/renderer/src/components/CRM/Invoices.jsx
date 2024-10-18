@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Table, Modal, Form, Input, DatePicker, message, Select } from 'antd';
 import Navbar from './Navbar';
 import { useTranslation } from 'react-i18next';
 import '../../assets/main.css';
 import axios from 'axios';
 import { FileAddOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
 
 const { Option } = Select;
 
@@ -16,12 +16,13 @@ const Invoices = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [invoices, setInvoices] = useState([]);
+  const [deposits, setDeposits] = useState([]);
   const [usernames, setUsernames] = useState([]);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const { t } = useTranslation();
 
-  const handleNavigate = (path) => {
-    navigate(path);
+  const handleNavigate = () => {
+    navigate("/navbar");
   };
 
   // Fetch invoices when the component mounts
@@ -30,7 +31,7 @@ const Invoices = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/invoices', {
+        const response = await axios.get('http://localhost:4000/api/invoices', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setInvoices(response.data);
@@ -46,43 +47,65 @@ const Invoices = () => {
   }, [t]);
 
   // Fetch usernames and the logged-in user's information when the component mounts
-  // useEffect(() => {
-  //   const fetchUserData = async () => {
-  //     try {
-  //       const token = localStorage.getItem('token');
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const token = localStorage.getItem('token');
 
-  //       // Fetch all usernames
-  //       const usersResponse = await axios.get('http://localhost:5000/api/users', {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       });
-  //       setUsernames(usersResponse.data.map(user => user.username));
+        // Fetch all usernames
+        const usersResponse = await axios.get('http://localhost:4000/api/users', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setUsernames(usersResponse.data.map(user => user.username));
 
-  //       // Fetch logged-in user information
-  //       const loggedInUserResponse = await axios.get('http://localhost:5000/api/users/me', {
-  //         headers: { Authorization: `Bearer ${token}` },
-  //       });
-  //       setLoggedInUser(loggedInUserResponse.data.user.username);
-  //     } catch (error) {
-  //       console.error('Failed to fetch user data:', error);
-  //       message.error(t('Failed to load user data. Please try again later.'));
-  //     }
-  //   };
+        // Fetch logged-in user information
+        const loggedInUserResponse = await axios.get('http://localhost:4000/api/users/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setLoggedInUser(loggedInUserResponse.data.user.username);
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+        message.error(t('Failed to load user data. Please try again later.'));
+      }
+    };
 
-  //   fetchUserData();
-  // }, [t]);
+    fetchUserData();
+  }, [t]);
 
-  //CORS Functionality
+  // Fetch deposits when the component mounts
+  useEffect(() => {
+    const fetchDeposits = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:4000/api/deposits', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setDeposits(response.data);
+      } catch (error) {
+        console.error('Failed to fetch deposits:', error);
+        message.error(t('Failed to load deposits. Please try again later.'));
+      }
+    };
+
+    fetchDeposits();
+  }, [t]);
+
+  // Handle creating a new invoice
   const handleCreateInvoice = async (values) => {
     try {
       const token = localStorage.getItem('token');
-      
+
       // Convert the date to the required format
       const formattedValues = {
         ...values,
         createdDate: values.createdDate ? values.createdDate.toISOString() : undefined,
       };
 
-      const response = await axios.post('http://localhost:5000/api/invoices', formattedValues, {
+      // Check formatted values before making the request
+      console.log("Formatted Values:", formattedValues);
+
+      // Make sure all required fields, including deposit, are included
+      const response = await axios.post('http://localhost:4000/api/invoices', formattedValues, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -91,27 +114,28 @@ const Invoices = () => {
       setIsModalVisible(false);
       form.resetFields(); // Reset form fields
     } catch (error) {
-      console.error('Failed to create invoice:', error);
+      console.error('Failed to create invoice:', error.response?.data || error.message);
       message.error(t('Failed to create invoice. Please try again later.'));
     }
   };
 
-  // const handleEditInvoice = async (invoiceId, updatedValues) => {
-  //   try {
-  //     const token = localStorage.getItem('token');
-  //     const response = await axios.put(`http://localhost:5000/api/invoices/${invoiceId}`, updatedValues, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     });
-  //     const updatedInvoices = invoices.map(invoice =>
-  //       invoice._id === invoiceId ? { ...invoice, ...updatedValues } : invoice
-  //     );
-  //     setInvoices(updatedInvoices);
-  //     message.success(t('Invoice updated successfully!'));
-  //   } catch (error) {
-  //     console.error('Failed to update invoice:', error);
-  //     message.error(t('Failed to update invoice. Please try again later.'));
-  //   }
-  // };
+  // Handle editing an existing invoice
+  const handleEditInvoice = async (invoiceId, updatedValues) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(`http://localhost:4000/api/invoices/${invoiceId}`, updatedValues, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const updatedInvoices = invoices.map(invoice =>
+        invoice._id === invoiceId ? { ...invoice, ...updatedValues } : invoice
+      );
+      setInvoices(updatedInvoices);
+      message.success(t('Invoice updated successfully!'));
+    } catch (error) {
+      console.error('Failed to update invoice:', error);
+      message.error(t('Failed to update invoice. Please try again later.'));
+    }
+  };
 
   const showCreateInvoiceModal = () => {
     setIsModalVisible(true);
@@ -203,31 +227,29 @@ const Invoices = () => {
             </Form.Item>
 
             <Form.Item
-            name="company"
-            label="Company"
-            rules={[{ required: true, message: 'Please select a company' }]}
-          >
-            <Select>
-              <Option value="BRS Industries SRL">BRS Industries</Option>
-              <Option value="Viscomplac SRL">Viscomplac</Option>
-              <Option value="Promoauto SRL">Promoauto</Option>
-            </Select>
-          </Form.Item>
-
-            <Form.Item
-              label={t('Client')}
-              name="client"
-              rules={[{ required: true, message: t('Please input the client name!') }]}
+              name="company"
+              label={t('Company')}
+              rules={[{ required: true, message: 'Please select a company' }]}
             >
-              <Input />
+              <Select>
+                <Option value="BRS Industries SRL">BRS Industries</Option>
+                <Option value="Viscomplac SRL">Viscomplac</Option>
+                <Option value="Promoauto SRL">Promoauto</Option>
+              </Select>
             </Form.Item>
 
             <Form.Item
               label={t('Deposit')}
               name="deposit"
-              rules={[{ required: true, message: t('Please input the deposit!') }]}
+              rules={[{ required: true, message: t('Please select a deposit!') }]}
             >
-              <Input />
+              <Select>
+                {deposits.map((deposit) => (
+                  <Option key={deposit._id || deposit.id} value={deposit._id || deposit.id}>
+                    {deposit.deposit_name || deposit.name}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
 
             <Form.Item
@@ -259,7 +281,6 @@ const Invoices = () => {
             </Form.Item>
           </Form>
         </Modal>
-        
       </div>
     </>
   );

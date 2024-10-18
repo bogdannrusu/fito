@@ -36,6 +36,10 @@ const Navbar = () => {
   const routes = {
     '1': '/orders',
     '2': '/invoices',
+    '3': '/contragents',
+    '4': '/units',
+    '7': '/depositsales',
+    '8': '/orderdeposits',
     '20': '/users',
     'sub5': null,
   };
@@ -58,7 +62,7 @@ const Navbar = () => {
       const token = sessionStorage.getItem('token');
       if (token) {
         try {
-          const response = await axios.get('http://localhost:5000/api/users/me', {
+          const response = await axios.get('http://localhost:4000/api/users/me', {
             headers: { Authorization: `Bearer ${token}` },
           });
           setLoggedInUser(response.data.user);
@@ -132,7 +136,7 @@ const Navbar = () => {
   };
 
   const isAdmin = () => {
-    const roles = axios.get('http://localhost:5000/api/users/users/me/roles');
+    const roles = axios.get('http://localhost:4000/api/users/users/me/roles');
     return roles;
   };
 
@@ -236,6 +240,11 @@ const Navbar = () => {
         },
         {
           key: '8',
+          label: t('Order Deposits'),
+          icon: <EuroOutlined />,
+        },
+        {
+          key: '9',
           label: t('Deposit Invoices'),
           icon: <DollarOutlined />,
         },
@@ -245,12 +254,12 @@ const Navbar = () => {
           icon: <BarChartOutlined />,
           children: [
             {
-              key: '9',
+              key: '10',
               label: t('Sale to WP'),
               icon: <TwitterOutlined />,
             },
             {
-              key: '10',
+              key: '11',
               label: t('Direct Sale'),
               icon: <QqOutlined />,
             },
@@ -276,7 +285,7 @@ const Navbar = () => {
       ],
     },
     {
-      key: '11',
+      key: '24',
       icon: <FlagOutlined />,
       label: t('Language'),
       children: [
@@ -318,6 +327,7 @@ const Navbar = () => {
   );
 
   return (
+    <>
     <div style={{ position: 'relative', width: '100%' }}>
       <Button
         danger
@@ -363,6 +373,8 @@ const Navbar = () => {
         <p>{t('Are you sure you want to logout?')}</p>
       </Modal>
     </div>
+    </>
+    
   );
 };
 

@@ -6,7 +6,7 @@ services:
       context: ./app
       dockerfile: Dockerfile
     ports:
-      - "3000:3000" # Change to your app's port
+      - "5000:5000" # Change to your app's port
     volumes:
       - ./app
        - node_modules:/usr/src/app/node_modules
@@ -18,30 +18,23 @@ services:
       context: ./api
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "4000:4000"
     volumes:
       - ./api:/api
     networks:
       - app-network
 
   website:
+    image: website
     build:
       context: ./website
       dockerfile: Dockerfile
     ports:
-      - "8000:8081" # Change to your website's port
+      - 3000:3000
     volumes:
       - ./website:/website
     networks:
       - app-network
-    # watch:
-    #     - action: sync
-    #       path: ./website
-    #       target: ./website
-    #       ignore:
-    #         - node_modules/
-    #     - action: rebuild
-    #       path: package.json
 
 networks:
   app-network:
