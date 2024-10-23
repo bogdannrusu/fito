@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
-import React from 'react';
-import { Button, Checkbox, Form, Input, message, Select } from 'antd';
+// import React from 'react';
+import { Button, Form, Input, message, Select } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Flag from 'react-flagkit';
+import logo from '../../assets/icons/logo.webp';
 
 const { Option } = Select;
 
@@ -38,7 +39,7 @@ const Login = () => {
 
   const handleClose = () => {
     if (window.electron && window.electron.closeApp) {
-      window.electron.closeApp(); // Call the closeApp function
+      window.electron.closeApp();
     } else {
       console.error('Electron API not available');
     }
@@ -67,8 +68,10 @@ const Login = () => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', position: 'relative' }}>
-      <Button danger
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
+      {/* Butoane de minimizare și închidere */}
+      <Button
+        danger
         style={{ position: 'absolute', top: 10, right: 10 }}
         type="primary"
         shape="circle"
@@ -85,6 +88,7 @@ const Login = () => {
         _
       </Button>
 
+      {/* Selector de limbă */}
       <Select
         defaultValue={i18n.language}
         style={{ position: 'absolute', top: 10, left: 10 }}
@@ -101,26 +105,28 @@ const Login = () => {
         </Option>
       </Select>
 
+      {/* Logo-ul aplicației */}
+      <img src={logo} alt="Fito logo" style={{ width: '150px', marginBottom: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }} />
+
+      {/* Formularul de autentificare */}
       <Form
         form={form}
-        name="basic"
-        labelCol={{
-          span: 8,
-        }}
-        wrapperCol={{
-          span: 16,
-        }}
+        name="login"
         style={{
-          maxWidth: 600,
+          maxWidth: '400px',
           width: '100%',
+          padding: '20px',
+          backgroundColor: '#f7f7f7',
+          borderRadius: '10px',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
         }}
         initialValues={{
           remember: true,
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        autoComplete="off"
       >
+        {/* Input pentru utilizator */}
         <Form.Item
           label={t('Username')}
           name="username"
@@ -134,6 +140,7 @@ const Login = () => {
           <Input />
         </Form.Item>
 
+        {/* Input pentru parolă */}
         <Form.Item
           label={t('Password')}
           name="password"
@@ -147,31 +154,23 @@ const Login = () => {
           <Input.Password />
         </Form.Item>
 
+        {/* Butoane de login și connect */}
         <Form.Item
-          name="remember"
-          valuePropName="checked"
-          wrapperCol={{
-            offset: 8,
-            span: 16,
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
           }}
         >
-        </Form.Item>
-
-        <Form.Item
-          wrapperCol={{
-            offset: 8,
-            span: 16,
-          }}
-        >
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" style={{ width: '45%' }}>
             {t('Submit')}
           </Button>
           <Button
-        type="link"
-        onClick={handleAdminSignUp}
-      >
-        {t('Connect')}
-      </Button>
+            type="default"
+            onClick={handleAdminSignUp}
+            style={{ width: '45%' }}
+          >
+            {t('Connect')}
+          </Button>
         </Form.Item>
       </Form>
     </div>

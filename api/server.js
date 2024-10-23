@@ -31,8 +31,8 @@ app.use((req, res, next) => {
 });
 
 mongoose.connect(dbUri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
 })
   .then(() => {
     console.log('Connected to MongoDB');
@@ -42,6 +42,11 @@ mongoose.connect(dbUri, {
   });
 
 app.use(express.json());
+
+//Testarea in production
+app.get('/', (req, res) => {
+  res.send('Hello from Express.js on Vercel!');
+});
 
 app.use('/api/goods', goodsRoutes);
 app.use('/api/users', userRoutes);
@@ -60,3 +65,5 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+module.exports = app;

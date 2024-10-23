@@ -1,29 +1,28 @@
+//Declaration
 const Contragent = require('../models/contragents');
 
-const getAllContragents = async (req, res) => {
+
+//General Code
+const getAllContragents = async () => {
   try {
     const contragents = await Contragent.find();
-    if (!contragents) {
-      return res.status(404).json({ message: 'No contragents found' });
-    }
-    res.status(200).json(contragents);
+    return contragents; // Returnăm doar datele
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching contragents', error: error.message });
+    throw new Error('Error fetching contragents: ' + error.message);
   }
 };
 
-const getContragentById = async (req, res) => {
+const getContragentById = async (id) => {
   try {
-    const contragent = await Contragent.findById(req.params.id);
+    const contragent = await Contragent.findById(id);
     if (!contragent) {
-      return res.status(404).json({ message: 'Contragent not found' });
+      throw new Error('Contragent not found');
     }
-    res.status(200).json(contragent);
+    return contragent;
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching contragent', error: error.message });
+    throw new Error('Error fetching contragent: ' + error.message);
   }
 };
-
 
 const updateContragent = async (req, res) => {
   try {
@@ -43,7 +42,7 @@ const deleteContragent = async (req, res) => {
     if (!deletedContragent) {
       return res.status(404).json({ message: 'Contragent not found' });
     }
-    res.status(200).json({ message: 'Contragent deleted successfully' });
+    return deletedContragent;
   } catch (error) {
     res.status(500).json({ message: 'Error deleting contragent', error: error.message });
   }

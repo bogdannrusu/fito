@@ -7,12 +7,7 @@ const contragentSchema = new mongoose.Schema({
   contactPerson: { type: String, trim: true },
   email: { type: String, trim: true, lowercase: true },
   phone: { type: String, trim: true },
-  address: {
-    street: String,
-    city: String,
-    country: String,
-    postalCode: String
-  },
+  address: { type: String, trim: true },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now }
 });

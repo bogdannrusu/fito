@@ -17,7 +17,7 @@ const Invoices = () => {
   const [loading, setLoading] = useState(false);
   const [invoices, setInvoices] = useState([]);
   const [deposits, setDeposits] = useState([]);
-  const [usernames, setUsernames] = useState([]);
+  const [contragents, setContragents] = useState([]); // New state for contragents
   const [loggedInUser, setLoggedInUser] = useState(null);
   const { t } = useTranslation();
 
@@ -46,17 +46,11 @@ const Invoices = () => {
     fetchInvoices();
   }, [t]);
 
-  // Fetch usernames and the logged-in user's information when the component mounts
+  // Fetch the logged-in user's information when the component mounts
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchLoggedInUser = async () => {
       try {
         const token = localStorage.getItem('token');
-
-        // Fetch all usernames
-        const usersResponse = await axios.get('http://localhost:4000/api/users', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUsernames(usersResponse.data.map(user => user.username));
 
         // Fetch logged-in user information
         const loggedInUserResponse = await axios.get('http://localhost:4000/api/users/me', {
@@ -64,12 +58,12 @@ const Invoices = () => {
         });
         setLoggedInUser(loggedInUserResponse.data.user.username);
       } catch (error) {
-        console.error('Failed to fetch user data:', error);
+        console.error('Failed to fetch logged-in user:', error);
         message.error(t('Failed to load user data. Please try again later.'));
       }
     };
 
-    fetchUserData();
+    fetchLoggedInUser();
   }, [t]);
 
   // Fetch deposits when the component mounts
@@ -90,6 +84,24 @@ const Invoices = () => {
     fetchDeposits();
   }, [t]);
 
+  // Fetch contragents when the component mounts
+  useEffect(() => {
+    const fetchContragents = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get('http://localhost:4000/api/contragents', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setContragents(response.data);
+      } catch (error) {
+        console.error('Failed to fetch contragents:', error);
+        message.error(t('Failed to load clients. Please try again later.'));
+      }
+    };
+
+    fetchContragents();
+  }, [t]);
+
   // Handle creating a new invoice
   const handleCreateInvoice = async (values) => {
     try {
@@ -99,12 +111,9 @@ const Invoices = () => {
       const formattedValues = {
         ...values,
         createdDate: values.createdDate ? values.createdDate.toISOString() : undefined,
+        username: loggedInUser, // Ensure the invoice is created with the logged-in user
       };
 
-      // Check formatted values before making the request
-      console.log("Formatted Values:", formattedValues);
-
-      // Make sure all required fields, including deposit, are included
       const response = await axios.post('http://localhost:4000/api/invoices', formattedValues, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -116,24 +125,6 @@ const Invoices = () => {
     } catch (error) {
       console.error('Failed to create invoice:', error.response?.data || error.message);
       message.error(t('Failed to create invoice. Please try again later.'));
-    }
-  };
-
-  // Handle editing an existing invoice
-  const handleEditInvoice = async (invoiceId, updatedValues) => {
-    try {
-      const token = localStorage.getItem('token');
-      await axios.put(`http://localhost:4000/api/invoices/${invoiceId}`, updatedValues, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const updatedInvoices = invoices.map(invoice =>
-        invoice._id === invoiceId ? { ...invoice, ...updatedValues } : invoice
-      );
-      setInvoices(updatedInvoices);
-      message.success(t('Invoice updated successfully!'));
-    } catch (error) {
-      console.error('Failed to update invoice:', error);
-      message.error(t('Failed to update invoice. Please try again later.'));
     }
   };
 
@@ -239,28 +230,14 @@ const Invoices = () => {
             </Form.Item>
 
             <Form.Item
-              label={t('Deposit')}
-              name="deposit"
-              rules={[{ required: true, message: t('Please select a deposit!') }]}
+              label={t('Client')}
+              name="client"
+              rules={[{ required: true, message: t('Please select a client!') }]}
             >
               <Select>
-                {deposits.map((deposit) => (
-                  <Option key={deposit._id || deposit.id} value={deposit._id || deposit.id}>
-                    {deposit.deposit_name || deposit.name}
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              label={t('Username')}
-              name="username"
-              rules={[{ required: true, message: t('Please select a username!') }]}
-            >
-              <Select defaultValue={loggedInUser}>
-                {usernames.map((username) => (
-                  <Option key={username} value={username}>
-                    {username}
+                {contragents.map((contragent) => (
+                  <Option key={contragent._id} value={contragent.name}>
+                    {contragent.name}
                   </Option>
                 ))}
               </Select>
@@ -269,14 +246,28 @@ const Invoices = () => {
             <Form.Item
               label={t('Created Date')}
               name="createdDate"
-              rules={[{ required: true, message: t('Please select the created date!') }]}
+              rules={[{ required: true, message: t('Please select the creation date!') }]}
             >
-              <DatePicker format="YYYY-MM-DD" />
+              <DatePicker />
+            </Form.Item>
+
+            <Form.Item
+              label={t('Deposit')}
+              name="deposit"
+              rules={[{ required: true, message: t('Please select a deposit!') }]}
+            >
+              <Select>
+                {deposits.map((deposit) => (
+                  <Option key={deposit._id} value={deposit._id}>
+                    {deposit.deposit_number}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
 
             <Form.Item>
-              <Button type="primary" htmlType="submit" icon={<FileAddOutlined />}>
-                {t('Create')}
+              <Button type="primary" htmlType="submit" style={{ backgroundColor: '#37bd8e', color: '#ffffff' }}>
+                {t('Create Invoice')}
               </Button>
             </Form.Item>
           </Form>

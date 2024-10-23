@@ -10,7 +10,7 @@ import './i18n';
 import './assets/main.css';
 import NotFound from './components/Settings/404NotFound';
 import Orders from './components/CRM/Orders';
-import Contragents from './components/CRM/Contragents';
+import Contragents from './components/CRM/Contragents/Contragents';
 import Units from './components/CRM/Units';
 import DepositSales from './components/Workspace/DepositSales';
 

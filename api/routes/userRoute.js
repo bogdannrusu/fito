@@ -23,7 +23,7 @@ const validateUser = [
   check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
 ];
 
-router.get('/', getAllUsers);
+router.get('/users', getAllUsers);
 router.get('/:id', auth, getUserById);
 router.post('/register', validateUser, createUser);
 router.post('/login', [

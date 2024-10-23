@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Modal, Form, Input, message } from 'antd';
 import axios from 'axios';
-import Navbar from './Navbar';
+import Navbar from '../Navbar';
 import { useTranslation } from 'react-i18next';
-import '../../assets/main.css';
+import ContragentDetails from './ContragentsDetails';
+import Contragent from '../../../../../../../api/models/contragents';
 
 const Contragents = () => {
   const [contragents, setContragents] = useState([]);
@@ -17,6 +18,19 @@ const Contragents = () => {
   useEffect(() => {
     fetchContragents();
   }, []);
+
+  const handleAddContragent = async () => {
+    try {
+      const values = await form.validateFields();
+      await axios.post('http://localhost:4000/api/contragents', values);
+      message.success('Contragent added successfully');
+      fetchContragents();
+      setIsModalVisible(false);
+    } catch (error) {
+      console.error('Error adding contragent:', error);
+      message.error('Failed to add contragent');
+    }
+  };
 
   const fetchContragents = async () => {
     try {
@@ -64,43 +78,20 @@ const Contragents = () => {
       message.error('Failed to delete contragent');
     }
   };
-  
-  
-  
-  
-
-  const showModal = (record = null) => {
-    setIsModalVisible(true);
-    setEditingId(record ? record.id : null);
-    if (record) {
-      form.setFieldsValue(record);
-    } else {
-      form.resetFields();
-    }
-  };
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    setEditingId(null);
+    form.resetFields();
+  };  
 
   const columns = [
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-    },
-    {
-      title: 'Phone',
-      dataIndex: 'phone',
-      key: 'phone',
-    },
-    {
-      title: 'Actions',
-      key: 'actions',
+    {  title: 'Name', dataIndex: 'name', key: 'name',  },
+    {  title: 'Email', dataIndex: 'email', key: 'email', },
+    {  title: 'Phone', dataIndex: 'phone', key: 'phone',  },
+    {  title: 'Actions', key: 'actions',
       render: (_, record) => (
         <>
-          <Button onClick={() => showModal(record)}>
+          <Button onClick={ContragentDetails}>
             {t('Edit')}
           </Button>
           <Button onClick={() => handleDelete(record.id)} danger>
@@ -116,44 +107,11 @@ const Contragents = () => {
       
         <Navbar />
         <div className="custom-spacing">
-      <Button onClick={() => showModal()} type="primary" style={{ marginBottom: 16 }}>
+      <Button onClick={ ContragentDetails } type="primary" style={{ marginBottom: 16 }}>
         {t('Add Contragent')}
       </Button>
       </div>
       <Table columns={columns} dataSource={contragents} rowKey="id" />
-      <Modal
-        title={editingId ? t("Edit Contragent") : t("Add Contragent")}
-        open={isModalVisible}
-        onOk={handleOk}
-        onCancel={() => setIsModalVisible(false)}
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item
-            name="name"
-            label="Name"
-            rules={[{ required: true, message: t('Please input the name!') }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              { required: true, message: t('Please input the email!') },
-              { type: 'email', message: t('Please enter a valid email!') }
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="phone"
-            label="Phone"
-            rules={[{ required: true, message: t('Please input the phone number!') }]}
-          >
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
     </div>
   );
 };
