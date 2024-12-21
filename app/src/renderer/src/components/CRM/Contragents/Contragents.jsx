@@ -6,7 +6,6 @@ import axios from 'axios';
 import Navbar from '../Navbar';
 import { useTranslation } from 'react-i18next';
 import ContragentDetails from './ContragentsDetails';
-import Contragent from '../../../../../../../api/models/contragents';
 
 const Contragents = () => {
   const [contragents, setContragents] = useState([]);

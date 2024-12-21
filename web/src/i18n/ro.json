@@ -1,0 +1,129 @@
+{
+  "header": {
+    "menu": "Meniu",
+    "order": "Comandă",
+    "contact": "Contact"
+  },
+  "hero": {
+    "welcome": "Bun venit la Fito",
+    "title": "Cafeneaua ta de specialitate",
+    "subtitle": "Descoperă aroma autentică a cafelei proaspăt prăjite și atmosfera primitoare",
+    "explore": "Explorează Meniul",
+    "imageAlt": "Cafenea Fito"
+  },
+  "menu": {
+    "discover": "Descoperă",
+    "ourMenu": "Meniul Nostru",
+    "addToCart": "Adaugă în coș",
+    "addedToCart": "Adăugat în coș",
+    "itemsAdded": "{{quantity}} x {{name}} adăugat în coș",
+    "categories": {
+      "signaturedrinks": "Băuturi Speciale",
+      "classiccoffee": "Cafea Clasică",
+      "desserts": "Deserturi"
+    },
+    "items": {
+      "fitospeciallatte": "Latte Special Fito",
+      "honeycinnamoncappuccino": "Cappuccino cu Miere și Scorțișoară",
+      "espresso": "Espresso",
+      "americano": "Americano",
+      "tiramisu": "Tiramisu",
+      "chocolatecroissant": "Croissant cu Ciocolată"
+    },
+    "descriptions": {
+      "fitospeciallatte": "Amestecul nostru special cu vanilie și caramel",
+      "honeycinnamoncappuccino": "Miere locală și scorțișoară Ceylon",
+      "espresso": "O doză din amestecul nostru special",
+      "americano": "Espresso cu apă fierbinte",
+      "tiramisu": "Desert italian clasic cu aromă de cafea",
+      "chocolatecroissant": "Croissant cu unt și umplutură bogată de ciocolată"
+    }
+  },
+  "education": {
+    "learn": "Învață despre cafea",
+    "title": "Educație despre Cafea",
+    "subtitle": "Descoperă secretele din spatele cafelei perfecte",
+    "topics": {
+      "BeanOrigins": {
+        "title": "Originea Boabelor",
+        "beanOriginsDesc": "Explorează diferitele regiuni de cultivare a cafelei",
+        "beanOriginsFact": "Știați că boabele de cafea provin din peste 50 de țări?"
+      },
+      "BrewingMethods": {
+        "title": "Metode de Preparare",
+        "brewingMethodsDesc": "Învață diferite tehnici de preparare a cafelei",
+        "brewingMethodsFact": "Fiecare metodă de preparare scoate în evidență arome diferite"
+      },
+      "RoastingProcess": {
+        "title": "Procesul de Prăjire",
+        "roastingProcessDesc": "Înțelege arta prăjirii cafelei",
+        "roastingProcessFact": "Temperatura și timpul sunt cruciale pentru aroma finală"
+      },
+      "CoffeeTasting": {
+        "title": "Degustarea Cafelei",
+        "coffeeTastingDesc": "Dezvoltă-ți paleta de gusturi",
+        "coffeeTastingFact": "Există peste 800 de arome distincte în cafea"
+      }
+    }
+  },
+  "origins": {
+    "discover": "Descoperă",
+    "title": "Originile Cafelei Noastre",
+    "subtitle": "Călătorește prin regiunile producătoare de cafea din lume",
+    "regions": {
+      "ethiopia": "Etiopia",
+      "colombia": "Columbia",
+      "brazil": "Brazilia",
+      "indonesia": "Indonezia"
+    },
+    "descriptions": {
+      "EthiopiaDesc": "Note florale și de fructe de pădure",
+      "ColombiaDesc": "Echilibrat, cu note de caramel",
+      "BrazilDesc": "Corp bogat, note de ciocolată",
+      "IndonesiaDesc": "Aromă intensă, note de condimente"
+    }
+  },
+  "contact": {
+    "visit": "Vizitează-ne",
+    "getInTouch": "Contactează-ne",
+    "location": "Locație",
+    "address": "Str. Principală nr. 123, Chișinău",
+    "hours": "Program",
+    "weekdayHours": "Luni - Vineri: 7:00 - 22:00",
+    "weekendHours": "Sâmbătă - Duminică: 8:00 - 23:00",
+    "contact": "Contact",
+    "phone": "Tel: +373 22 123 456",
+    "email": "Email: contact@fito.md",
+    "mapTitle": "Locația Fito Cafe"
+  },
+  "footer": {
+    "title": "Fito Coffee",
+    "tagline": "Cafea de specialitate și experiențe unice",
+    "openingHours": "Program de lucru",
+    "weekdayHours": "Luni - Vineri: 7:00 - 22:00",
+    "saturdayHours": "Sâmbătă: 8:00 - 23:00",
+    "sundayHours": "Duminică: 8:00 - 23:00",
+    "quickLinks": "Link-uri rapide",
+    "links": {
+      "menu": "Meniu",
+      "orderOnline": "Comandă Online",
+      "contactUs": "Contactează-ne"
+    },
+    "copyright": "© {{year}} Fito Coffee. Toate drepturile rezervate."
+  },
+  "cart": {
+    "title": "Coșul meu",
+    "empty": "Coșul tău este gol",
+    "total": "Total",
+    "submitOrder": "Trimite Comanda",
+    "submitting": "Se trimite...",
+    "orderSuccess": "Comandă trimisă cu succes",
+    "orderProcessing": "Comanda ta va fi procesată în curând",
+    "orderError": "Eroare la trimiterea comenzii",
+    "tryAgain": "Te rugăm să încerci din nou",
+    "itemRemoved": "Produs eliminat",
+    "itemRemovedDesc": "Produsul a fost eliminat din coș",
+    "emptyOrderError": "Coș gol",
+    "addItemsFirst": "Te rugăm să adaugi produse în coș"
+  }
+}

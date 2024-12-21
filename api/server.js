@@ -13,6 +13,7 @@ const contragentsRoutes = require('./routes/contragentsRoute');
 const depositRoutes = require('./routes/depositRoute');
 const ordersRoutes = require('./routes/ordersRoute');
 const orderDepositRoute = require('./routes/orderDepositRoute');
+const unitsRoutes = require('./routes/unitsRoute');
 
 const dbUri = process.env.MONGODB_URI;
 
@@ -56,6 +57,7 @@ app.use('/api/contragents', contragentsRoutes);
 app.use('/api/deposits', depositRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/orderDeposit', orderDepositRoute);
+app.use('/api/units', unitsRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

@@ -2,10 +2,10 @@
   "name": "api",
   "version": "1.0.0",
   "description": "api for desktop app",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "nodemon": "nodemon index.js"
+    "nodemon": "nodemon server.js"
   },
   "repository": {
     "type": "git",

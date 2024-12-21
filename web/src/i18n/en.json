@@ -1,0 +1,114 @@
+{
+  "header": {
+    "menu": "Menu",
+    "order": "Order",
+    "contact": "Contact"
+  },
+  "hero": {
+    "welcome": "Welcome to Fito",
+    "title": "Craft Coffee Experience",
+    "subtitle": "Where every cup tells a story of passion and precision",
+    "explore": "Explore Menu",
+    "imageAlt": "Coffee beans background"
+  },
+  "menu": {
+    "discover": "Discover",
+    "ourMenu": "Our Menu",
+    "addToCart": "Add to Cart",
+    "addedToCart": "Added to cart",
+    "itemsAdded": "{{quantity}}x {{name}} added to your order",
+    "categories": {
+      "signatureDrinks": "Signature Drinks",
+      "classicCoffee": "Classic Coffee",
+      "desserts": "Desserts"
+    },
+    "items": {
+      "fitoSpecialLatte": "Fito Special Latte",
+      "honeyCinnamonCappuccino": "Honey Cinnamon Cappuccino",
+      "espresso": "Espresso",
+      "americano": "Americano",
+      "tiramisu": "Tiramisu",
+      "chocolateCroissant": "Chocolate Croissant"
+    },
+    "descriptions": {
+      "fitoSpecialLatte": "Our signature blend with vanilla and caramel",
+      "honeyCinnamonCappuccino": "Local honey and Ceylon cinnamon",
+      "espresso": "Single shot of our house blend",
+      "americano": "Espresso with hot water",
+      "tiramisu": "Classic Italian coffee-flavored dessert",
+      "chocolateCroissant": "Buttery croissant with rich chocolate filling"
+    }
+  },
+  "origins": {
+    "discover": "Discover",
+    "title": "Coffee Origins",
+    "subtitle": "Explore the world's finest coffee regions and their unique characteristics that make each cup special.",
+    "regions": {
+      "ethiopia": "Ethiopia",
+      "colombia": "Colombia",
+      "brazil": "Brazil",
+      "indonesia": "Indonesia"
+    },
+    "descriptions": {
+      "EthiopiaDesc": "Birthplace of coffee with floral and fruity notes, known for its complex flavors and wine-like quality.",
+      "ColombiaDesc": "Rich, full-bodied coffee with sweet aroma and caramel notes, perfectly balanced acidity.",
+      "BrazilDesc": "Smooth, mild and nutty flavors with a sweet finish, perfect for espresso blends.",
+      "IndonesiaDesc": "Full-bodied with earthy flavors and low acidity, featuring rich dark chocolate notes."
+    }
+  },
+  "education": {
+    "learn": "Learn",
+    "title": "Coffee Education",
+    "subtitle": "Dive into the world of coffee with our educational series. From bean to cup, discover the artistry and science behind every perfect brew.",
+    "topics": {
+      "BeanOrigins": {
+        "title": "Bean Origins",
+        "beanOriginsDesc": "Explore our carefully selected coffee beans from Ethiopia, Colombia, and Brazil",
+        "beanOriginsFact": "Did you know? Coffee beans are actually the seeds of coffee cherries!"
+      },
+      "BrewingMethods": {
+        "title": "Brewing Methods",
+        "brewingMethodsDesc": "Learn about different brewing techniques from pour-over to espresso",
+        "brewingMethodsFact": "Each brewing method brings out different flavors in your coffee"
+      },
+      "RoastingProcess": {
+        "title": "Roasting Process",
+        "roastingProcessDesc": "Discover how we roast our beans to perfection",
+        "roastingProcessFact": "The roasting process can take anywhere from 8 to 15 minutes"
+      },
+      "CoffeeTasting": {
+        "title": "Coffee Tasting",
+        "coffeeTastingDesc": "Master the art of coffee tasting and flavor identification",
+        "coffeeTastingFact": "Professional coffee tasters (Q-graders) can identify hundreds of distinct flavors"
+      }
+    }
+  },
+  "contact": {
+    "visit": "Visit Us",
+    "getInTouch": "Get in Touch",
+    "location": "Location",
+    "address": "123 Coffee Street, Brewville, BW 12345",
+    "hours": "Hours",
+    "weekdayHours": "Monday - Friday: 7am - 7pm",
+    "weekendHours": "Saturday - Sunday: 8am - 6pm",
+    "contact": "Contact",
+    "phone": "Phone: (555) 123-4567",
+    "email": "Email: hello@fitocoffee.com",
+    "mapTitle": "Our Location"
+  },
+  "footer": {
+    "title": "Fito Coffee",
+    "tagline": "Crafting moments of joy, one cup at a time.",
+    "openingHours": "Opening Hours",
+    "weekdayHours": "Monday - Friday: 7:00 AM - 8:00 PM",
+    "saturdayHours": "Saturday: 8:00 AM - 9:00 PM",
+    "sundayHours": "Sunday: 8:00 AM - 6:00 PM",
+    "quickLinks": "Quick Links",
+    "links": {
+      "menu": "Menu",
+      "orderOnline": "Order Online",
+      "contactUs": "Contact Us"
+    },
+    "copyright": "© {{year}} Fito Coffee. All rights reserved."
+  }
+}

@@ -2,7 +2,6 @@ const contragentService = require('../services/contragentsService');
 
 exports.getAllContragents = async (req, res) => {
   try {
-    // Ensure the controller handles the response, not the service
     const contragents = await contragentService.getAllContragents(); // This is likely returning undefined
     res.status(200).json(contragents);  // You may be trying to send an empty or undefined response
   } catch (error) {

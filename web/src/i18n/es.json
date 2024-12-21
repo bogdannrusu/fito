@@ -1,0 +1,114 @@
+{
+  "header": {
+    "menu": "Menú",
+    "order": "Ordenar",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "welcome": "Bienvenido a Fito",
+    "title": "Experiencia de Café Artesanal",
+    "subtitle": "Donde cada taza cuenta una historia de pasión y precisión",
+    "explore": "Explorar Menú",
+    "imageAlt": "Fondo de granos de café"
+  },
+  "menu": {
+    "discover": "Descubre",
+    "ourMenu": "Nuestro Menú",
+    "addToCart": "Añadir al Carrito",
+    "addedToCart": "Añadido al carrito",
+    "itemsAdded": "{{quantity}}x {{name}} añadido a tu orden",
+    "categories": {
+      "signatureDrinks": "Bebidas Especiales",
+      "classicCoffee": "Café Clásico",
+      "desserts": "Postres"
+    },
+    "items": {
+      "fitoSpecialLatte": "Latte Especial Fito",
+      "honeyCinnamonCappuccino": "Cappuccino con Miel y Canela",
+      "espresso": "Espresso",
+      "americano": "Americano",
+      "tiramisu": "Tiramisú",
+      "chocolateCroissant": "Croissant de Chocolate"
+    },
+    "descriptions": {
+      "fitoSpecialLatte": "Nuestra mezcla especial con vainilla y caramelo",
+      "honeyCinnamonCappuccino": "Miel local y canela de Ceylán",
+      "espresso": "Una dosis de nuestra mezcla especial",
+      "americano": "Espresso con agua caliente",
+      "tiramisu": "Postre italiano clásico con sabor a café",
+      "chocolateCroissant": "Croissant con mantequilla y relleno rico de chocolate"
+    }
+  },
+  "education": {
+    "learn": "Aprende",
+    "title": "Educación sobre el Café",
+    "subtitle": "Sumérgete en el mundo del café con nuestra serie educativa. Del grano a la taza, descubre el arte y la ciencia detrás de cada preparación perfecta.",
+    "topics": {
+      "BeanOrigins": {
+        "title": "Origen de los Granos",
+        "beanOriginsDesc": "Explora nuestros granos de café cuidadosamente seleccionados de Etiopía, Colombia y Brasil",
+        "beanOriginsFact": "¿Sabías que? ¡Los granos de café son en realidad semillas de cerezas de café!"
+      },
+      "BrewingMethods": {
+        "title": "Métodos de Preparación",
+        "brewingMethodsDesc": "Aprende sobre diferentes técnicas de preparación, desde el vertido hasta el espresso",
+        "brewingMethodsFact": "Cada método de preparación resalta diferentes sabores en tu café"
+      },
+      "RoastingProcess": {
+        "title": "Proceso de Tostado",
+        "roastingProcessDesc": "Descubre cómo tostamos nuestros granos hasta la perfección",
+        "roastingProcessFact": "El proceso de tostado puede durar entre 8 y 15 minutos"
+      },
+      "CoffeeTasting": {
+        "title": "Degustación de Café",
+        "coffeeTastingDesc": "Domina el arte de la degustación de café y la identificación de sabores",
+        "coffeeTastingFact": "Los catadores profesionales de café pueden identificar cientos de sabores distintos"
+      }
+    }
+  },
+  "origins": {
+    "discover": "Descubre",
+    "title": "Orígenes del Café",
+    "subtitle": "Explora las mejores regiones cafeteras del mundo y sus características únicas que hacen especial cada taza.",
+    "regions": {
+      "ethiopia": "Etiopía",
+      "colombia": "Colombia",
+      "brazil": "Brasil",
+      "indonesia": "Indonesia"
+    },
+    "descriptions": {
+      "EthiopiaDesc": "Cuna del café con notas florales y afrutadas, conocido por sus sabores complejos y calidad similar al vino.",
+      "ColombiaDesc": "Café rico y con cuerpo, con aroma dulce y notas de caramelo, acidez perfectamente equilibrada.",
+      "BrazilDesc": "Sabores suaves y con notas a nueces con un final dulce, perfecto para mezclas de espresso.",
+      "IndonesiaDesc": "Con cuerpo completo y sabores terrosos y baja acidez, con ricas notas de chocolate negro."
+    }
+  },
+  "contact": {
+    "visit": "Visítanos",
+    "getInTouch": "Contáctanos",
+    "location": "Ubicación",
+    "address": "Calle Café 123, Brewville, BW 12345",
+    "hours": "Horario",
+    "weekdayHours": "Lunes - Viernes: 7am - 7pm",
+    "weekendHours": "Sábado - Domingo: 8am - 6pm",
+    "contact": "Contacto",
+    "phone": "Teléfono: (555) 123-4567",
+    "email": "Correo: hello@fitocoffee.com",
+    "mapTitle": "Nuestra Ubicación"
+  },
+  "footer": {
+    "title": "Fito Coffee",
+    "tagline": "Creando momentos de alegría, una taza a la vez.",
+    "openingHours": "Horario de Apertura",
+    "weekdayHours": "Lunes - Viernes: 7:00 AM - 8:00 PM",
+    "saturdayHours": "Sábado: 8:00 AM - 9:00 PM",
+    "sundayHours": "Domingo: 8:00 AM - 6:00 PM",
+    "quickLinks": "Enlaces Rápidos",
+    "links": {
+      "menu": "Menú",
+      "orderOnline": "Ordenar en Línea",
+      "contactUs": "Contáctanos"
+    },
+    "copyright": "© {{year}} Fito Coffee. Todos los derechos reservados."
+  }
+}
