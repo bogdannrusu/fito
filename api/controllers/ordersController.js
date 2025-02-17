@@ -52,6 +52,34 @@ const fetchOrdersWithGoods = async (req, res) => {
   }
 };
 
+const createFrontOrder = async (req, res) => {
+  try {
+    const { orderId, items, totalAmount, name, address, phone } = req.body;
+
+    if (!name || !address || !phone) {
+      return res.status(400).json({ message: "Name, address, and phone are required." });
+    }
+
+    const newOrder = new Order({
+      orderId,
+      items,
+      totalAmount,
+      status: "Pending",
+      orderDate: new Date(),
+      name,
+      address,
+      phone,
+    });
+
+    await newOrder.save();
+    res.status(201).json({ message: "Order created successfully", order: newOrder });
+  } catch (error) {
+    console.error("Error creating order:", error);
+    res.status(500).json({ message: "Failed to create order", error });
+  }
+};
+
+
 
 
 // Creează o nouă comandă
@@ -109,5 +137,6 @@ module.exports = {
   getAllOrders,
   createOrder,
   fetchOrdersWithGoods,
-  deleteOrder
+  deleteOrder,
+  createFrontOrder
 };

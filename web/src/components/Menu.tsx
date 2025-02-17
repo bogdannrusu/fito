@@ -1,63 +1,78 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { MenuCategory } from "./MenuCategory";
+import { useQuery } from "@tanstack/react-query";
 
-const menuItems = [
-  {
-    category: "SignatureDrinks",
-    items: [
-      {
-        name: "FitoSpecialLatte",
-        price: "5.50",
-        description: "Our signature blend with vanilla and caramel",
-        image: "/placeholder.svg"
-      },
-      {
-        name: "HoneyCinnamonCappuccino",
-        price: "4.90",
-        description: "Local honey and Ceylon cinnamon",
-        image: "/placeholder.svg"
-      },
-    ]
-  },
-  {
-    category: "ClassicCoffee",
-    items: [
-      {
-        name: "Espresso",
-        price: "3.00",
-        description: "Single shot of our house blend",
-        image: "/placeholder.svg"
-      },
-      {
-        name: "Americano",
-        price: "3.50",
-        description: "Espresso with hot water",
-        image: "/placeholder.svg"
-      },
-    ]
-  },
-  {
-    category: "Desserts",
-    items: [
-      {
-        name: "Tiramisu",
-        price: "6.50",
-        description: "Classic Italian coffee-flavored dessert",
-        image: "/placeholder.svg"
-      },
-      {
-        name: "ChocolateCroissant",
-        price: "4.00",
-        description: "Buttery croissant with rich chocolate filling",
-        image: "/placeholder.svg"
-      },
-    ]
+interface Good {
+  _id: string;
+  good_name: string;
+  good_description: string;
+  good_price: number;
+  category: string;
+}
+
+interface MenuItem {
+  name: string;
+  price: string;
+  description: string;
+  image: string;
+  _id: string;
+}
+
+interface MenuCategory {
+  category: string;
+  items: MenuItem[];
+}
+
+// Function to fetch goods from API
+const fetchGoods = async () => {
+  const response = await fetch('http://localhost:4000/api/goods');
+  if (!response.ok) {
+    throw new Error('Failed to fetch goods');
   }
-];
+  return response.json();
+};
+
+// Function to organize goods by category
+const organizeGoodsByCategory = (goods: Good[]): MenuCategory[] => {
+  const categories = goods.reduce((acc: { [key: string]: MenuItem[] }, good: Good) => {
+    const category = good.category || "Other";
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push({
+      name: good.good_name,
+      price: good.good_price.toString(),
+      description: good.good_description || "",
+      image: "/placeholder.svg",
+      _id: good._id
+    });
+    return acc;
+  }, {});
+
+  return Object.entries(categories).map(([category, items]) => ({
+    category,
+    items
+  }));
+};
 
 export const Menu = () => {
   const { t } = useTranslation();
+
+  const { data: goods, isLoading, error } = useQuery({
+    queryKey: ['goods'],
+    queryFn: fetchGoods
+  });
+
+  const menuItems = goods ? organizeGoodsByCategory(goods) : [];
+
+  if (isLoading) {
+    return <div className="py-24 text-center">Loading...</div>;
+  }
+
+  if (error) {
+    return <div className="py-24 text-center text-red-500">Error loading menu items</div>;
+  }
 
   return (
     <section id="menu" className="py-24 bg-secondary">

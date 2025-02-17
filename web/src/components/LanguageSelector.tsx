@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Globe } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 
 export const LanguageSelector = () => {
   const { i18n } = useTranslation();
@@ -27,21 +27,32 @@ export const LanguageSelector = () => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex items-center gap-2"
+      className="flex items-center"
     >
-      <Globe className="h-4 w-4 text-muted-foreground" />
-      <Select defaultValue={i18n.language} onValueChange={handleLanguageChange}>
-        <SelectTrigger className="w-[120px]">
-          <SelectValue />
-        </SelectTrigger>
-        <SelectContent>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button 
+            variant="ghost" 
+            size="icon"
+            className="hover:bg-accent hover:text-accent-foreground"
+          >
+            <Globe className="h-5 w-5" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="bg-background">
           {languages.map((lang) => (
-            <SelectItem key={lang.code} value={lang.code}>
+            <DropdownMenuItem
+              key={lang.code}
+              onClick={() => handleLanguageChange(lang.code)}
+              className={`cursor-pointer ${
+                i18n.language === lang.code ? "bg-accent" : ""
+              }`}
+            >
               {lang.name}
-            </SelectItem>
+            </DropdownMenuItem>
           ))}
-        </SelectContent>
-      </Select>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </motion.div>
   );
 };

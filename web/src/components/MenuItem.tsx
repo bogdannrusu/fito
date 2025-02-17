@@ -12,6 +12,7 @@ type MenuItemProps = {
     price: string;
     description: string;
     image: string;
+    _id?: string;
   };
 };
 
@@ -20,8 +21,19 @@ export const MenuItem = ({ item }: MenuItemProps) => {
   const { toast } = useToast();
   const { t } = useTranslation();
 
-  // Convert item name to lowercase for consistent translation lookup
-  const itemKey = item.name.toLowerCase().replace(/([A-Z])/g, " $1").trim().replace(/\s+/g, "");
+  // Define a mapping of product names to image URLs
+  const productImages: { [key: string]: string } = {
+    "Espresso": "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=500&h=500&fit=crop",
+    "Cappuccino": "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&h=500&fit=crop",
+    "Latte": "https://images.unsplash.com/photo-1561047029-3000c68339ca?w=500&h=500&fit=crop",
+    "Americano": "https://images.unsplash.com/photo-1521302080334-4bebac2763a6?w=500&h=500&fit=crop",
+    "Mocha": "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=500&h=500&fit=crop",
+    "Tea": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500&h=500&fit=crop",
+    "Hot Chocolate": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=500&h=500&fit=crop",
+    "Croissant": "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&h=500&fit=crop",
+    "Muffin": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&h=500&fit=crop",
+    "Cake": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&h=500&fit=crop"
+  };
 
   const handleAddToCart = () => {
     if (quantity > 0) {
@@ -40,7 +52,8 @@ export const MenuItem = ({ item }: MenuItemProps) => {
         cartItems.push({
           name: item.name,
           price: item.price,
-          quantity: quantity
+          quantity: quantity,
+          _id: item._id
         });
       }
       
@@ -57,13 +70,16 @@ export const MenuItem = ({ item }: MenuItemProps) => {
         title: t("menu.addedToCart"),
         description: t("menu.itemsAdded", { 
           quantity, 
-          name: t(`menu.items.${itemKey}`)
+          name: item.name
         }),
       });
       
       setQuantity(0);
     }
   };
+
+  // Get the image URL for the current item, or use a default image if not found
+  const imageUrl = productImages[item.name] || "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop";
 
   return (
     <motion.div
@@ -73,18 +89,18 @@ export const MenuItem = ({ item }: MenuItemProps) => {
       <div className="flex flex-col md:flex-row gap-4">
         <motion.img
           whileHover={{ scale: 1.05 }}
-          src={item.image}
-          alt={t(`menu.items.${itemKey}`)}
+          src={imageUrl}
+          alt={item.name}
           className="w-full md:w-32 h-32 object-cover rounded-lg"
         />
         <div className="flex-1 space-y-2">
           <div className="flex justify-between items-start">
             <div>
               <h4 className="font-medium">
-                {t(`menu.items.${itemKey}`)}
+                {item.name}
               </h4>
               <p className="text-sm text-muted-foreground">
-                {t(`menu.descriptions.${itemKey}`)}
+                {item.description}
               </p>
             </div>
             <span className="font-medium">${item.price}</span>

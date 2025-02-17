@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import { Card, Table, Tag, Space, Button, message, Modal, Form, Input, Select, Popconfirm } from 'antd';
@@ -18,28 +19,41 @@ const Orders = () => {
     return localStorage.getItem('token'); 
   };
 
-  const fetchOrders = async () => {
-    const token = getToken();
 
-    if (!token) {
-      message.error('You are not authenticated. Please log in.');
-      return;
-    }
 
-    try {
-      const response = await axios.get('http://localhost:4000/api/orders/ordergoods', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setOrders(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching orders:', error);
-      message.error('Failed to fetch orders');
-      setLoading(false);
-    }
-  };
+const fetchOrders = async () => {
+  const token = getToken();
+
+  if (!token) {
+    message.error('You are not authenticated. Please log in.');
+    return;
+  }
+
+  try {
+    const response = await axios.get('http://localhost:4000/api/orders/ordergoods', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    // Sortează comenzile astfel încât cele cu status "Pending" să fie primele
+    const sortedOrders = response.data.sort((a, b) => {
+      if (a.status === 'Pending' && b.status === 'Completed') return -1;
+      if (a.status === 'Completed' && b.status === 'Pending') return 1;
+      return 0;
+    });
+
+    setOrders(sortedOrders);
+    setLoading(false);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    message.error('Failed to fetch orders');
+    setLoading(false);
+  }
+};
+
+
+
 
   const deleteOrder = async (orderId) => {
     const token = getToken();
@@ -125,7 +139,7 @@ const Orders = () => {
         totalAmount: items.reduce((total, item) => total + item.subtotal, 0),  // Calculăm totalul
       };
   
-      await axios.post('http://localhost:4000/api/orders', newOrder, {
+      await axios.post('http://localhost:4000/api/orders/order', newOrder, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

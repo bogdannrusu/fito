@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Twitter } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import { Separator } from "./ui/separator";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -27,18 +27,25 @@ export const Footer = () => {
               {t("footer.tagline")}
             </p>
             <div className="flex space-x-4">
-              {[Facebook, Instagram, Twitter].map((Icon, index) => (
-                <motion.a
-                  key={index}
-                  href="#"
-                  className="hover:text-primary transition-colors"
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Icon className="h-5 w-5" />
-                </motion.a>
-              ))}
-            </div>
+            {[
+               { Icon: Facebook, link: "https://www.facebook.com/bogdanvoeod01" },
+               { Icon: Instagram, link: "https://www.instagram.com/bogdann_rusu/" },
+               { Icon: Linkedin, link: "https://www.linkedin.com/in/bogdann-rusu/" },
+             ].map(({ Icon, link }, index) => (
+           <motion.a
+            key={index}
+             href={link}
+             target="_blank"
+             rel="noopener noreferrer"
+             className="hover:text-primary transition-colors"
+             whileHover={{ scale: 1.2 }}
+             whileTap={{ scale: 0.9 }}
+           >
+      <Icon className="h-5 w-5" />
+    </motion.a>
+  ))}
+</div>
+
           </motion.div>
 
           <motion.div
