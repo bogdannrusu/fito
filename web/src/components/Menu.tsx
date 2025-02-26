@@ -24,13 +24,12 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
-const API_URL = process.env.NODE_ENV === 'production'
-  ? 'http://localhost:4001'
-  : '/api';
+const LOCAL_API_URL = 'http://localhost:4001';
+const WEB_API_URL = 'https://fito-api.vercel.app/api';
 
 
 const fetchGoods = async () => {
-  const response = await fetch(API_URL + '/goods');
+  const response = await fetch(WEB_API_URL + '/goods');
   if (!response.ok) {
     throw new Error('Failed to fetch goods');
   }

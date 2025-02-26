@@ -7,6 +7,9 @@ import { OrderDetailsModal, CustomerDetails } from "./OrderDetailsModal";
 import { CartSidebar } from "./CartSidebar";
 import { createOrderItems, submitOrder } from "@/utils/cartUtils";
 
+const LOCAL_API_URL = 'http://localhost:4001';
+const WEB_API_URL = 'https://fito-api.vercel.app/api';
+
 export type CartItem = {
   name: string;
   price: string;
@@ -22,7 +25,7 @@ type CartProps = {
 };
 
 const fetchGoods = async () => {
-  const response = await fetch('http://localhost:4000/api/goods');
+  const response = await fetch(WEB_API_URL + '/goods');
   if (!response.ok) {
     throw new Error('Failed to fetch goods');
   }

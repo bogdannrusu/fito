@@ -15,38 +15,55 @@ const ordersRoutes = require('./routes/ordersRoute');
 const orderDepositRoute = require('./routes/orderDepositRoute');
 const unitsRoutes = require('./routes/unitsRoute');
 
-const dbUri = process.env.MONGODB_URI;
-
 const app = express();
+
+// Variabile de mediu
+const dbUri = process.env.MONGODB_URI;
 const port = process.env.PORT || 4000;
 
+// Conexiune cached la MongoDB
+let cachedDb = null;
+
+async function connectToDatabase() {
+  if (cachedDb && mongoose.connection.readyState === 1) {
+    console.log('Using cached database connection');
+    return cachedDb;
+  }
+
+  try {
+    console.log('Establishing new database connection');
+    await mongoose.connect(dbUri, {
+      // Opțiunile sunt opționale în versiunile recente de Mongoose, dar le putem păstra dacă ai o versiune mai veche
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    cachedDb = mongoose.connection;
+    console.log('Connected to MongoDB');
+    return cachedDb;
+  } catch (err) {
+    console.error('Failed to connect to MongoDB', err);
+    throw err;
+  }
+}
+
+// Middleware
 app.use(cors());
 app.use(helmet());
-
-app.use((req, res, next) => {
-  res.setHeader(
-    "Content-Security-Policy",
-    "default-src 'self'; connect-src 'self' http://localhost:4000"
-  );
-  next();
-});
-
-mongoose.connect(dbUri, {
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
-})
-  .then(() => {
-    console.log('Connected to MongoDB');
-  })
-  .catch((err) => {
-    console.error('Failed to connect to MongoDB', err);
-  });
-
 app.use(express.json());
 
-//Testarea in production
+// Asigurăm conexiunea înainte de fiecare request
+app.use(async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (err) {
+    res.status(500).send('Database connection failed');
+  }
+});
+
+// Rute
 app.get('/', (req, res) => {
-  res.send('Server is running on port 4000 - great job!');
+  res.send('Server is running - great job!');
 });
 
 app.use('/api/goods', goodsRoutes);
@@ -59,13 +76,17 @@ app.use('/api/orders', ordersRoutes);
 app.use('/api/orderDeposit', orderDepositRoute);
 app.use('/api/units', unitsRoutes);
 
+// Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something broke!'); 
+  res.status(500).send('Something broke!');
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// Pornim serverul doar local (nu e necesar pentru Vercel)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
 
 module.exports = app;
