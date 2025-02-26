@@ -7,7 +7,7 @@ import { OrderDetailsModal, CustomerDetails } from "./OrderDetailsModal";
 import { CartSidebar } from "./CartSidebar";
 import { createOrderItems, submitOrder } from "@/utils/cartUtils";
 
-const LOCAL_API_URL = 'http://localhost:4001';
+const LOCAL_API_URL = 'http://localhost:4000/api';
 const WEB_API_URL = 'https://fito-api.vercel.app/api';
 
 export type CartItem = {

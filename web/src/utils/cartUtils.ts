@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CartItem } from "@/components/Cart";
 
+const LOCAL_API_URL = 'http://localhost:4000/api';
+const WEB_API_URL = 'https://fito-api.vercel.app/api';
+
 export const createOrderItems = (items: CartItem[], goodsData: any[]) => {
   return items.map(item => {
     const good = goodsData.find(g => 
@@ -23,7 +26,7 @@ export const createOrderItems = (items: CartItem[], goodsData: any[]) => {
 
 export const submitOrder = async (orderData: any) => {
   try {
-    const response = await fetch('http://localhost:4000/api/orders', {
+    const response = await fetch(WEB_API_URL + '/orders', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',

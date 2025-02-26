@@ -24,7 +24,7 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
-const LOCAL_API_URL = 'http://localhost:4001';
+const LOCAL_API_URL = 'http://localhost:4000/api';
 const WEB_API_URL = 'https://fito-api.vercel.app/api';
 
 
