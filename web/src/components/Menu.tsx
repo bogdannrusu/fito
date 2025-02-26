@@ -3,6 +3,16 @@ import { useTranslation } from "react-i18next";
 import { MenuCategory } from "./MenuCategory";
 import { useQuery } from "@tanstack/react-query";
 
+import getAmericanoImage from "../../public/americano.jpg";
+import getEspressoImage from "../../public/espresso.jpg";
+import getLatteImage from "../../public/latte.jpg";
+import getCappuccinoImage from "../../public/capuccinno.jpg";
+import getCroissantCiocolataImage from "../../public/croissant cu ciocolata.jpg";
+import getCroissantPistachioImage from "../../public/croissant cu fistic.jpg";
+import getMedovikImage from "../../public/medovik.jpg";
+import getNapoleonImage from "../../public/napoleon.jpg";
+import getTiramisuImage from "../../public/tiramisu.jpg";
+
 interface Good {
   _id: string;
   good_name: string;
@@ -40,21 +50,23 @@ const fetchGoods = async () => {
 const getProductImage = (goodName: string): string => {
   switch (goodName.toLowerCase()) {
     case 'espresso':
-      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/BoRRaoZ45Z54smAE-generated_image.jpg';
-    case 'fitoSpecialLatte':
-      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/Cxxhpgz920ug4pb9-generated_image.jpg';
+      return getEspressoImage;
+    case 'fitospeciallatte':
+      return getLatteImage;
+    case 'cappuccino':
+      return getCappuccinoImage;
     case 'americano':
-      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/CiGbTgreGLA6yc5z-generated_image.jpg';
+      return getAmericanoImage;
     case 'napoleon':
-      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/mKPadGhzcXDBsETf-generated_image.jpg';
+      return getNapoleonImage;
     case 'medovik':
-      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/WFO8rpsAFwfmpBZy-generated_image.jpg';
+      return getMedovikImage;
     case 'tiramisu':
-      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/31cC9OXRz7TrVT9B-generated_image.jpg';
+      return getTiramisuImage;
     case 'croissant cu fistic':
-      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/YJzjBmB3FPx1Wg7k-generated_image.jpg';
+      return getCroissantPistachioImage;
     case 'croissant cu ciocolata':
-      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/YJzjBmB3FPx1Wg7k-generated_image.jpg';
+      return getCroissantCiocolataImage;
   }
 };
 

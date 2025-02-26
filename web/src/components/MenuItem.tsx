@@ -7,6 +7,18 @@ import { useTranslation } from "react-i18next";
 import { CartItem } from "./Cart";
 
 
+import getAmericanoImage from "../../public/americano.jpg";
+import getEspressoImage from "../../public/espresso.jpg";
+import getLatteImage from "../../public/latte.jpg";
+import getCappuccinoImage from "../../public/capuccinno.jpg";
+import getCroissantCiocolataImage from "../../public/croissant cu ciocolata.jpg";
+import getHoneyCinnamonCappuccinoImage from "../../public/honeycinnamoncappuccino.jpg";
+import getCroissantPistachioImage from "../../public/croissant cu fistic.jpg";
+import getMedovikImage from "../../public/medovik.jpg";
+import getNapoleonImage from "../../public/napoleon.jpg";
+import getTiramisuImage from "../../public/tiramisu.jpg";
+
+
 type MenuItemProps = {
   item: {
     name: string;
@@ -26,25 +38,25 @@ export const MenuItem = ({ item }: MenuItemProps) => {
   const getProductImage = (name: string): string => {
     switch (name.toLowerCase()) {
       case 'espresso':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/BoRRaoZ45Z54smAE-generated_image.jpg';
+        return getEspressoImage;
       case 'latte special fito':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/Cxxhpgz920ug4pb9-generated_image.jpg';
+        return getLatteImage;
       case 'americano special fito':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/CiGbTgreGLA6yc5z-generated_image.jpg';
+        return getAmericanoImage;
       case 'cappuccino cu miere și scorțișoară':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/GklUvSo00TnXo8Q0-generated_image.jpg';
+        return getCappuccinoImage;
       case 'honey cinnamon cappuccino':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/dyFC6KM8OQW54Ujr-generated_image.jpg';
+        return getHoneyCinnamonCappuccinoImage;
       case 'napoleon':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/mKPadGhzcXDBsETf-generated_image.jpg';
+        return getNapoleonImage;
       case 'medovik':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/WFO8rpsAFwfmpBZy-generated_image.jpg';
+        return getMedovikImage;
       case 'tiramisu':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/31cC9OXRz7TrVT9B-generated_image.jpg';
+        return getTiramisuImage;
       case 'croissant cu ciocolată':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/YJzjBmB3FPx1Wg7k-generated_image.jpg';
+        return getCroissantCiocolataImage;
       case 'croissant cu fistic':
-        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/Tk6ZlVvc6oaPjbXh-generated_image.jpg';
+        return getCroissantPistachioImage;
     }
   };
 
