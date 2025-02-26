@@ -122,7 +122,7 @@ export const MenuItem = ({ item }: MenuItemProps) => {
                 {item.description}
               </p>
             </div>
-            <span className="font-medium">${item.price}</span>
+            <span className="font-medium">{item.price} lei</span>
           </div>
           <div className="flex items-center gap-4 pt-2">
             <div className="flex items-center gap-2">

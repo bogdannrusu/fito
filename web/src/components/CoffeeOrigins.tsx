@@ -3,30 +3,35 @@ import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "./ui/card";
 import { Globe2, Coffee, Leaf, Sun } from "lucide-react";
 
+import brazil from  "../../public/brazil.jpg";
+import columbia from "../../public/columbia.jpg";
+import etiopia from "../../public/etiopia.jpg";
+import indonesia from "../../public/indonesia.jpg";
+
 const regions = [
   {
     icon: <Sun className="w-6 h-6" />,
     region: "Ethiopia",
     characteristics: "EthiopiaDesc",
-    image: "https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/cJ7eysfrnnoxVuqi-generated_image.jpg"
+    image: etiopia,
   },
   {
     icon: <Leaf className="w-6 h-6" />,
     region: "Colombia",
     characteristics: "ColombiaDesc",
-    image: "https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/DLAYUZKcZi7gGgxO-generated_image.jpg"
+    image: columbia,
   },
   {
     icon: <Coffee className="w-6 h-6" />,
     region: "Brazil",
     characteristics: "BrazilDesc",
-    image: "https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/eJ9lTII1b9NwTCHB-generated_image.jpg"
+    image: brazil,
   },
   {
     icon: <Globe2 className="w-6 h-6" />,
     region: "Indonesia",
     characteristics: "IndonesiaDesc",
-    image: "https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/BClOtiSfabNam3kS-generated_image.jpg"
+    image: indonesia,
   }
 ];
 

@@ -49,7 +49,7 @@ export const CartSidebar = ({
                 <div>
                   <p className="font-medium">{formatProductName(item.name)}</p>
                   <p className="text-sm text-muted-foreground">
-                    {item.quantity} x ${item.price}
+                    {item.quantity} x {item.price} lei
                   </p>
                 </div>
                 <Button
@@ -65,7 +65,7 @@ export const CartSidebar = ({
           <div className="pt-4 border-t mt-auto">
             <div className="flex justify-between font-semibold mb-4">
               <span>{t("cart.total")}</span>
-              <span>${total.toFixed(2)}</span>
+              <span> {total.toFixed(2)} lei</span>
             </div>
             <Button 
               className="w-full" 
