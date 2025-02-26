@@ -6,6 +6,7 @@ import { useToast } from "./ui/use-toast";
 import { useTranslation } from "react-i18next";
 import { CartItem } from "./Cart";
 
+
 type MenuItemProps = {
   item: {
     name: string;
@@ -21,34 +22,42 @@ export const MenuItem = ({ item }: MenuItemProps) => {
   const { toast } = useToast();
   const { t } = useTranslation();
 
-  // Define a mapping of product names to image URLs
-  const productImages: { [key: string]: string } = {
-    "Espresso": "https://images.unsplash.com/photo-1510707577719-ae7c14805e3a?w=500&h=500&fit=crop",
-    "Cappuccino": "https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=500&h=500&fit=crop",
-    "Latte": "https://images.unsplash.com/photo-1561047029-3000c68339ca?w=500&h=500&fit=crop",
-    "Americano": "https://images.unsplash.com/photo-1521302080334-4bebac2763a6?w=500&h=500&fit=crop",
-    "Mocha": "https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?w=500&h=500&fit=crop",
-    "Tea": "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=500&h=500&fit=crop",
-    "Hot Chocolate": "https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=500&h=500&fit=crop",
-    "Croissant": "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&h=500&fit=crop",
-    "Muffin": "https://images.unsplash.com/photo-1558961363-fa8fdf82db35?w=500&h=500&fit=crop",
-    "Cake": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&h=500&fit=crop"
+  // Funcție pentru a returna imaginea corectă bazată pe numele produsului
+  const getProductImage = (name: string): string => {
+    switch (name.toLowerCase()) {
+      case 'espresso':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/BoRRaoZ45Z54smAE-generated_image.jpg';
+      case 'latte special fito':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/Cxxhpgz920ug4pb9-generated_image.jpg';
+      case 'americano special fito':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/CiGbTgreGLA6yc5z-generated_image.jpg';
+      case 'cappuccino cu miere și scorțișoară':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/GklUvSo00TnXo8Q0-generated_image.jpg';
+      case 'honey cinnamon cappuccino':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/dyFC6KM8OQW54Ujr-generated_image.jpg';
+      case 'napoleon':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/mKPadGhzcXDBsETf-generated_image.jpg';
+      case 'medovik':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/WFO8rpsAFwfmpBZy-generated_image.jpg';
+      case 'tiramisu':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/31cC9OXRz7TrVT9B-generated_image.jpg';
+      case 'croissant cu ciocolată':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/YJzjBmB3FPx1Wg7k-generated_image.jpg';
+      case 'croissant cu fistic':
+        return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/Tk6ZlVvc6oaPjbXh-generated_image.jpg';
+    }
   };
 
   const handleAddToCart = () => {
     if (quantity > 0) {
-      // Get existing cart items
       const existingCart = localStorage.getItem('cart');
       const cartItems: CartItem[] = existingCart ? JSON.parse(existingCart) : [];
       
-      // Check if item already exists in cart
       const existingItemIndex = cartItems.findIndex(cartItem => cartItem.name === item.name);
       
       if (existingItemIndex !== -1) {
-        // Update quantity if item exists
         cartItems[existingItemIndex].quantity += quantity;
       } else {
-        // Add new item if it doesn't exist
         cartItems.push({
           name: item.name,
           price: item.price,
@@ -57,10 +66,8 @@ export const MenuItem = ({ item }: MenuItemProps) => {
         });
       }
       
-      // Save to localStorage
       localStorage.setItem('cart', JSON.stringify(cartItems));
 
-      // Dispatch a custom event to notify the Header component
       window.dispatchEvent(new StorageEvent('storage', {
         key: 'cart',
         newValue: JSON.stringify(cartItems)
@@ -78,8 +85,8 @@ export const MenuItem = ({ item }: MenuItemProps) => {
     }
   };
 
-  // Get the image URL for the current item, or use a default image if not found
-  const imageUrl = productImages[item.name] || "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=500&h=500&fit=crop";
+  // Folosim funcția pentru a obține imaginea specifică
+  const imageUrl = getProductImage(item.name);
 
   return (
     <motion.div

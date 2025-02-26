@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { useState, useEffect } from 'react';
 import {
@@ -35,7 +36,7 @@ const Navbar = () => {
 
   const routes = {
     '1': '/orders',
-    '2': '/invoices',
+    '2': '/orderforsend',
     '3': '/contragents',
     '4': '/units',
     '7': '/depositsales',
@@ -190,7 +191,7 @@ const Navbar = () => {
             {
               key: '2',
               icon: <SnippetsOutlined />,
-              label: t('Invoices View'),
+              label: t('Orders For Send'),
             },
             {
               key: '3',
@@ -212,7 +213,7 @@ const Navbar = () => {
             {
               key: '5',
               icon: <LineChartOutlined />,
-              label: t('Orders Invoice View'),
+              label: t('Orders Report View'),
             },
             {
               key: '6',

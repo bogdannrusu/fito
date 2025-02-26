@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
@@ -14,46 +15,41 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [totalAmount, setTotalAmount] = useState(0);
 
   const getToken = () => {
     return localStorage.getItem('token'); 
   };
 
+  const fetchOrders = async () => {
+    const token = getToken();
 
+    if (!token) {
+      message.error('You are not authenticated. Please log in.');
+      return;
+    }
 
-const fetchOrders = async () => {
-  const token = getToken();
+    try {
+      const response = await axios.get('http://localhost:4000/api/orders/ordergoods', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-  if (!token) {
-    message.error('You are not authenticated. Please log in.');
-    return;
-  }
+      const sortedOrders = response.data.sort((a, b) => {
+        if (a.status === 'Pending' && b.status === 'Completed') return -1;
+        if (a.status === 'Completed' && b.status === 'Pending') return 1;
+        return 0;
+      });
 
-  try {
-    const response = await axios.get('http://localhost:4000/api/orders/ordergoods', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    // Sortează comenzile astfel încât cele cu status "Pending" să fie primele
-    const sortedOrders = response.data.sort((a, b) => {
-      if (a.status === 'Pending' && b.status === 'Completed') return -1;
-      if (a.status === 'Completed' && b.status === 'Pending') return 1;
-      return 0;
-    });
-
-    setOrders(sortedOrders);
-    setLoading(false);
-  } catch (error) {
-    console.error('Error fetching orders:', error);
-    message.error('Failed to fetch orders');
-    setLoading(false);
-  }
-};
-
-
-
+      setOrders(sortedOrders);
+      setLoading(false);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+      message.error('Failed to fetch orders');
+      setLoading(false);
+    }
+  };
 
   const deleteOrder = async (orderId) => {
     const token = getToken();
@@ -107,44 +103,46 @@ const fetchOrders = async () => {
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
+    setTotalAmount(0); // Resetăm suma totală
   };
 
-  // Functie pentru a trimite datele corecte catre backend
   const handleOk = async () => {
     const token = getToken();
-  
+
     if (!token) {
       message.error('You are not authenticated. Please log in.');
       return;
     }
-  
+
     try {
       const values = await form.validateFields();
       console.log('Form values:', values);
-  
-      // Asigură-te că trimitem datele într-un format corect
+
       const items = values.items.map(productId => {
         const selectedProduct = goods.find(good => good._id === productId);
         return {
-          productId,  // ID-ul produsului
-          quantity: 1,  // Presupunem că cantitatea este 1 (poate fi personalizată)
-          price: selectedProduct.good_price,  // Prețul produsului
-          subtotal: selectedProduct.good_price * 1,  // Prețul * cantitatea
+          productId,
+          quantity: 1,
+          price: selectedProduct.good_price,
+          subtotal: selectedProduct.good_price * 1,
         };
       });
-  
+
       const newOrder = {
         orderId: values.orderId,
-        items,  // Adăugăm lista de produse
-        totalAmount: items.reduce((total, item) => total + item.subtotal, 0),  // Calculăm totalul
+        items,
+        totalAmount: items.reduce((total, item) => total + item.subtotal, 0),
+        name: values.name,
+        address: values.address,
+        phone: values.phone,
       };
-  
+
       await axios.post('http://localhost:4000/api/orders/order', newOrder, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-  
+
       message.success('Order created successfully!');
       setIsModalVisible(false);
       form.resetFields();
@@ -154,7 +152,6 @@ const fetchOrders = async () => {
       message.error('Failed to create order');
     }
   };
-  
 
   const handleOrderFromDeposit = async (order) => {
     const token = getToken();
@@ -181,6 +178,14 @@ const fetchOrders = async () => {
       console.error('Failed to move order to deposit:', error);
       message.error('Failed to move order to deposit');
     }
+  };
+
+  const handleItemsChange = (selectedItems) => {
+    const total = selectedItems.reduce((sum, productId) => {
+      const selectedProduct = goods.find(good => good._id === productId);
+      return sum + (selectedProduct ? selectedProduct.good_price : 0);
+    }, 0);
+    setTotalAmount(total);
   };
 
   return (
@@ -285,7 +290,7 @@ const fetchOrders = async () => {
             label="Items"
             rules={[{ required: true, message: 'Please select at least one item' }]}
           >
-            <Select mode="multiple" placeholder="Select items">
+            <Select mode="multiple" placeholder="Select items" onChange={handleItemsChange}>
               {goods.map((good) => (
                 <Option key={good._id} value={good._id}>
                   {good.good_name} - ${good.good_price}
@@ -296,9 +301,29 @@ const fetchOrders = async () => {
           <Form.Item
             name="totalAmount"
             label="Total Amount"
-            rules={[{ required: true, message: 'Please input the total amount' }]}
           >
-            <Input type="number" />
+            <Input type="number" value={totalAmount} readOnly />
+          </Form.Item>
+          <Form.Item
+            name="name"
+            label="Name"
+            rules={[{ required: true, message: 'Please input the name' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="address"
+            label="Address"
+            rules={[{ required: true, message: 'Please input the address' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="phone"
+            label="Phone"
+            rules={[{ required: true, message: 'Please input the phone number' }]}
+          >
+            <Input />
           </Form.Item>
         </Form>
       </Modal>

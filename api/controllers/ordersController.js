@@ -81,37 +81,31 @@ const createFrontOrder = async (req, res) => {
 
 
 
-
 // Creează o nouă comandă
 const createOrder = async (req, res) => {
   try {
-    const { orderId, items, totalAmount } = req.body;
+    const { orderId, items, totalAmount, name, address, phone } = req.body;
 
-    console.log("Request body:", req.body);  // Logăm datele trimise
+    if (!name || !address || !phone) {
+      return res.status(400).json({ message: "Name, address, and phone are required." });
+    }
 
-    // Creăm o nouă comandă
     const newOrder = new Order({
       orderId,
       items,
       totalAmount,
-      status: 'Pending',
+      status: "Pending",
       orderDate: new Date(),
-      shippingAddress: {
-        street: '', 
-        city: ''
-      },
-      paymentMethod: 'Cash',
-      paymentStatus: 'Pending',
-      shippingMethod: 'Standard',
-      trackingNumber: '',
+      name,
+      address,
+      phone,
     });
 
-    // Salvăm comanda în baza de date
     await newOrder.save();
-    res.status(201).json(newOrder);
+    res.status(201).json({ message: "Order created successfully", order: newOrder });
   } catch (error) {
-    console.error('Error creating order:', error);  // Logăm eroarea
-    res.status(500).json({ message: 'Failed to create order', error });
+    console.error("Error creating order:", error);
+    res.status(500).json({ message: "Failed to create order", error });
   }
 };
 

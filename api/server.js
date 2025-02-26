@@ -46,7 +46,7 @@ app.use(express.json());
 
 //Testarea in production
 app.get('/', (req, res) => {
-  res.send('Hello from Express.js on Vercel!');
+  res.send('Server is running on port 4000 - great job!');
 });
 
 app.use('/api/goods', goodsRoutes);

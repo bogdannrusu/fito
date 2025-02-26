@@ -8,25 +8,25 @@ const regions = [
     icon: <Sun className="w-6 h-6" />,
     region: "Ethiopia",
     characteristics: "EthiopiaDesc",
-    image: "https://images.unsplash.com/photo-1523367438061-c655d5fbc3ae"
+    image: "https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/cJ7eysfrnnoxVuqi-generated_image.jpg"
   },
   {
     icon: <Leaf className="w-6 h-6" />,
     region: "Colombia",
     characteristics: "ColombiaDesc",
-    image: "https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b"
+    image: "https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/DLAYUZKcZi7gGgxO-generated_image.jpg"
   },
   {
     icon: <Coffee className="w-6 h-6" />,
     region: "Brazil",
     characteristics: "BrazilDesc",
-    image: "https://images.unsplash.com/photo-1599999905374-a7264eba40c4"
+    image: "https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/eJ9lTII1b9NwTCHB-generated_image.jpg"
   },
   {
     icon: <Globe2 className="w-6 h-6" />,
     region: "Indonesia",
     characteristics: "IndonesiaDesc",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122"
+    image: "https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/BClOtiSfabNam3kS-generated_image.jpg"
   }
 ];
 

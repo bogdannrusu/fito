@@ -24,16 +24,41 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
-// Function to fetch goods from API
+const API_URL = process.env.NODE_ENV === 'production'
+  ? 'http://localhost:4001'
+  : '/api';
+
+
 const fetchGoods = async () => {
-  const response = await fetch('http://localhost:4000/api/goods');
+  const response = await fetch(API_URL + '/goods');
   if (!response.ok) {
     throw new Error('Failed to fetch goods');
   }
   return response.json();
 };
 
-// Function to organize goods by category
+// Obiect care mapează numele produselor la imaginile lor specifice
+const getProductImage = (goodName: string): string => {
+  switch (goodName.toLowerCase()) {
+    case 'espresso':
+      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/BoRRaoZ45Z54smAE-generated_image.jpg';
+    case 'fitoSpecialLatte':
+      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/Cxxhpgz920ug4pb9-generated_image.jpg';
+    case 'americano':
+      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/CiGbTgreGLA6yc5z-generated_image.jpg';
+    case 'napoleon':
+      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/mKPadGhzcXDBsETf-generated_image.jpg';
+    case 'medovik':
+      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/WFO8rpsAFwfmpBZy-generated_image.jpg';
+    case 'tiramisu':
+      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/31cC9OXRz7TrVT9B-generated_image.jpg';
+    case 'croissant cu fistic':
+      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/YJzjBmB3FPx1Wg7k-generated_image.jpg';
+    case 'croissant cu ciocolata':
+      return 'https://assets.grok.com/users/53ec2ee6-b705-4a66-94e5-61ceeb48869f/YJzjBmB3FPx1Wg7k-generated_image.jpg';
+  }
+};
+
 const organizeGoodsByCategory = (goods: Good[]): MenuCategory[] => {
   const categories = goods.reduce((acc: { [key: string]: MenuItem[] }, good: Good) => {
     const category = good.category || "Other";
@@ -44,7 +69,7 @@ const organizeGoodsByCategory = (goods: Good[]): MenuCategory[] => {
       name: good.good_name,
       price: good.good_price.toString(),
       description: good.good_description || "",
-      image: "/placeholder.svg",
+      image: getProductImage(good.good_name), // Folosim funcția pentru a seta imaginea
       _id: good._id
     });
     return acc;

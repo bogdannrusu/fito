@@ -4,8 +4,8 @@ import Navbar from './components/CRM/Navbar';
 import Login from './components/Login/Login';
 import Logout from './components/Login/Logout';
 import UserComponent from './components/Settings/UsersComponent';
+import OrdersForSend from './components/CRM/OrdersForSend';
 import SignUp from './components/Login/SignUp';
-import Invoices from './components/CRM/Invoices';
 import './i18n';
 import './assets/main.css';
 import NotFound from './components/Settings/404NotFound';
@@ -27,12 +27,12 @@ const App = () => {
             <Route path="/navbar" element={isAuthenticated ? <Navbar /> : <Navigate to="/" />} />
             <Route path="/logout" element={<Logout />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/invoices" element={isAuthenticated ? <Invoices /> : <Navigate to="/" />} />
             <Route path="/users" element={isAuthenticated ? <UserComponent /> : <Navigate to="/" />} />
             <Route path="/orders" element={isAuthenticated ? <Orders /> : <Navigate to="/" />} />
             <Route path="/contragents" element={isAuthenticated ? <Contragents /> : <Navigate to="/" />} />
             <Route path="/units" element={isAuthenticated ? <Units /> : <Navigate to="/" />} />
             <Route path="/depositsales" element={isAuthenticated ? <DepositSales /> : <Navigate to="/" />} />
+            <Route path="/orderforsend" element={isAuthenticated ? <OrdersForSend /> : <Navigate to="/" />} />
             <Route path="/404notfound" element={<NotFound /> } />
             <Route path="*" element={<NotFound />} />
           </Routes>
