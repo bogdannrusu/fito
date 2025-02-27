@@ -9,11 +9,9 @@ const goodsRoutes = require('./routes/goodRoute');
 const userRoutes = require('./routes/userRoute');
 const wpRoutes = require('./routes/workpointsRoute');
 const invoiceRoutes = require('./routes/invoiceRoute');
-const contragentsRoutes = require('./routes/contragentsRoute');
 const depositRoutes = require('./routes/depositRoute');
 const ordersRoutes = require('./routes/ordersRoute');
 const orderDepositRoute = require('./routes/orderDepositRoute');
-const unitsRoutes = require('./routes/unitsRoute');
 
 const app = express();
 
@@ -70,11 +68,9 @@ app.use('/api/goods', goodsRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/workpoints', wpRoutes);
 app.use('/api/invoices', invoiceRoutes);
-app.use('/api/contragents', contragentsRoutes);
 app.use('/api/deposits', depositRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/orderDeposit', orderDepositRoute);
-app.use('/api/units', unitsRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {

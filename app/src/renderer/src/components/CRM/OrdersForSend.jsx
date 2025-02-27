@@ -7,122 +7,112 @@ import axios from 'axios';
 import Navbar from './Navbar';
 
 const OrdersForSend = () => {
-  const [orders, setOrders] = useState([]);
+  const [orderDeposits, setOrderDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getToken = () => localStorage.getItem('token');
 
-  const fetchOrders = async () => {
+  const fetchOrderDeposits = async () => {
     const token = getToken();
-    if (!token) {
-      message.error('You are not authenticated. Please log in.');
-      return;
-    }
-
     try {
-      const response = await axios.get('http://localhost:4000/api/orders/ordersend', {
-        headers: { Authorization: `Bearer ${token}` },
+      const response = await axios.get('http://localhost:4000/api/orderDeposit', {
+        headers: { Authorization: `Bearer ${token}` }
       });
-      setOrders(response.data);
+      setOrderDeposits(response.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching orders:', error);
-      message.error('Failed to fetch orders');
+      message.error('Failed to fetch order deposits');
       setLoading(false);
-    }
-  };
-
-  const updateOrderStatus = async (orderId) => {
-    const token = getToken();
-    if (!token) {
-      message.error('You are not authenticated. Please log in.');
-      return;
-    }
-
-    try {
-      await axios.put(
-        `http://localhost:4000/api/orders/updateorderstatus/${orderId}`, 
-        { status: 'Completed' },
-        { headers: { Authorization: `Bearer ${token}` }}
-      );
-      message.success('Order marked as completed successfully!');
-      fetchOrders();
-    } catch (error) {
-      console.error('Error updating order status:', error);
-      message.error('Failed to update order status');
     }
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrderDeposits();
   }, []);
 
   const columns = [
     {
+      title: '#',
+      key: 'index',
+      render: (_, __, index) => index + 1,
+      width: 60
+    },
+    {
       title: 'Order ID',
       dataIndex: 'orderId',
-      key: 'orderId',
+      key: 'orderId'
     },
     {
       title: 'Products',
       dataIndex: 'items',
       key: 'items',
-      render: (items) => items.map(item => 
-        `${item.productId.good_name} (${item.quantity})`
-      ).join(', '),
+      render: (items) => items?.map(item => 
+        `${item.productId?.good_name} (${item.quantity}x${item.price})`
+      ).join(', ')
     },
     {
       title: 'Total Amount',
       dataIndex: 'totalAmount',
       key: 'totalAmount',
-      render: (amount) => `${amount.toFixed(2)} RON`,
+      render: (amount) => `${amount?.toFixed(2)} Lei`
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
       render: (status) => (
-        <Tag color={status === 'Pending' ? 'orange' : 'green'}>
+        <Tag color={status === 'Completed' ? 'green' : 'orange'}>
           {status}
         </Tag>
-      ),
+      )
     },
     {
       title: 'Deposit Date',
       dataIndex: 'depositDate',
       key: 'depositDate',
-      render: (date) => new Date(date).toLocaleDateString(),
+      render: (date) => new Date(date).toLocaleString()
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: 'Final Status',
+      key: 'finalStatus',
       render: (_, record) => (
-        <Space size="middle">
-          {record.status !== 'Completed' && (
-            <Popconfirm
-              title="Are you sure you want to mark this order as completed?"
-              onConfirm={() => updateOrderStatus(record.orderId)}
-              okText="Yes"
-              cancelText="No"
-            >
-              <Button type="primary">Mark as Completed</Button>
-            </Popconfirm>
-          )}
+        <Space>
+          <Tag color={record.finalStatus === 'Delivered' ? 'green' : 'orange'}>
+            {record.finalStatus}
+          </Tag>
+          <Button 
+            type="primary" 
+            size="small"
+            onClick={async () => {
+              try {
+                const token = getToken();
+                await axios.patch(
+                  `http://localhost:4000/api/orderDeposit/status/${record.orderId}`,
+                  { finalStatus: 'Delivered' },
+                  { headers: { Authorization: `Bearer ${token}` } }
+                );
+                message.success('Status updated successfully');
+                fetchOrderDeposits();
+              } catch (error) {
+                message.error('Failed to update status');
+              }
+            }}
+          >
+            Mark as Delivered
+          </Button>
         </Space>
-      ),
-    },
+      )
+    }
   ];
-
-  return (
-    <>
+  return (    
+  <>
       <Navbar />
       <Table
         columns={columns}
-        dataSource={orders.map((order) => ({ ...order, key: order._id }))}
+        dataSource={orderDeposits.map((order) => ({ ...order, key: order._id }))}
         loading={loading}
       />
-    </>
+  </>
   );
 };
-
 export default OrdersForSend;

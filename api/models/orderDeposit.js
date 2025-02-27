@@ -13,8 +13,10 @@ const orderDepositSchema = new mongoose.Schema({
   ],
   totalAmount: { type: Number, required: true },
   status: { type: String, default: 'Pending' },
+  finalStatus: { type: String, default: 'Pending' },
   depositDate: { type: Date, default: Date.now }
 });
+
 
 const OrderDeposit = mongoose.model('OrderDeposit', orderDepositSchema);
 

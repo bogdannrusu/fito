@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { useState, useEffect } from 'react';
@@ -8,7 +9,7 @@ import {
   OrderedListOutlined,
   SnippetsOutlined,
   LineChartOutlined,
-  SolutionOutlined,
+  GoogleOutlined,
   FontSizeOutlined,
   TableOutlined,
   LogoutOutlined,
@@ -37,24 +38,23 @@ const Navbar = () => {
   const routes = {
     '1': '/orders',
     '2': '/orderforsend',
-    '3': '/contragents',
-    '4': '/units',
+    '3': '/goods',
+    '4': '/test',
     '7': '/depositsales',
     '8': '/orderdeposits',
     '20': '/users',
     'sub5': null,
   };
 
-  // Clear token on page refresh
+  
   useEffect(() => {
     window.onbeforeunload = () => {
       localStorage.removeItem('token');
     };
 
-    // Check token on component mount
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/'); // Redirect to login page if token is missing
+      navigate('/');
     }
   }, [navigate]);
 
@@ -142,7 +142,7 @@ const Navbar = () => {
   };
 
   const verifyAdminAndNavigate = (routeKey) => {
-    if (routeKey === '20') { // Check if the route is for the User component
+    if (routeKey === '20') {
       if (isAdmin()) {
         navigate(routes[routeKey]);
       } else {
@@ -195,14 +195,14 @@ const Navbar = () => {
             },
             {
               key: '3',
-              icon: <SolutionOutlined />,
-              label: t('Contragents'),
+              icon: <GoogleOutlined />,
+              label: t('Goods'),
             },
-            {
-              key: '4',
-              icon: <FontSizeOutlined />,
-              label: t('Units'),
-            },
+            // {
+            //   key: '4',
+            //   icon: <FontSizeOutlined />,
+            //   label: t('Units'),
+            // },
           ],
         },
         {

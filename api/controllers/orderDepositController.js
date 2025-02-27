@@ -26,20 +26,17 @@ const moveToOrderDeposit = async (req, res) => {
       price: item.price,
       subtotal: item.quantity * item.price
     }));
-
-    // Creează o nouă intrare în order_deposit pe baza comenzii selectate
-    const newOrderDeposit = new OrderDeposit({
-      orderId: order.orderId,
-      items: orderItems, // Atribuim lista de produse
-      totalAmount: order.totalAmount,
-      status: 'Completed', // Setăm statusul pe Completed
-      depositDate: new Date(),
+      const newOrderDeposit = new OrderDeposit({
+        orderId: order.orderId,
+        items: orderItems,
+        totalAmount: order.totalAmount,
+        status: 'Completed',
+        finalStatus: 'Delivered',
+        depositDate: new Date(),
     });
 
-    // Salvăm comanda în colecția order_deposit
     await newOrderDeposit.save();
 
-    // Actualizează statusul comenzii în colecția Orders la Completed
     order.status = 'Completed';
     await order.save();
 
@@ -49,6 +46,42 @@ const moveToOrderDeposit = async (req, res) => {
   }
 };
 
-module.exports = {
-  moveToOrderDeposit
-};
+  const getAllOrderDeposits = async (req, res) => {
+    try {
+      const deposits = await OrderDeposit.find()
+        .populate('items.productId')
+        .sort({ depositDate: -1 });
+      res.status(200).json(deposits);
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch deposits', error });
+    }
+  };
+
+  const updateFinalStatus = async (req, res) => {
+    try {
+      const { orderId } = req.params;
+      const { finalStatus } = req.body;
+  
+      const order = await OrderDeposit.findOneAndUpdate(
+        { orderId },
+        { finalStatus },
+        { new: true }
+      );
+  
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+  
+      res.status(200).json({ message: 'Final status updated successfully', order });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to update final status', error });
+    }
+  };
+
+  module.exports = {
+    moveToOrderDeposit,
+    getAllOrderDeposits,
+    updateFinalStatus
+  };
+
+
