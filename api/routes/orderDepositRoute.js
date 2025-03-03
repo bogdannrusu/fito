@@ -3,10 +3,10 @@ const router = express.Router();
 const { moveToOrderDeposit, getAllOrderDeposits, updateFinalStatus } = require('../controllers/orderDepositController');
 const auth = require('../middleware/auth');
 
-router.post('/move', auth, moveToOrderDeposit);
-router.get('/', auth, getAllOrderDeposits);
+router.post('/move', moveToOrderDeposit);
+router.get('/', getAllOrderDeposits);
 
 // ✅ Adaugă ruta pentru actualizarea finalStatus
-router.patch('/status/:orderId', auth, updateFinalStatus);
+router.patch('/status/:orderId', updateFinalStatus);
 
 module.exports = router;

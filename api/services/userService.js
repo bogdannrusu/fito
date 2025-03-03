@@ -68,27 +68,35 @@ const comparePassword = async (plainPassword, hashedPassword) => {
 };
 
 const generateToken = (user) => {
-  return jwt.sign({ userId: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '1h' });
+  const token = jwt.sign(
+    { 
+      userId: user._id.toString(),
+      timestamp: Date.now()
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: '12h' }
+  );
+  
+  // Save the new token to user document
+  user.token = token;
+  user.save();
+  
+  return token;
 };
 
 const assignRolesToAllUsers = async () => {
   try {
-    // Fetch all users from the database
     const users = await User.find();
 
-    // Loop through each user and assign a role
     for (const user of users) {
-      // Check if a role already exists for the user to avoid duplicate roles
       const existingRole = await Role.findOne({ user_id: user.user_id });
 
       if (!existingRole) {
-        // Assign a role to the user, e.g., 'user'
         const newRole = new Role({
           user_id: user.user_id,
-          role_name: 'user' // Default role
+          role_name: 'user'
         });
 
-        // Save the role in the database
         await newRole.save();
         console.log(`Assigned role 'user' to user with ID: ${user.user_id}`);
       } else {
@@ -101,6 +109,33 @@ const assignRolesToAllUsers = async () => {
   }
 };
 
+const userByTokenHandler = async (req, res) => {
+  try {
+    const token = req.headers.authorization?.split('Bearer ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'No token provided' });
+    }
+
+    const user = await User.findOne({ token });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json({
+      user: {
+        user_id: user.user_id,
+        username: user.username,
+        email: user.email,
+        role_id: user.role_id,
+        roles: user.roles || []
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching user by token:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
 module.exports = {
   findAllUsers,
   findUserById,
@@ -110,5 +145,6 @@ module.exports = {
   deleteUser,
   comparePassword,
   generateToken,
+  userByTokenHandler,
   assignRolesToAllUsers
 };

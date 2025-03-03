@@ -12,6 +12,8 @@ const invoiceRoutes = require('./routes/invoiceRoute');
 const depositRoutes = require('./routes/depositRoute');
 const ordersRoutes = require('./routes/ordersRoute');
 const orderDepositRoute = require('./routes/orderDepositRoute');
+const reportsRoutes = require('./routes/reportsRoute');
+const roleRoutes = require('./routes/roleRoute');
 
 const app = express();
 
@@ -71,6 +73,8 @@ app.use('/api/invoices', invoiceRoutes);
 app.use('/api/deposits', depositRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/orderDeposit', orderDepositRoute);
+app.use('/api/reports', reportsRoutes);
+app.use('/api/roles', roleRoutes);
 
 // Error handling
 app.use((err, req, res, next) => {

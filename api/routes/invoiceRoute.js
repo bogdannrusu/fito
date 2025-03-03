@@ -13,13 +13,13 @@ const validateInvoice = [
   check('client').notEmpty().withMessage('Client name is required'),
 ];
 
-router.get('/', auth, getAllInvoices);
-router.post('/', auth, validateInvoice, (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  next();
-}, createInvoice);
+router.get('/', getAllInvoices);
+// router.post('/', validateInvoice, (req, res, next) => {
+//   const errors = validationResult(req);
+//   if (!errors.isEmpty()) {
+//     return res.status(400).json({ errors: errors.array() });
+//   }
+//   next();
+// }, createInvoice);
 
 module.exports = router;

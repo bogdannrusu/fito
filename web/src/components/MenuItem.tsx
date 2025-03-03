@@ -8,6 +8,7 @@ import { CartItem } from "./Cart";
 
 
 import getAmericanoImage from "../../public/americano.jpg";
+import simpleAmericanoImage from "../../public/americanoNew.jpg";
 import getEspressoImage from "../../public/espresso.jpg";
 import getLatteImage from "../../public/latte.jpg";
 import getCappuccinoImage from "../../public/capuccinno.jpg";
@@ -39,6 +40,8 @@ export const MenuItem = ({ item }: MenuItemProps) => {
     switch (name.toLowerCase()) {
       case 'espresso':
         return getEspressoImage;
+      case 'americano':
+        return simpleAmericanoImage;
       case 'latte special fito':
         return getLatteImage;
       case 'americano special fito':

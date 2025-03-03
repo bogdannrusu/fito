@@ -14,14 +14,14 @@ const auth = require('../middleware/auth');
 
 // Route pentru obținerea tuturor comenzilor
 router.get('/', getAllOrders);
-router.get('/ordergoods', auth, fetchOrdersWithGoods);
+router.get('/ordergoods', fetchOrdersWithGoods);
 
 // Route pentru crearea unei noi comenzi
 router.post('/order', createOrder);
 router.post('/', createFrontOrder);
-router.get('/ordersend', auth, getAllOrdersForSend);
-router.put('/updateorderstatus', auth, updateOrderStatus);
+router.get('/ordersend', getAllOrdersForSend);
+router.put('/updateorderstatus', updateOrderStatus);
 
-router.delete('/:id', auth, deleteOrder); // Ruta pentru ștergere
+router.delete('/:id', deleteOrder); // Ruta pentru ștergere
 
 module.exports = router;

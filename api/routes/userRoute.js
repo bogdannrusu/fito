@@ -23,14 +23,14 @@ const validateUser = [
   check('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
 ];
 
-router.get('/users', getAllUsers);
-router.get('/:id', auth, getUserById);
+router.get('/', getAllUsers);
+router.get('/:id', getUserById);
 router.post('/register', validateUser, createUser);
 router.post('/login', [
   check('username').notEmpty().withMessage('Username is required'),
   check('password').notEmpty().withMessage('Password is required')
 ], loginUser);
-router.get('/me', auth, getUserDetails);
+router.get('/me', getUserDetails);
 router.put('/:id', validateUser, updateUser);
 router.delete('/:id', deleteUser);
 router.post('/assign-roles', async (req, res) => {

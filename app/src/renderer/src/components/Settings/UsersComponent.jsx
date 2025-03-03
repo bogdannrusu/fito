@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import { Table, Space, Button, message, Modal, Form, Select, Switch } from 'antd';
 import axios from 'axios';
@@ -17,17 +19,6 @@ const UsersComponent = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
-
-  const fetchUsers = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get('http://localhost:4000/api/users');
-      setUsers(response.data);
-    } catch (error) {
-      message.error('Failed to fetch users');
-    }
-    setLoading(false);
-  };
 
   const columns = [
     {
@@ -73,6 +64,22 @@ const UsersComponent = () => {
     },
   ];
 
+  const getToken = () => sessionStorage.getItem('token');
+
+  const fetchUsers = async () => {
+    setLoading(true);
+    try {
+      const token = getToken();
+      const response = await axios.get('http://localhost:4000/api/users', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setUsers(response.data);
+    } catch (error) {
+      message.error('Failed to fetch users');
+    }
+    setLoading(false);
+  };
+
   const showEditModal = (user) => {
     setSelectedUser(user);
     form.setFieldsValue({
@@ -85,7 +92,12 @@ const UsersComponent = () => {
   const handleEdit = async () => {
     try {
       const values = await form.validateFields();
-      await axios.put(`http://localhost:4000/api/users/${selectedUser._id}`, values);
+      const token = getToken();
+      await axios.put(
+        `http://localhost:4000/api/users/${selectedUser._id}`, 
+        values,
+        { headers: { Authorization: `Bearer ${token}` }}
+      );
       message.success('User updated successfully');
       fetchUsers();
       setIsEditModalVisible(false);
@@ -102,7 +114,11 @@ const UsersComponent = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:4000/api/users/${selectedUser._id}`);
+      const token = getToken();
+      await axios.delete(
+        `http://localhost:4000/api/users/${selectedUser._id}`,
+        { headers: { Authorization: `Bearer ${token}` }}
+      );
       message.success('User deleted successfully');
       fetchUsers();
       setIsDeleteModalVisible(false);
@@ -133,7 +149,7 @@ const UsersComponent = () => {
       {/* Edit Modal */}
       <Modal
         title="Edit User"
-        visible={isEditModalVisible}
+        open={isEditModalVisible}
         onOk={handleEdit}
         onCancel={handleCancel}
         okText="Save"
@@ -182,6 +198,8 @@ const UsersComponent = () => {
       </Modal>
     </>
   );
+
 };
+
 
 export default UsersComponent;

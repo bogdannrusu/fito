@@ -31,7 +31,7 @@ const moveToOrderDeposit = async (req, res) => {
         items: orderItems,
         totalAmount: order.totalAmount,
         status: 'Completed',
-        finalStatus: 'Delivered',
+        finalStatus: 'Pending',
         depositDate: new Date(),
     });
 

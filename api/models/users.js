@@ -4,13 +4,14 @@ const mongoose = require('mongoose');
 const Crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
-  user_id: { type: Number, unique: true },
+  user_id: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   createdAt: { type: Date, default: Date.now },
-  role: { type: [String], default: ['user'] } ,
-  is_active: { type: Boolean, default: true }
+  is_active: { type: Boolean, default: true },
+  role_id: { type: Number, required: true },
+  token: { type: String }
 });
 
 userSchema.pre('save', function (next) {

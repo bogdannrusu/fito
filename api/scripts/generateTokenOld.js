@@ -4,7 +4,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
-const User = require('./models/users');
+const User = require('../models/users');
 
 const dbUri = process.env.MONGODB_URI;
 

@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
-/* eslint-disable prettier/prettier */
 import { useState, useEffect } from 'react';
 import {
   AppstoreOutlined,
@@ -34,26 +33,29 @@ const Navbar = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [roles, setRoles] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const routes = {
     '1': '/orders',
     '2': '/orderforsend',
     '3': '/goods',
     '4': '/test',
+    '5': '/orderreport',
     '7': '/depositsales',
     '8': '/orderdeposits',
     '20': '/users',
+    '15': '/roles',
     'sub5': null,
   };
 
-  
   useEffect(() => {
     window.onbeforeunload = () => {
-      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
     };
 
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (!token) {
+      console.log('No token found, redirecting to /');
       navigate('/');
     }
   }, [navigate]);
@@ -105,13 +107,13 @@ const Navbar = () => {
     }
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('roles');
-    setLoggedInUser(null);
-    navigate('/');
-  };
+const handleOk = () => {
+  setIsModalVisible(false);
+  sessionStorage.removeItem('token');
+  sessionStorage.removeItem('roles');
+  setLoggedInUser(null);
+  navigate('/');
+};
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -183,26 +185,9 @@ const Navbar = () => {
           label: t('Orders'),
           type: 'group',
           children: [
-            {
-              key: '1',
-              icon: <OrderedListOutlined />,
-              label: t('Orders View'),
-            },
-            {
-              key: '2',
-              icon: <SnippetsOutlined />,
-              label: t('Orders For Send'),
-            },
-            {
-              key: '3',
-              icon: <GoogleOutlined />,
-              label: t('Goods'),
-            },
-            // {
-            //   key: '4',
-            //   icon: <FontSizeOutlined />,
-            //   label: t('Units'),
-            // },
+            { key: '1', icon: <OrderedListOutlined />, label: t('Orders View') },
+            { key: '2', icon: <SnippetsOutlined />, label: t('Orders For Send') },
+            { key: '3', icon: <GoogleOutlined />, label: t('Goods') },
           ],
         },
         {
@@ -210,16 +195,8 @@ const Navbar = () => {
           label: t('Reports'),
           type: 'group',
           children: [
-            {
-              key: '5',
-              icon: <LineChartOutlined />,
-              label: t('Orders Report View'),
-            },
-            {
-              key: '6',
-              icon: <TableOutlined />,
-              label: t('Invoice Report View'),
-            },
+            { key: '5', icon: <LineChartOutlined />, label: t('Orders Report View') },
+            { key: '6', icon: <TableOutlined />, label: t('Invoice Report View') },
           ],
         },
       ],
@@ -229,41 +206,17 @@ const Navbar = () => {
       icon: <AppstoreOutlined />,
       label: t('Workspace'),
       children: [
-        {
-          key: '5-1',
-          label: t('Deposits'),
-          type: 'group',
-        },
-        {
-          key: '7',
-          label: t('Deposit Sales'),
-          icon: <EuroOutlined />,
-        },
-        {
-          key: '8',
-          label: t('Order Deposits'),
-          icon: <EuroOutlined />,
-        },
-        {
-          key: '9',
-          label: t('Deposit Invoices'),
-          icon: <DollarOutlined />,
-        },
+        { key: '5-1', label: t('Deposits'), type: 'group' },
+        { key: '7', label: t('Deposit Sales'), icon: <EuroOutlined /> },
+        { key: '8', label: t('Order Deposits'), icon: <EuroOutlined /> },
+        { key: '9', label: t('Deposit Invoices'), icon: <DollarOutlined /> },
         {
           key: 'sub3',
           label: t('Sales'),
           icon: <BarChartOutlined />,
           children: [
-            {
-              key: '10',
-              label: t('Sale to WP'),
-              icon: <TwitterOutlined />,
-            },
-            {
-              key: '11',
-              label: t('Direct Sale'),
-              icon: <QqOutlined />,
-            },
+            { key: '10', label: t('Sale to WP'), icon: <TwitterOutlined /> },
+            { key: '11', label: t('Direct Sale'), icon: <QqOutlined /> },
           ],
         },
       ],
@@ -273,16 +226,8 @@ const Navbar = () => {
       label: t('Settings'),
       icon: <SettingOutlined />,
       children: [
-        {
-          key: '20',
-          label: t('Users'),
-          icon: <UserOutlined />,
-        },
-        {
-          key: '15',
-          label: t('Roles'),
-          icon: <RedditOutlined />,
-        },
+        { key: '20', label: t('Users'), icon: <UserOutlined /> },
+        { key: '15', label: t('Roles'), icon: <RedditOutlined /> },
       ],
     },
     {
@@ -290,45 +235,26 @@ const Navbar = () => {
       icon: <FlagOutlined />,
       label: t('Language'),
       children: [
-        {
-          key: '12',
-          label: t('English'),
-          icon: <Flag country="GB" size={15} />,
-        },
-        {
-          key: '13',
-          label: t('Russian'),
-          icon: <Flag country="RU" size={15} />,
-        },
-        {
-          key: '14',
-          label: t('Romanian'),
-          icon: <Flag country="RO" size={15} />,
-        },
+        { key: '12', label: t('English'), icon: <Flag country="GB" size={15} /> },
+        { key: '13', label: t('Russian'), icon: <Flag country="RU" size={15} /> },
+        { key: '14', label: t('Romanian'), icon: <Flag country="RO" size={15} /> },
       ],
     },
-    {
-      key: 'sub5',
-      label: t('Logout'),
-      icon: <LogoutOutlined />,
-    },
+    { key: 'sub5', label: t('Logout'), icon: <LogoutOutlined /> },
   ];
 
   const contentUser = (
     <div>
       {loggedInUser ? (
-        <>
-          <p>{t('User')}: {loggedInUser.username}</p>
-          <p>{t('Email')}: {loggedInUser.email}</p>
-        </>
+        <span>{t('loggedInAs', { username: loggedInUser.username })}</span>
       ) : (
-        <p>{t('No user logged in')}</p>
+        <span>{t('noUserLoggedIn')}</span>
       )}
     </div>
   );
 
+
   return (
-    <>
     <div style={{ position: 'relative', width: '100%' }}>
       <Button
         danger
@@ -349,10 +275,7 @@ const Navbar = () => {
       </Button>
 
       <Popover content={contentUser} placement="bottom">
-        <Button
-          icon={<UserOutlined />}
-          style={{ position: 'absolute', top: 5, right: 95 }}
-        />
+        <Button icon={<UserOutlined />} style={{ position: 'absolute', top: 5, right: 95 }} />
       </Popover>
 
       <Menu onClick={handleClick} mode="horizontal" items={items} />
@@ -374,8 +297,6 @@ const Navbar = () => {
         <p>{t('Are you sure you want to logout?')}</p>
       </Modal>
     </div>
-    </>
-    
   );
 };
 
