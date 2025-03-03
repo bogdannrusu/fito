@@ -24,13 +24,13 @@ const validateUser = [
 ];
 
 router.get('/', getAllUsers);
+router.get('/me', auth, getUserDetails);
 router.get('/:id', getUserById);
 router.post('/register', validateUser, createUser);
 router.post('/login', [
   check('username').notEmpty().withMessage('Username is required'),
   check('password').notEmpty().withMessage('Password is required')
 ], loginUser);
-router.get('/me', getUserDetails);
 router.put('/:id', validateUser, updateUser);
 router.delete('/:id', deleteUser);
 router.post('/assign-roles', async (req, res) => {

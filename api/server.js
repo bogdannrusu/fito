@@ -8,7 +8,6 @@ const helmet = require('helmet');
 const goodsRoutes = require('./routes/goodRoute');
 const userRoutes = require('./routes/userRoute');
 const wpRoutes = require('./routes/workpointsRoute');
-const invoiceRoutes = require('./routes/invoiceRoute');
 const depositRoutes = require('./routes/depositRoute');
 const ordersRoutes = require('./routes/ordersRoute');
 const orderDepositRoute = require('./routes/orderDepositRoute');
@@ -69,7 +68,6 @@ app.get('/', (req, res) => {
 app.use('/api/goods', goodsRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/workpoints', wpRoutes);
-app.use('/api/invoices', invoiceRoutes);
 app.use('/api/deposits', depositRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/orderDeposit', orderDepositRoute);

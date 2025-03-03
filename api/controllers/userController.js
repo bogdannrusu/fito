@@ -17,13 +17,23 @@ const getAllUsers = async (req, res) => {
 
 const getUserDetails = async (req, res) => {
   try {
-    const userId = req.user.userId; // This should be a valid ObjectId string
-    const user = await User.findById(userId);
-    console.log(user.username);
+    const user = await User.findById(req.user.userId);
+    console.log('User fetched in /me:', user.username);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    res.json({ user });
+
+    res.json({
+      user: {
+        user_id: user.user_id,
+        _id: user._id.toString(), // Include ID-ul MongoDB
+        username: user.username,
+        email: user.email,
+        role_id: user.role_id,
+        roles: user.roles || [],
+        token: user.token // Include token-ul dacă dorești
+      }
+    });
   } catch (err) {
     console.error('Error fetching user details:', err);
     res.status(500).json({ message: err.message });
@@ -69,23 +79,28 @@ const loginUser = async (req, res) => {
   try {
     const user = await userService.findUserByUsername(username);
     if (!user) {
-      console.log('User not found:', username);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
-    console.log('Hashed password from DB:', user.password);
-
     const isMatch = await userService.comparePassword(password, user.password);
     if (!isMatch) {
-      console.log('Password mismatch for user:', username);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const token = userService.generateToken(user);
-    const roles = await Role.find({ user_id: user.user_id }).select('role_name');
+    user.token = token; // Actualizează token-ul în baza de date
+    await user.save();
 
-    console.log('Login successful for user:', username, 'and with role:', roles);
-    res.json({ token, roles });
+    res.json({ 
+      token,
+      roles: user.roles || [], // Returnăm rolurile utilizatorului
+      user: {
+        user_id: user.user_id,
+        username: user.username,
+        email: user.email,
+        role_id: user.role_id
+      }
+    });
   } catch (err) {
     console.error('Error during login:', err);
     res.status(500).json({ message: err.message });

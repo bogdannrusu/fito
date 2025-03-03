@@ -18,7 +18,6 @@ const findUserByUsername = async (username) => {
 };
 
 const createUser = async (userData) => {
-  // Increment the user_id counter
   const counter = await Counter.findByIdAndUpdate(
     { _id: 'user_id' },
     { $inc: { seq: 1 } },
@@ -32,6 +31,7 @@ const createUser = async (userData) => {
     email: userData.email,
     is_active: true,
     createdAt: new Date(),
+    role_id: userData.role_id || 2,
   });
 
   return newUser.save();
@@ -68,20 +68,15 @@ const comparePassword = async (plainPassword, hashedPassword) => {
 };
 
 const generateToken = (user) => {
-  const token = jwt.sign(
+  return jwt.sign(
     { 
       userId: user._id.toString(),
-      timestamp: Date.now()
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: '12h' }
+      username: user.username,
+      role_id: user.role_id 
+    }, 
+    process.env.JWT_SECRET, 
+    { expiresIn: '24h' } // Poți ajusta la 7d sau alt interval
   );
-  
-  // Save the new token to user document
-  user.token = token;
-  user.save();
-  
-  return token;
 };
 
 const assignRolesToAllUsers = async () => {
@@ -96,7 +91,6 @@ const assignRolesToAllUsers = async () => {
           user_id: user.user_id,
           role_name: 'user'
         });
-
         await newRole.save();
         console.log(`Assigned role 'user' to user with ID: ${user.user_id}`);
       } else {
@@ -109,33 +103,6 @@ const assignRolesToAllUsers = async () => {
   }
 };
 
-const userByTokenHandler = async (req, res) => {
-  try {
-    const token = req.headers.authorization?.split('Bearer ')[1];
-    if (!token) {
-      return res.status(401).json({ message: 'No token provided' });
-    }
-
-    const user = await User.findOne({ token });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    res.json({
-      user: {
-        user_id: user.user_id,
-        username: user.username,
-        email: user.email,
-        role_id: user.role_id,
-        roles: user.roles || []
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching user by token:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
 module.exports = {
   findAllUsers,
   findUserById,
@@ -145,6 +112,5 @@ module.exports = {
   deleteUser,
   comparePassword,
   generateToken,
-  userByTokenHandler,
   assignRolesToAllUsers
 };

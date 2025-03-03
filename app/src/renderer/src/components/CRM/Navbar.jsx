@@ -62,30 +62,65 @@ const Navbar = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      setLoading(true);
       const token = sessionStorage.getItem('token');
-      if (token) {
-        try {
-          const response = await axios.get('http://localhost:4000/api/users/me', {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setLoggedInUser(response.data.user);
-        } catch (error) {
-          console.error('Failed to fetch user:', error);
-          if (error.response && error.response.status === 401) {
+      console.log('Token in Navbar:', token);
+
+      if (!token) {
+        console.log('No token, redirecting to login');
+        navigate('/');
+        return;
+      }
+
+      try {
+        const response = await axios.get('http://localhost:4000/api/users/me', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        console.log('API response for user:', response.data); // Debug detaliat
+
+        // Verificăm structura răspunsului
+        if (!response.data.user || !response.data.user.username) {
+          throw new Error('Invalid user data structure. Response:', JSON.stringify(response.data));
+        }
+
+        const user = response.data.user;
+        setLoggedInUser(user);
+        setRoles(user.roles || []);
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+        if (error.response) {
+          console.log('Error response:', error.response.data);
+          if (error.response.status === 401) {
+            message.error(t('Session expired. Please log in again.'));
             sessionStorage.removeItem('token');
             setLoggedInUser(null);
+            setRoles([]);
+            navigate('/');
+          } else {
+            message.error(t('Failed to load user data'));
           }
+        } else {
+          message.error(t('Server not responding'));
         }
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUser();
-  }, []);
+  }, [navigate, t]);
+
+  // Forțăm re-renderizarea pentru a verifica starea loggedInUser
+  const forceUpdate = () => {
+    setLoading(false); // Forțăm o re-renderizare simplă
+  };
 
   useEffect(() => {
-    const savedRoles = JSON.parse(sessionStorage.getItem('roles'));
-    setRoles(savedRoles || []);
-  }, []);
+    // Forțăm re-renderizarea după ce loggedInUser se actualizează
+    if (loggedInUser) {
+      forceUpdate();
+    }
+  }, [loggedInUser]);
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -107,13 +142,13 @@ const Navbar = () => {
     }
   };
 
-const handleOk = () => {
-  setIsModalVisible(false);
-  sessionStorage.removeItem('token');
-  sessionStorage.removeItem('roles');
-  setLoggedInUser(null);
-  navigate('/');
-};
+  const handleOk = () => {
+    setIsModalVisible(false);
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('roles');
+    setLoggedInUser(null);
+    navigate('/');
+  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -138,14 +173,25 @@ const handleOk = () => {
     }
   };
 
-  const isAdmin = () => {
-    const roles = axios.get('http://localhost:4000/api/users/users/me/roles');
-    return roles;
+  const isAdmin = async () => {
+    try {
+      const token = sessionStorage.getItem('token');
+      if (!token) return false;
+
+      const response = await axios.get('http://localhost:4000/api/users/me', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return response.data.user.role_id === 1;
+    } catch (error) {
+      console.error('Error checking admin:', error);
+      return false;
+    }
   };
 
-  const verifyAdminAndNavigate = (routeKey) => {
+  const verifyAdminAndNavigate = async (routeKey) => {
     if (routeKey === '20') {
-      if (isAdmin()) {
+      const hasAdminRole = await isAdmin();
+      if (hasAdminRole) {
         navigate(routes[routeKey]);
       } else {
         message.error('Access Denied: You do not have the required permissions to access this page.');
@@ -246,13 +292,12 @@ const handleOk = () => {
   const contentUser = (
     <div>
       {loggedInUser ? (
-        <span>{t('loggedInAs', { username: loggedInUser.username })}</span>
+        <span>{loggedInUser.username || 'Unknown User'}</span>
       ) : (
         <span>{t('noUserLoggedIn')}</span>
       )}
     </div>
   );
-
 
   return (
     <div style={{ position: 'relative', width: '100%' }}>
