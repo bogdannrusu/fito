@@ -1,0 +1,43 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - docker build -t my-app:$CI_COMMIT_SHA .
+    - docker save my-app:$CI_COMMIT_SHA > image.tar
+  artifacts:
+    paths:
+      - image.tar
+    expire_in: 1 hour
+
+test:
+  stage: test
+  script:
+    - docker load < image.tar
+    - docker run my-app:$CI_COMMIT_SHA npm test
+  dependencies:
+    - build
+
+deploy:
+  stage: deploy
+  script:
+    - docker load < image.tar
+    - docker tag my-app:$CI_COMMIT_SHA my-app:latest
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    - docker push my-app:latest
+  only:
+    - main
+  dependencies:
+    - build

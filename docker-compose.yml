@@ -1,22 +1,9 @@
 version: '3.8'
 
 services:
-  app:
-    build:
-      context: ./app
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000" # Change to your app's port
-    volumes:
-      - ./app
-       - node_modules:/usr/src/app/node_modules
-    networks:
-      - app-network
-
+ 
   api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
+    image: bogdannrusu/fito-api:latest
     ports:
       - "4000:4000"
     volumes:
@@ -25,10 +12,7 @@ services:
       - app-network
 
   website:
-    image: website
-    build:
-      context: ./website
-      dockerfile: Dockerfile
+    image: bogdannrusu/fito-website:latest
     ports:
       - 3000:3000
     volumes:
