@@ -10,6 +10,9 @@ const RolesComponent = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const WEB_API_URL = 'https://fito-api.vercel.app';
+  const LOCAL_API_URL = 'http://localhost:4000';
+
   const columns = [
     {
       title: 'Role ID',
@@ -32,7 +35,7 @@ const RolesComponent = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.get('http://localhost:4000/api/roles', {
+      const response = await axios.get(`${WEB_API_URL}/api/roles`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setRoles(response.data);

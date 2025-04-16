@@ -75,7 +75,7 @@ const generateToken = (user) => {
       role_id: user.role_id 
     }, 
     process.env.JWT_SECRET, 
-    { expiresIn: '24h' } // Poți ajusta la 7d sau alt interval
+    { expiresIn: '12h' } // Poți ajusta la 7d sau alt interval
   );
 };
 

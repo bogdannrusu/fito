@@ -11,11 +11,13 @@ const OrdersForSend = () => {
   const [loading, setLoading] = useState(true);
 
   const getToken = () => localStorage.getItem('token');
+  const WEB_API_URL = 'https://fito-api.vercel.app';
+  const LOCAL_API_URL = 'http://localhost:4000';
 
   const fetchOrderDeposits = async () => {
     const token = getToken();
     try {
-      const response = await axios.get('http://localhost:4000/api/orderDeposit', {
+      const response = await axios.get(`${WEB_API_URL}/api/orderDeposit`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrderDeposits(response.data);
@@ -87,7 +89,7 @@ const OrdersForSend = () => {
               try {
                 const token = getToken();
                 await axios.patch(
-                  `http://localhost:4000/api/orderDeposit/status/${record.orderId}`,
+                  `${WEB_API_URL}/api/orderDeposit/status/${record.orderId}`,
                   { finalStatus: 'Delivered' },
                   { headers: { Authorization: `Bearer ${token}` } }
                 );

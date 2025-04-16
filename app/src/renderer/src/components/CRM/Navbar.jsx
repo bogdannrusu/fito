@@ -35,6 +35,9 @@ const Navbar = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const WEB_API_URL = 'https://fito-api.vercel.app';
+  const LOCAL_API_URL = 'http://localhost:4000';
+
   const routes = {
     '1': '/orders',
     '2': '/orderforsend',
@@ -73,7 +76,7 @@ const Navbar = () => {
       }
 
       try {
-        const response = await axios.get('http://localhost:4000/api/users/me', {
+        const response = await axios.get(`${WEB_API_URL}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log('API response for user:', response.data); // Debug detaliat
@@ -178,7 +181,7 @@ const Navbar = () => {
       const token = sessionStorage.getItem('token');
       if (!token) return false;
 
-      const response = await axios.get('http://localhost:4000/api/users/me', {
+      const response = await axios.get(`${WEB_API_URL}/api/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data.user.role_id === 1;

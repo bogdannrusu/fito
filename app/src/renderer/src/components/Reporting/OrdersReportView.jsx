@@ -12,11 +12,13 @@ const OrdersReportView = () => {
   const [loading, setLoading] = useState(true);
 
   const getToken = () => localStorage.getItem('token');
+  const WEB_API_URL = 'https://fito-api.vercel.app';
+  const LOCAL_API_URL = 'http://localhost:4000';
 
   const fetchReportData = async () => {
     try {
       const token = getToken();
-      const response = await axios.get('http://localhost:4000/api/reports', {
+      const response = await axios.get(`${WEB_API_URL}/api/reports`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(response.data);

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { Button, Form, Input, message, Select } from 'antd';
 import axios from 'axios';
@@ -6,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import Flag from 'react-flagkit';
 import logo from '../../assets/icons/logo.webp';
 
+axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`;
+
 const { Option } = Select;
 
 const Login = () => {
@@ -13,9 +16,13 @@ const Login = () => {
   const [form] = Form.useForm();
   const { t, i18n } = useTranslation();
 
+  const WEB_API_URL = 'https://fito-api.vercel.app';
+  const LOCAL_API_URL = 'http://localhost:4000';
+
+
   const onFinish = async (values) => {
     try {
-      const response = await axios.post('http://localhost:4000/api/users/login', {
+      const response = await axios.post(`${WEB_API_URL}/api/users/login`, {
         username: values.username,
         password: values.password,
       });

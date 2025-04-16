@@ -17,10 +17,13 @@ const SignUp = () => {
     navigate('/');
   }
 
+  const WEB_API_URL = 'https://fito-api.vercel.app';
+  const LOCAL_API_URL = 'http://localhost:4000';
+
   const onFinish = async (values) => {
     try {
       // Sign up user
-      const response = await axios.post('http://localhost:4000/api/users/register', {
+      const response = await axios.post(`${WEB_API_URL}/api/users/register`, {
         username: values.username,
         password: values.password,
         confirm: values.confirm,
@@ -31,7 +34,7 @@ const SignUp = () => {
         message.success('Account created successfully!');
 
         // Authenticate user
-        const loginResponse = await axios.post('http://localhost:4000/api/users/login', {
+        const loginResponse = await axios.post(`${WEB_API_URL}/api/users/login`, {
           username: values.username,
           password: values.password,
         });

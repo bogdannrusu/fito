@@ -13,9 +13,8 @@ const Goods = () => {
   const [form] = Form.useForm()
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
-    const API_URL = process.env.NODE_ENV === 'production' 
-      ? 'https://fito-api.vercel.app/api'
-      : 'http://localhost:4000/api';
+      const WEB_API_URL = 'https://fito-api.vercel.app';
+      const LOCAL_API_URL = 'http://localhost:4000';
 
     const columns = [
       {
@@ -66,7 +65,7 @@ const Goods = () => {
     const fetchGoods = async () => {
       try {
         setLoading(true)
-        const response = await axios.get(`${API_URL}/goods`)
+        const response = await axios.get(`${WEB_API_URL}/api/goods`)
         setGoods(response.data)
       } catch (error) {
         message.error('Failed to fetch goods')
@@ -83,7 +82,7 @@ const Goods = () => {
 
     const handleDelete = async (id) => {
       try {
-        await axios.delete(`${API_URL}/goods/${id}`)
+        await axios.delete(`${WEB_API_URL}/api/goods/${id}`)
         message.success('Product deleted successfully')
         fetchGoods()
       } catch (error) {
@@ -95,9 +94,9 @@ const Goods = () => {
     const handleSubmit = async (values) => {
       try {
         if (values.id) {
-          await axios.put(`${API_URL}/goods/${values.id}`, values)
+          await axios.put(`${WEB_API_URL}/api/goods/${values.id}`, values)
         } else {
-          await axios.post(`${API_URL}/goods`, values)
+          await axios.post(`${WEB_API_URL}/api/goods`, values)
         }
         message.success('Good saved successfully')
         setIsModalVisible(false)

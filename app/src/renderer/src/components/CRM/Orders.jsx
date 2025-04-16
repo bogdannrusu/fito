@@ -17,6 +17,9 @@ const Orders = () => {
   const [form] = Form.useForm();
   const [totalAmount, setTotalAmount] = useState(0);
 
+  const WEB_API_URL = 'https://fito-api.vercel.app';
+  const LOCAL_API_URL = 'http://localhost:4000';
+
   const getToken = () => {
     return localStorage.getItem('token'); 
   };
@@ -30,7 +33,7 @@ const Orders = () => {
     }
 
     try {
-      const response = await axios.get('http://localhost:4000/api/orders/ordergoods', {
+      const response = await axios.get(`${WEB_API_URL}/api/orders/ordergoods`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -59,7 +62,7 @@ const Orders = () => {
       return;
     }
     try {
-      await axios.delete(`http://localhost:4000/api/orders/${orderId}`, {
+      await axios.delete(`${WEB_API_URL}/api/orders/${orderId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(orders.filter(order => order._id !== orderId));
@@ -79,7 +82,7 @@ const Orders = () => {
     }
 
     try {
-      const response = await axios.get('http://localhost:4000/api/goods', {
+      const response = await axios.get(`${WEB_API_URL}/api/goods`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -137,7 +140,7 @@ const Orders = () => {
         phone: values.phone,
       };
 
-      await axios.post('http://localhost:4000/api/orders/order', newOrder, {
+      await axios.post(`${WEB_API_URL}/api/orders/order`, newOrder, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -162,7 +165,7 @@ const Orders = () => {
     }
 
     try {
-      await axios.post('http://localhost:4000/api/orderDeposit/move', {
+      await axios.post(`${WEB_API_URL}/api/orderDeposit/move`, {
         orderId: order.orderId,
         items: order.items,
         totalAmount: order.totalAmount

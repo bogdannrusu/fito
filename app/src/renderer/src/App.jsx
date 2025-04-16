@@ -9,7 +9,6 @@ import OrdersForSend from './components/CRM/OrdersForSend';
 import SignUp from './components/Login/SignUp';
 import NotFound from './components/Settings/404NotFound';
 import Orders from './components/CRM/Orders';
-import DepositSales from './components/Workspace/DepositSales';
 import OrdersReportView from './components/Reporting/OrdersReportView';
 import RolesComponent from './components/Settings/RolesComponent';
 
@@ -36,7 +35,6 @@ const App = () => {
             <Route path="/users" element={isAuthenticated ? <UserComponent /> : <Navigate to="/" />} />
             <Route path='/roles' element={isAuthenticated ? <RolesComponent /> : <Navigate to="/" />} />
             <Route path="/orders" element={isAuthenticated ? <Orders /> : <Navigate to="/" />} />
-            <Route path="/depositsales" element={isAuthenticated ? <DepositSales /> : <Navigate to="/" />} />
             <Route path="/orderforsend" element={isAuthenticated ? <OrdersForSend /> : <Navigate to="/" />} />
             <Route path="/404notfound" element={<NotFound /> } />
             <Route path="*" element={<NotFound />} />

@@ -8,6 +8,9 @@ import Navbar from '../CRM/Navbar';
 
 const { Option } = Select;
 
+const WEB_API_URL = 'https://fito-api.vercel.app';
+const LOCAL_API_URL = 'http://localhost:4000';
+
 const UsersComponent = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -70,7 +73,7 @@ const UsersComponent = () => {
     setLoading(true);
     try {
       const token = getToken();
-      const response = await axios.get('http://localhost:4000/api/users', {
+      const response = await axios.get(`${WEB_API_URL}/api/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(response.data);
@@ -94,7 +97,7 @@ const UsersComponent = () => {
       const values = await form.validateFields();
       const token = getToken();
       await axios.put(
-        `http://localhost:4000/api/users/${selectedUser._id}`, 
+        `${WEB_API_URL}/api/users/${selectedUser._id}`, 
         values,
         { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -116,7 +119,7 @@ const UsersComponent = () => {
     try {
       const token = getToken();
       await axios.delete(
-        `http://localhost:4000/api/users/${selectedUser._id}`,
+        `${WEB_API_URL}api/users/${selectedUser._id}`,
         { headers: { Authorization: `Bearer ${token}` }}
       );
       message.success('User deleted successfully');
