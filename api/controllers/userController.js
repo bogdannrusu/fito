@@ -4,6 +4,7 @@ const { validationResult } = require('express-validator');
 const userService = require('../services/userService');
 const Role = require('../models/roles');
 const User = require('../models/users');
+const jwt = require('jsonwebtoken');
 
 // Get All Users
 const getAllUsers = async (req, res) => {
@@ -107,6 +108,50 @@ const loginUser = async (req, res) => {
   }
 };
 
+// Refresh Token
+const refreshToken = async (req, res) => {
+  try {
+    // Verificăm token-ul existent din antet
+    const authHeader = req.header('Authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return res.status(401).json({ message: 'No token provided or invalid format' });
+    }
+
+    const oldToken = authHeader.replace('Bearer ', '');
+    
+    let decoded;
+    try {
+      // Verificăm dacă token-ul este valid (chiar dacă e expirat)
+      decoded = jwt.verify(oldToken, process.env.JWT_SECRET, { ignoreExpiration: true });
+    } catch (err) {
+      return res.status(401).json({ message: 'Invalid token format' });
+    }
+    
+    // Căutăm utilizatorul după ID
+    const user = await User.findById(decoded.userId);
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+    
+    // Generăm un nou token
+    const newToken = userService.generateToken(user);
+    
+    // Actualizăm token-ul în baza de date
+    user.token = newToken;
+    await user.save();
+    
+    // Returnăm noul token
+    res.json({ 
+      token: newToken,
+      roles: user.roles || [],
+      message: 'Token refreshed successfully'
+    });
+  } catch (err) {
+    console.error('Error during token refresh:', err);
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Update User
 const updateUser = async (req, res) => {
   const errors = validationResult(req);
@@ -153,4 +198,5 @@ module.exports = {
   loginUser,
   updateUser,
   deleteUser,
+  refreshToken
 };

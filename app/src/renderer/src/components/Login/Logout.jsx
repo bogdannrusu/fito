@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.removeItem('token');
+    Cookies.remove('token');
     navigate('/');
   }, [navigate]);
 

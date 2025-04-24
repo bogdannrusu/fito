@@ -5,6 +5,7 @@ import { LanguageSelector } from "./LanguageSelector";
 import { ShoppingCart } from "lucide-react";
 import { Button } from "./ui/button";
 import { Cart, CartItem } from "./Cart";
+import Cookies from "js-cookie";
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,7 +24,7 @@ export const Header = () => {
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'cart') {
-        const storedCart = localStorage.getItem('cart');
+        const storedCart = Cookies.get('cart');
         if (storedCart) {
           setCartItems(JSON.parse(storedCart));
         }
@@ -31,7 +32,7 @@ export const Header = () => {
     };
 
     // Initial load
-    const storedCart = localStorage.getItem('cart');
+    const storedCart = Cookies.get('cart');
     if (storedCart) {
       setCartItems(JSON.parse(storedCart));
     }
@@ -46,7 +47,7 @@ export const Header = () => {
   const removeFromCart = (itemName: string) => {
     const updatedItems = cartItems.filter(item => item.name !== itemName);
     setCartItems(updatedItems);
-    localStorage.setItem('cart', JSON.stringify(updatedItems));
+    Cookies.set('cart', JSON.stringify(updatedItems), { secure: true, sameSite: 'strict' });
   };
 
   const headerVariants = {

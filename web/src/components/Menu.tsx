@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { MenuCategory } from "./MenuCategory";
 import { useQuery } from "@tanstack/react-query";
+import { apiConfig } from "@/utils/apiConfig";
 
 import getAmericanoImage from "../../public/americano.jpg";
 import getEspressoImage from "../../public/espresso.jpg";
@@ -34,12 +35,8 @@ interface MenuCategory {
   items: MenuItem[];
 }
 
-const LOCAL_API_URL = 'http://localhost:4000/api';
-const WEB_API_URL = 'https://fito-api.vercel.app/api';
-
-
 const fetchGoods = async () => {
-  const response = await fetch(WEB_API_URL + '/goods');
+  const response = await fetch(apiConfig.API_URL + '/goods');
   if (!response.ok) {
     throw new Error('Failed to fetch goods');
   }

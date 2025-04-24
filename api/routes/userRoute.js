@@ -10,7 +10,8 @@ const {
   updateUser,
   loginUser,
   deleteUser,
-  getUserDetails
+  getUserDetails,
+  refreshToken
 } = require('../controllers/userController');
 
 const auth = require('../middleware/auth');
@@ -31,6 +32,7 @@ router.post('/login', [
   check('username').notEmpty().withMessage('Username is required'),
   check('password').notEmpty().withMessage('Password is required')
 ], loginUser);
+router.post('/refresh-token', refreshToken);
 router.put('/:id', validateUser, updateUser);
 router.delete('/:id', deleteUser);
 router.post('/assign-roles', async (req, res) => {

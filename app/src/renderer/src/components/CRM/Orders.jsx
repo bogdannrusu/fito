@@ -6,6 +6,8 @@ import { Card, Table, Tag, Space, Button, message, Modal, Form, Input, Select, P
 import { ShoppingCartOutlined, DeleteOutlined } from '@ant-design/icons'; 
 import Navbar from './Navbar';
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import { apiUrls } from '../../../../../services/api';
 
 const { Option } = Select;
 
@@ -17,11 +19,11 @@ const Orders = () => {
   const [form] = Form.useForm();
   const [totalAmount, setTotalAmount] = useState(0);
 
-  const WEB_API_URL = 'https://fito-api.vercel.app';
-  const LOCAL_API_URL = 'http://localhost:4000';
+  // Folosim URL-ul API din serviciul centralizat
+  const API_URL = apiUrls.CURRENT_API_URL;
 
   const getToken = () => {
-    return localStorage.getItem('token'); 
+    return Cookies.get('token'); 
   };
 
   const fetchOrders = async () => {
@@ -33,7 +35,7 @@ const Orders = () => {
     }
 
     try {
-      const response = await axios.get(`${WEB_API_URL}/api/orders/ordergoods`, {
+      const response = await axios.get(`${API_URL}/api/orders/ordergoods`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -62,7 +64,7 @@ const Orders = () => {
       return;
     }
     try {
-      await axios.delete(`${WEB_API_URL}/api/orders/${orderId}`, {
+      await axios.delete(`${API_URL}/api/orders/${orderId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrders(orders.filter(order => order._id !== orderId));
@@ -82,7 +84,7 @@ const Orders = () => {
     }
 
     try {
-      const response = await axios.get(`${WEB_API_URL}/api/goods`, {
+      const response = await axios.get(`${API_URL}/api/goods`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -140,7 +142,7 @@ const Orders = () => {
         phone: values.phone,
       };
 
-      await axios.post(`${WEB_API_URL}/api/orders/order`, newOrder, {
+      await axios.post(`${API_URL}/api/orders/order`, newOrder, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -165,7 +167,7 @@ const Orders = () => {
     }
 
     try {
-      await axios.post(`${WEB_API_URL}/api/orderDeposit/move`, {
+      await axios.post(`${API_URL}/api/orderDeposit/move`, {
         orderId: order.orderId,
         items: order.items,
         totalAmount: order.totalAmount

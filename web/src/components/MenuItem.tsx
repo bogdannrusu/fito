@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import { useTranslation } from "react-i18next";
 import { CartItem } from "./Cart";
+import Cookies from "js-cookie";
 
 
 import getAmericanoImage from "../../public/americano.jpg";
@@ -65,7 +66,7 @@ export const MenuItem = ({ item }: MenuItemProps) => {
 
   const handleAddToCart = () => {
     if (quantity > 0) {
-      const existingCart = localStorage.getItem('cart');
+      const existingCart = Cookies.get('cart');
       const cartItems: CartItem[] = existingCart ? JSON.parse(existingCart) : [];
       
       const existingItemIndex = cartItems.findIndex(cartItem => cartItem.name === item.name);
@@ -81,7 +82,7 @@ export const MenuItem = ({ item }: MenuItemProps) => {
         });
       }
       
-      localStorage.setItem('cart', JSON.stringify(cartItems));
+      Cookies.set('cart', JSON.stringify(cartItems), { secure: true, sameSite: 'strict' });
 
       window.dispatchEvent(new StorageEvent('storage', {
         key: 'cart',

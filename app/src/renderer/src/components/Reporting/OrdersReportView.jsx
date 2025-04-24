@@ -6,19 +6,21 @@ import { Table, Button, message, Card } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 import Navbar from '../CRM/Navbar';
+import Cookies from 'js-cookie';
+import { apiUrls } from '../../../../../services/api';
 
 const OrdersReportView = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getToken = () => localStorage.getItem('token');
-  const WEB_API_URL = 'https://fito-api.vercel.app';
-  const LOCAL_API_URL = 'http://localhost:4000';
+  const getToken = () => Cookies.get('token');
+  // Folosim URL-ul API din serviciul centralizat
+  const API_URL = apiUrls.CURRENT_API_URL;
 
   const fetchReportData = async () => {
     try {
       const token = getToken();
-      const response = await axios.get(`${WEB_API_URL}/api/reports`, {
+      const response = await axios.get(`${API_URL}/api/reports`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setData(response.data);

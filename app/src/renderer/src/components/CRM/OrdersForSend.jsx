@@ -5,19 +5,21 @@ import React, { useEffect, useState } from 'react';
 import { Table, Tag, Space, Button, message, Popconfirm } from 'antd';
 import axios from 'axios';
 import Navbar from './Navbar';
+import Cookies from 'js-cookie';
+import { apiUrls } from '../../../../../services/api';
 
 const OrdersForSend = () => {
   const [orderDeposits, setOrderDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const getToken = () => localStorage.getItem('token');
-  const WEB_API_URL = 'https://fito-api.vercel.app';
-  const LOCAL_API_URL = 'http://localhost:4000';
+  const getToken = () => Cookies.get('token');
+  // Folosim URL-ul API din serviciul centralizat
+  const API_URL = apiUrls.CURRENT_API_URL;
 
   const fetchOrderDeposits = async () => {
     const token = getToken();
     try {
-      const response = await axios.get(`${WEB_API_URL}/api/orderDeposit`, {
+      const response = await axios.get(`${API_URL}/api/orderDeposit`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setOrderDeposits(response.data);
@@ -89,7 +91,7 @@ const OrdersForSend = () => {
               try {
                 const token = getToken();
                 await axios.patch(
-                  `${WEB_API_URL}/api/orderDeposit/status/${record.orderId}`,
+                  `${API_URL}/api/orderDeposit/status/${record.orderId}`,
                   { finalStatus: 'Delivered' },
                   { headers: { Authorization: `Bearer ${token}` } }
                 );

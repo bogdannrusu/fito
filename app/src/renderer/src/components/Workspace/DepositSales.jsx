@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Form, Input, Select, Button, message } from 'antd';
 import Navbar from '../CRM/Navbar';
 import axios from 'axios';

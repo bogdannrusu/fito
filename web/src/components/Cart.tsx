@@ -6,9 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { OrderDetailsModal, CustomerDetails } from "./OrderDetailsModal";
 import { CartSidebar } from "./CartSidebar";
 import { createOrderItems, submitOrder } from "@/utils/cartUtils";
-
-const LOCAL_API_URL = 'http://localhost:4000/api';
-const WEB_API_URL = 'https://fito-api.vercel.app/api';
+import { apiConfig } from "../utils/apiConfig";
 
 export type CartItem = {
   name: string;
@@ -25,7 +23,7 @@ type CartProps = {
 };
 
 const fetchGoods = async () => {
-  const response = await fetch(WEB_API_URL + '/goods');
+  const response = await fetch(apiConfig.API_URL + '/goods');
   if (!response.ok) {
     throw new Error('Failed to fetch goods');
   }

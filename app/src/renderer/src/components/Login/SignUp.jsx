@@ -6,6 +6,8 @@ import { Form, Input, Button, Typography, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { apiUrls } from '../../../../../services/api';
 
 const { Title } = Typography;
 
@@ -17,13 +19,13 @@ const SignUp = () => {
     navigate('/');
   }
 
-  const WEB_API_URL = 'https://fito-api.vercel.app';
-  const LOCAL_API_URL = 'http://localhost:4000';
+  // Folosim URL-ul API din serviciul centralizat
+  const API_URL = apiUrls.CURRENT_API_URL;
 
   const onFinish = async (values) => {
     try {
       // Sign up user
-      const response = await axios.post(`${WEB_API_URL}/api/users/register`, {
+      const response = await axios.post(`${API_URL}/api/users/register`, {
         username: values.username,
         password: values.password,
         confirm: values.confirm,
@@ -34,13 +36,16 @@ const SignUp = () => {
         message.success('Account created successfully!');
 
         // Authenticate user
-        const loginResponse = await axios.post(`${WEB_API_URL}/api/users/login`, {
+        const loginResponse = await axios.post(`${API_URL}/api/users/login`, {
           username: values.username,
           password: values.password,
         });
 
         if (loginResponse.data.token) {
-          localStorage.setItem('token', loginResponse.data.token);
+          // Set token in cookie using same settings as in Login.jsx
+          Cookies.set('token', loginResponse.data.token, { expires: 1 });
+          console.log('Token cookie set:', Cookies.get('token'));
+          
           message.success('Login successful!');
           navigate('/navbar');
         }

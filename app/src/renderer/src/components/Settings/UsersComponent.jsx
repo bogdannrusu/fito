@@ -5,11 +5,13 @@ import React, { useState, useEffect } from 'react';
 import { Table, Space, Button, message, Modal, Form, Select, Switch } from 'antd';
 import axios from 'axios';
 import Navbar from '../CRM/Navbar';
+import Cookies from 'js-cookie';
+import { apiUrls } from '../../../../../services/api';
 
 const { Option } = Select;
 
-const WEB_API_URL = 'https://fito-api.vercel.app';
-const LOCAL_API_URL = 'http://localhost:4000';
+// Folosim URL-ul API din serviciul centralizat
+const API_URL = apiUrls.CURRENT_API_URL;
 
 const UsersComponent = () => {
   const [users, setUsers] = useState([]);
@@ -67,13 +69,13 @@ const UsersComponent = () => {
     },
   ];
 
-  const getToken = () => sessionStorage.getItem('token');
+  const getToken = () => Cookies.get('token');
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
       const token = getToken();
-      const response = await axios.get(`${WEB_API_URL}/api/users`, {
+      const response = await axios.get(`${API_URL}/api/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(response.data);
@@ -97,7 +99,7 @@ const UsersComponent = () => {
       const values = await form.validateFields();
       const token = getToken();
       await axios.put(
-        `${WEB_API_URL}/api/users/${selectedUser._id}`, 
+        `${API_URL}/api/users/${selectedUser._id}`, 
         values,
         { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -119,7 +121,7 @@ const UsersComponent = () => {
     try {
       const token = getToken();
       await axios.delete(
-        `${WEB_API_URL}api/users/${selectedUser._id}`,
+        `${API_URL}/api/users/${selectedUser._id}`,
         { headers: { Authorization: `Bearer ${token}` }}
       );
       message.success('User deleted successfully');

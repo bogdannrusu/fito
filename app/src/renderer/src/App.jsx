@@ -11,7 +11,8 @@ import NotFound from './components/Settings/404NotFound';
 import Orders from './components/CRM/Orders';
 import OrdersReportView from './components/Reporting/OrdersReportView';
 import RolesComponent from './components/Settings/RolesComponent';
-
+import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
 
 import './i18n';
 import './assets/main.css';
@@ -19,7 +20,28 @@ import './assets/main.css';
 
 
 const App = () => {
-  const isAuthenticated = !!localStorage.getItem('token');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
+  useEffect(() => {
+    // Verificăm tokenul la încărcarea componentei
+    const token = Cookies.get('token');
+    console.log('Token in App.jsx:', token);
+    setIsAuthenticated(!!token);
+  }, []);
+
+  // Re-verificăm tokenul la fiecare randare (opțional, poate fi ineficient în unele cazuri)
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = Cookies.get('token');
+      setIsAuthenticated(!!token);
+    };
+    
+    // Verifică la fiecare 2 secunde (in caz că tokenul a fost setat după randare)
+    const interval = setInterval(checkAuth, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  console.log('Is authenticated:', isAuthenticated);
 
   return (
     <Router>

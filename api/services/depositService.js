@@ -21,6 +21,7 @@ const updateDeposit = async (id, data) => {
   deposit.deposit_address = data.deposit_address || deposit.deposit_address;
 
   const updatedDeposit = await deposit.save();
+
   return updatedDeposit;
 };
 

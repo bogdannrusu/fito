@@ -6,8 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Flag from 'react-flagkit';
 import logo from '../../assets/icons/logo.webp';
+import Cookies from 'js-cookie';
+import { apiUrls } from '../../../../../services/api';
 
-axios.defaults.headers.common['Authorization'] = `Bearer ${sessionStorage.getItem('token')}`;
+axios.defaults.headers.common['Authorization'] = `Bearer ${Cookies.get('token')}`;
 
 const { Option } = Select;
 
@@ -16,13 +18,12 @@ const Login = () => {
   const [form] = Form.useForm();
   const { t, i18n } = useTranslation();
 
-  const WEB_API_URL = 'https://fito-api.vercel.app';
-  const LOCAL_API_URL = 'http://localhost:4000';
-
+  // Folosim URL-ul API din serviciul centralizat
+  const API_URL = apiUrls.CURRENT_API_URL;
 
   const onFinish = async (values) => {
     try {
-      const response = await axios.post(`${WEB_API_URL}/api/users/login`, {
+      const response = await axios.post(`${API_URL}/api/users/login`, {
         username: values.username,
         password: values.password,
       });
@@ -30,8 +31,12 @@ const Login = () => {
       console.log('Login response:', response.data); // Debug răspunsul API
 
       if (response.data.token) {
-        sessionStorage.setItem('token', response.data.token); // Schimbăm la sessionStorage
-        sessionStorage.setItem('roles', JSON.stringify(response.data.roles || []));
+        // În Electron, opțiunile secure și sameSite pot cauza probleme, așa că le eliminăm
+        Cookies.set('token', response.data.token, { expires: 1 }); // Expiră după 1 zi
+        Cookies.set('roles', JSON.stringify(response.data.roles || []), { expires: 1 });
+
+        // Debug pentru a verifica dacă cookie-ul a fost setat corect
+        console.log('Token cookie set:', Cookies.get('token'));
 
         message.success(t('Login successful!'));
         navigate('/navbar');

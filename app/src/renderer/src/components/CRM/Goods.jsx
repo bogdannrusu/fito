@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { Table, Button, Space, Modal, Form, Input, InputNumber, message } from 'antd'
 import axios from 'axios'
 import Navbar from './Navbar'
+import { apiUrls } from '../../../../../services/api';
 
 const Goods = () => {
   const [goods, setGoods] = useState([])
@@ -13,8 +14,8 @@ const Goods = () => {
   const [form] = Form.useForm()
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
-      const WEB_API_URL = 'https://fito-api.vercel.app';
-      const LOCAL_API_URL = 'http://localhost:4000';
+  // Folosim URL-ul API din serviciul centralizat
+  const API_URL = apiUrls.CURRENT_API_URL;
 
     const columns = [
       {
@@ -65,7 +66,7 @@ const Goods = () => {
     const fetchGoods = async () => {
       try {
         setLoading(true)
-        const response = await axios.get(`${WEB_API_URL}/api/goods`)
+        const response = await axios.get(`${API_URL}/api/goods`)
         setGoods(response.data)
       } catch (error) {
         message.error('Failed to fetch goods')
@@ -82,7 +83,7 @@ const Goods = () => {
 
     const handleDelete = async (id) => {
       try {
-        await axios.delete(`${WEB_API_URL}/api/goods/${id}`)
+        await axios.delete(`${API_URL}/api/goods/${id}`)
         message.success('Product deleted successfully')
         fetchGoods()
       } catch (error) {
@@ -94,9 +95,9 @@ const Goods = () => {
     const handleSubmit = async (values) => {
       try {
         if (values.id) {
-          await axios.put(`${WEB_API_URL}/api/goods/${values.id}`, values)
+          await axios.put(`${API_URL}/api/goods/${values.id}`, values)
         } else {
-          await axios.post(`${WEB_API_URL}/api/goods`, values)
+          await axios.post(`${API_URL}/api/goods`, values)
         }
         message.success('Good saved successfully')
         setIsModalVisible(false)

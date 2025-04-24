@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CartItem } from "@/components/Cart";
-
-const LOCAL_API_URL = 'http://localhost:4000/api';
-const WEB_API_URL = 'https://fito-api.vercel.app/api';
+import Cookies from "js-cookie";
+import { apiConfig } from "./apiConfig";
 
 export const createOrderItems = (items: CartItem[], goodsData: any[]) => {
   return items.map(item => {
@@ -26,11 +25,11 @@ export const createOrderItems = (items: CartItem[], goodsData: any[]) => {
 
 export const submitOrder = async (orderData: any) => {
   try {
-    const response = await fetch(WEB_API_URL + '/orders', {
+    const response = await fetch(apiConfig.API_URL + '/orders', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        'Authorization': `Bearer ${Cookies.get('token')}`,
       },
       body: JSON.stringify(orderData),
     });

@@ -26,6 +26,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import Flag from 'react-flagkit';
+import Cookies from 'js-cookie';
+import { apiUrls } from '../../../../../services/api';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -35,8 +37,8 @@ const Navbar = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const WEB_API_URL = 'https://fito-api.vercel.app';
-  const LOCAL_API_URL = 'http://localhost:4000';
+  // Folosim URL-ul API din serviciul centralizat
+  const API_URL = apiUrls.CURRENT_API_URL;
 
   const routes = {
     '1': '/orders',
@@ -52,11 +54,14 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    // Debug pentru a verifica cookie-ul
+    console.log('Token in Navbar useEffect init:', Cookies.get('token'));
+
     window.onbeforeunload = () => {
-      sessionStorage.removeItem('token');
+      Cookies.remove('token');
     };
 
-    const token = sessionStorage.getItem('token');
+    const token = Cookies.get('token');
     if (!token) {
       console.log('No token found, redirecting to /');
       navigate('/');
@@ -66,8 +71,8 @@ const Navbar = () => {
   useEffect(() => {
     const fetchUser = async () => {
       setLoading(true);
-      const token = sessionStorage.getItem('token');
-      console.log('Token in Navbar:', token);
+      const token = Cookies.get('token');
+      console.log('Token in Navbar fetchUser:', token);
 
       if (!token) {
         console.log('No token, redirecting to login');
@@ -76,7 +81,7 @@ const Navbar = () => {
       }
 
       try {
-        const response = await axios.get(`${WEB_API_URL}/api/users/me`, {
+        const response = await axios.get(`${API_URL}/api/users/me`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         console.log('API response for user:', response.data); // Debug detaliat
@@ -95,7 +100,7 @@ const Navbar = () => {
           console.log('Error response:', error.response.data);
           if (error.response.status === 401) {
             message.error(t('Session expired. Please log in again.'));
-            sessionStorage.removeItem('token');
+            Cookies.remove('token');
             setLoggedInUser(null);
             setRoles([]);
             navigate('/');
@@ -111,7 +116,7 @@ const Navbar = () => {
     };
 
     fetchUser();
-  }, [navigate, t]);
+  }, [navigate, t, API_URL]);
 
   // Forțăm re-renderizarea pentru a verifica starea loggedInUser
   const forceUpdate = () => {
@@ -147,8 +152,8 @@ const Navbar = () => {
 
   const handleOk = () => {
     setIsModalVisible(false);
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('roles');
+    Cookies.remove('token');
+    Cookies.remove('roles');
     setLoggedInUser(null);
     navigate('/');
   };
@@ -178,10 +183,10 @@ const Navbar = () => {
 
   const isAdmin = async () => {
     try {
-      const token = sessionStorage.getItem('token');
+      const token = Cookies.get('token');
       if (!token) return false;
 
-      const response = await axios.get(`${WEB_API_URL}/api/users/me`, {
+      const response = await axios.get(`${API_URL}/api/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return response.data.user.role_id === 1;
